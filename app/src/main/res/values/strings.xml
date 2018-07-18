@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Wordo</string>
+    <string name="menu_title">super cool MENU</string>
+    <string name="play_button_text">Play</string>
+</resources>
