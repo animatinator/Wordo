@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
@@ -14,11 +15,15 @@ import java.util.Optional;
 public class RotaryKeyboard {
     // The position along the circle's radius of the letters.
     // 0.0 = in the centre, 1.0 = on the edge.
-    private static final float LETTER_RADIUS_RATIO = 0.8f;
+    private static final float LETTER_RADIUS_RATIO = 0.75f;
     // Radius within which a motion event will count as hitting a letter.
     private static final float LETTER_HIT_RADIUS = 150f;
-    // Radius of the circle drawn around a letter when it is selected.
-    private static final float LETTER_HIGHLIGHT_RADIUS = 100.0f;
+    // Radius of the circle drawn around a letter when it is selected, relative to the radius of the
+    // circle.
+    private static final float LETTER_HIGHLIGHT_RADIUS_RADIO = 0.2f;
+    // Size of the letters
+    private static final float TEXT_SIZE = 100.0f;
+    private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
     private WordEntryCallback wordEntryCallback = null;
     private Paint backgroundPaint;
@@ -28,7 +33,8 @@ public class RotaryKeyboard {
     private Paint textPaint;
     private Paint highlightedTextPaint;
 
-    private Coordinates bottomRight = null;
+    private Coordinates centre = null;
+    private float radius = 10.0f;
 
     private String[] letters = null;
     private Coordinates[] letterPositions = null;
@@ -64,16 +70,19 @@ public class RotaryKeyboard {
         textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
         textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setTextSize(200.0f);
+        textPaint.setTextSize(TEXT_SIZE);
+        textPaint.setTypeface(TEXT_TYPEFACE);
 
         highlightedTextPaint = new Paint();
         highlightedTextPaint.setColor(Color.WHITE);
         highlightedTextPaint.setTextAlign(Paint.Align.CENTER);
-        highlightedTextPaint.setTextSize(200.0f);
+        highlightedTextPaint.setTextSize(TEXT_SIZE);
+        highlightedTextPaint.setTypeface(TEXT_TYPEFACE);
     }
 
-    public void updateSize(Coordinates bottomRight) {
-        this.bottomRight = bottomRight;
+    public void updateLayout(Coordinates centre, float radius) {
+        this.centre = centre;
+        this.radius = radius;
         recomputeLetterPositions();
     }
 
@@ -132,9 +141,9 @@ public class RotaryKeyboard {
     }
 
     public void onDraw(Canvas canvas) {
-        Coordinates circleCentre = getCircleCentre();
+        Coordinates circleCentre = centre;
         canvas.drawPaint(backgroundPaint);
-        canvas.drawCircle(circleCentre.x(), circleCentre.y(), getCircleRadius(), circlePaint);
+        canvas.drawCircle(circleCentre.x(), circleCentre.y(), radius, circlePaint);
 
         if (isDragging) {
             drawSelectedLetterTrail(canvas);
@@ -165,7 +174,7 @@ public class RotaryKeyboard {
             }
 
             canvas.drawCircle(
-                    letterPosition.x(), letterPosition.y(), LETTER_HIGHLIGHT_RADIUS, letterHighlightPaint);
+                    letterPosition.x(), letterPosition.y(), LETTER_HIGHLIGHT_RADIUS_RADIO * radius, letterHighlightPaint);
             lastLetterPosition = letterPosition;
         }
 
@@ -199,31 +208,21 @@ public class RotaryKeyboard {
         }
     }
 
-    private Coordinates getCircleCentre() {
-        return new Coordinates(bottomRight.x() / 2, bottomRight.y() / 2);
-    }
-
-    private float getCircleRadius() {
-        return Math.min(bottomRight.x(), bottomRight.y()) / 2;
-    }
-
     private void recomputeLetterPositions() {
-        if (letters != null && bottomRight != null) {
-            Coordinates circleCentre = getCircleCentre();
-            float circleRadius = getCircleRadius();
+        if (letters != null && centre != null) {
             int numLetters = letters.length;
 
             letterPositions = new Coordinates[numLetters];
 
-            float letterDistanceFromCentre = circleRadius * LETTER_RADIUS_RATIO;
+            float letterDistanceFromCentre = radius * LETTER_RADIUS_RATIO;
 
             for (int i = 0; i < numLetters; i++) {
                 double angle = (Math.PI * 2 * i) / numLetters;
 
                 float xFact = (float) Math.sin(angle);
                 float yFact = (float) Math.cos(angle);
-                float xPos = circleCentre.x() + (letterDistanceFromCentre * xFact);
-                float yPos = circleCentre.y() - (letterDistanceFromCentre * yFact);
+                float xPos = centre.x() + (letterDistanceFromCentre * xFact);
+                float yPos = centre.y() - (letterDistanceFromCentre * yFact);
 
                 letterPositions[i] = new Coordinates(xPos, yPos);
             }

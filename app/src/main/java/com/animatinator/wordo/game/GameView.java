@@ -37,14 +37,20 @@ public class GameView extends View implements View.OnTouchListener {
         super.onLayout(changed, left, top, right, bottom);
 
         if (changed) {
-            keyboard.updateSize(new Coordinates(right - left, bottom - top));
+            updateKeyboardLayout(right - left, bottom - top);
         }
     }
 
     @Override
     public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
-        keyboard.updateSize(new Coordinates(width, height));
+        updateKeyboardLayout(width, height);
+    }
+
+    private void updateKeyboardLayout(int width, int height) {
+        float radius = ((float)width) * 0.3f;
+        Coordinates centrePosition = new Coordinates(width / 2, (float) (height - (radius * 1.2)));
+        keyboard.updateLayout(centrePosition, radius);
     }
 
     @SuppressLint("NewApi")

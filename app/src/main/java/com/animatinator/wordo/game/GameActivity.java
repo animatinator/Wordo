@@ -14,7 +14,7 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         GameView gameView = findViewById(R.id.game_view);
-        gameView.setLetters(new String[] {"c", "a", "u", "s", "e", "d"});
+        gameView.setLetters(new String[] {"C", "A", "U", "S", "E", "D"});
         gameView.setWordEntryCallback(new RotaryKeyboard.WordEntryCallback() {
             @Override
             public void onWordEntered(String word) {
