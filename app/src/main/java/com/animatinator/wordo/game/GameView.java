@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -25,14 +26,23 @@ public class GameView extends View implements View.OnTouchListener {
         setOnTouchListener(this);
         board = new CrosswordBoard();
         keyboard = new RotaryKeyboard();
+        keyboard.setWordEntryCallback(new RotaryKeyboard.WordEntryCallback() {
+            @Override
+            public void onWordEntered(String word) {
+                Log.d("GameView", "===== Word entered: "+word+" =====");
+                board.maybeRevealWord(word);
+            }
+
+            @Override
+            public void onPartialWord(String partialWord) {
+                Log.d("GameView", "Partial word entry: "+partialWord);
+                // Do nothing.
+            }
+        });
     }
 
     public void setLetters(String[] letters) {
         keyboard.setLetters(letters);
-    }
-
-    public void setWordEntryCallback(RotaryKeyboard.WordEntryCallback wordEntryCallback) {
-        keyboard.setWordEntryCallback(wordEntryCallback);
     }
 
     @Override
