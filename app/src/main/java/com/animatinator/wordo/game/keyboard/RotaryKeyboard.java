@@ -17,7 +17,7 @@ public class RotaryKeyboard {
     // 0.0 = in the centre, 1.0 = on the edge.
     private static final float LETTER_RADIUS_RATIO = 0.75f;
     // Radius within which a motion event will count as hitting a letter.
-    private static final float LETTER_HIT_RADIUS = 150f;
+    private static final float LETTER_HIT_RADIUS = 100f;
     // Radius of the circle drawn around a letter when it is selected, relative to the radius of the
     // circle.
     private static final float LETTER_HIGHLIGHT_RADIUS_RADIO = 0.2f;
