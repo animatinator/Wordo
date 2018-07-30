@@ -1,4 +1,4 @@
-package com.animatinator.wordo.prototype;
+package com.animatinator.wordo.crossword;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -16,12 +16,12 @@ import java.util.Optional;
  * A board layout for use in-game. This stores a list of laid words and a 2D array of board tiles,
  * and manages revealing words as the game progresses.
  */
-public class PrototypeBoardLayout {
+public class CrosswordLayout {
 
     private BoardTile[][] board;
     private Map<String, LaidWord> laidWords;
 
-    public PrototypeBoardLayout(int width, int height) {
+    public CrosswordLayout(int width, int height) {
         board = new BoardTile[height][width];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -65,10 +65,10 @@ public class PrototypeBoardLayout {
     }
 
     public void maybeRevealWord(String word) {
-        Log.i("PrototypeBoardLayout", "maybeRevealWord: "+word);
+        Log.i("CrosswordLayout", "maybeRevealWord: "+word);
         LaidWord laidWord = laidWords.get(word);
         if (laidWord != null) {
-            Log.i("PrototypeBoardLayout", "Revealing word: "+word);
+            Log.i("CrosswordLayout", "Revealing word: "+word);
             if (laidWord.getDirection() == Direction.VERTICAL) {
                 for (int y = 0; y < word.length(); y++) {
                     board[y + laidWord.getTopLeft().y()][laidWord.getTopLeft().x()].reveal();

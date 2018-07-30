@@ -7,10 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
-import com.animatinator.wordo.prototype.PrototypeBoardLayout;
 import com.animatinator.wordo.util.Coordinates;
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class CrosswordBoard {
     private Paint letterPaint;
     private Rect backgroundRect = new Rect(0, 0, 0, 0);
 
-    private PrototypeBoardLayout fakeBoard;
+    private CrosswordLayout fakeBoard;
     private float gridSize;
     private float textSize;
 
@@ -36,7 +36,7 @@ public class CrosswordBoard {
     }
 
     private void initFakeBoard() {
-        fakeBoard = new PrototypeBoardLayout(5, 5);
+        fakeBoard = new CrosswordLayout(5, 5);
         fakeBoard.addWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL);
         fakeBoard.addWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL);
         fakeBoard.addWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL);
