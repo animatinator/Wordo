@@ -17,7 +17,7 @@ public class PuzzleWordConfiguration {
         return letters;
     }
 
-    List<String> getWords() {
+    public List<String> getWords() {
         return words;
     }
 
