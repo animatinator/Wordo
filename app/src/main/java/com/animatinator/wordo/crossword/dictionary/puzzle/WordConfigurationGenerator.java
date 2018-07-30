@@ -8,7 +8,7 @@ import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PuzzleGenerator {
+public class WordConfigurationGenerator {
 
     private static final PuzzleWordConfiguration EMPTY_PUZZLE =
             new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), 0);
@@ -20,11 +20,11 @@ public class PuzzleGenerator {
     private final Random random;
     private final WordMatcher matcher;
 
-    public PuzzleGenerator(ProcessedDictionary dictionary) {
+    public WordConfigurationGenerator(ProcessedDictionary dictionary) {
         this(dictionary, 0, 1000);
     }
 
-    private PuzzleGenerator(ProcessedDictionary dictionary, int minimumWordLength, int maximumWordCount) {
+    private WordConfigurationGenerator(ProcessedDictionary dictionary, int minimumWordLength, int maximumWordCount) {
         this.dictionary = dictionary;
         this.minimumWordLength = minimumWordLength;
         this.maximumWordCount = maximumWordCount;
@@ -32,12 +32,12 @@ public class PuzzleGenerator {
         matcher = new WordMatcher();
     }
 
-    public PuzzleGenerator withMinimumWordLength(int newMinimumWordLength) {
-        return new PuzzleGenerator(dictionary, newMinimumWordLength, maximumWordCount);
+    public WordConfigurationGenerator withMinimumWordLength(int newMinimumWordLength) {
+        return new WordConfigurationGenerator(dictionary, newMinimumWordLength, maximumWordCount);
     }
 
-    public PuzzleGenerator withMaximumWordCount(int newMaximumWordCount) {
-        return new PuzzleGenerator(dictionary, minimumWordLength, newMaximumWordCount);
+    public WordConfigurationGenerator withMaximumWordCount(int newMaximumWordCount) {
+        return new WordConfigurationGenerator(dictionary, minimumWordLength, newMaximumWordCount);
     }
 
     public PuzzleWordConfiguration buildPuzzle(int numLetters) {

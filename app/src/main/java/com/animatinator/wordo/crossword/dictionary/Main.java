@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
-import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleGenerator;
+import com.animatinator.wordo.crossword.dictionary.puzzle.WordConfigurationGenerator;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +21,7 @@ public class Main {
             e.printStackTrace();
             return;
         }
-        PuzzleGenerator generator = new PuzzleGenerator(dictionary).withMinimumWordLength(3).withMaximumWordCount(10);
+        WordConfigurationGenerator generator = new WordConfigurationGenerator(dictionary).withMinimumWordLength(3).withMaximumWordCount(10);
         PuzzleWordConfiguration puzzle = generator.buildPuzzle(7);
         System.out.println(puzzle);
     }

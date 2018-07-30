@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
-public class PuzzleGeneratorTest {
-    private PuzzleGenerator generator;
+public class WordConfigurationGeneratorTest {
+    private WordConfigurationGenerator generator;
     private ProcessedDictionary dictionary;
     private WordMatcher matcher;
 
@@ -31,7 +31,7 @@ public class PuzzleGeneratorTest {
         } catch (IOException e) {
             fail("Couldn't load test dictionary! Exception: "+e);
         }
-        generator = new PuzzleGenerator(dictionary);
+        generator = new WordConfigurationGenerator(dictionary);
         matcher = new WordMatcher();
     }
 
