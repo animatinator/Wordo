@@ -37,13 +37,13 @@ public class PuzzleGeneratorTest {
 
     @Test
     public void puzzleOfLength() {
-        PuzzleConfiguration puzzle = generator.buildPuzzle(4);
+        PuzzleWordConfiguration puzzle = generator.buildPuzzle(4);
         assertEquals(4, puzzle.getNumberOfLettersRequired());
     }
 
     @Test
     public void puzzleWithNoLength() {
-        PuzzleConfiguration puzzle = generator.buildPuzzle(0);
+        PuzzleWordConfiguration puzzle = generator.buildPuzzle(0);
         TestUtils.assertHasLength(0, puzzle.getWords());
     }
 
@@ -51,7 +51,7 @@ public class PuzzleGeneratorTest {
     public void puzzlesGeneratedAreValid() {
         // Run fifty times to account for randomness to some extent.
         for (int i = 0; i < 50; i++) {
-            PuzzleConfiguration puzzle = generator.buildPuzzle(6);
+            PuzzleWordConfiguration puzzle = generator.buildPuzzle(6);
             TestUtils.assertHasLength(14, puzzle.getWords());
             assertWordsAllInDictionary(puzzle.getWords(), dictionary);
             assertWordsAllFormableFromBaseWord(puzzle.getWords(), getLongestWord(puzzle));
@@ -60,37 +60,37 @@ public class PuzzleGeneratorTest {
 
     @Test
     public void puzzleWithZeroWords() {
-        PuzzleConfiguration puzzle = generator.withMaximumWordCount(0).buildPuzzle(6);
+        PuzzleWordConfiguration puzzle = generator.withMaximumWordCount(0).buildPuzzle(6);
         TestUtils.assertHasLength(0, puzzle.getWords());
     }
 
     @Test
     public void puzzleWithOnlyOneWord() {
-        PuzzleConfiguration puzzle = generator.withMaximumWordCount(1).buildPuzzle(6);
+        PuzzleWordConfiguration puzzle = generator.withMaximumWordCount(1).buildPuzzle(6);
         TestUtils.assertHasLength(1, puzzle.getWords());
     }
 
     @Test
     public void puzzleWithMinimumWordLength() {
-        PuzzleConfiguration puzzle = generator.withMinimumWordLength(6).buildPuzzle(6);
+        PuzzleWordConfiguration puzzle = generator.withMinimumWordLength(6).buildPuzzle(6);
         TestUtils.assertHasLength(1, puzzle.getWords());
     }
 
     @Test
     public void puzzleWithMinimumLengthTooHigh() {
-        PuzzleConfiguration puzzle = generator.withMinimumWordLength(7).buildPuzzle(6);
+        PuzzleWordConfiguration puzzle = generator.withMinimumWordLength(7).buildPuzzle(6);
         TestUtils.assertHasLength(0, puzzle.getWords());
     }
 
     @Test
     public void puzzleWithInitialLengthTooHigh() {
-        PuzzleConfiguration puzzle = generator.withMinimumWordLength(3).buildPuzzle(10);
+        PuzzleWordConfiguration puzzle = generator.withMinimumWordLength(3).buildPuzzle(10);
         assertEquals(6, puzzle.getNumberOfLettersRequired());
     }
 
     @Test
     public void setOfLettersIsCorrect() {
-        PuzzleConfiguration puzzle = generator.withMinimumWordLength(3).buildPuzzle(6);
+        PuzzleWordConfiguration puzzle = generator.withMinimumWordLength(3).buildPuzzle(6);
         TestUtils.assertContains(Arrays.asList(puzzle.getLetters()), "c", "a", "u", "s", "e", "d");
     }
 
@@ -106,7 +106,7 @@ public class PuzzleGeneratorTest {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private String getLongestWord(PuzzleConfiguration puzzle) {
+    private String getLongestWord(PuzzleWordConfiguration puzzle) {
         return puzzle.getWords().stream().max(Comparator.comparingInt(String::length)).get();
     }
 }

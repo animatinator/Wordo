@@ -2,12 +2,12 @@ package com.animatinator.wordo.crossword.dictionary.puzzle;
 
 import java.util.List;
 
-public class PuzzleConfiguration {
+public class PuzzleWordConfiguration {
     private final String[] letters;
     private final List<String> words;
     private final int numberOfLettersRequired;
 
-    PuzzleConfiguration(String[] letters, List<String> words, int numberOfLettersRequired) {
+    PuzzleWordConfiguration(String[] letters, List<String> words, int numberOfLettersRequired) {
         this.letters = letters;
         this.words = words;
         this.numberOfLettersRequired = numberOfLettersRequired;
@@ -27,7 +27,7 @@ public class PuzzleConfiguration {
 
     @Override
     public String toString() {
-        return "PuzzleConfiguration{" +
+        return "PuzzleWordConfiguration{" +
                 "letter set=" + letterString() +
                 "; words=" + words +
                 '}';

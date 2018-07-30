@@ -3,7 +3,7 @@ package com.animatinator.wordo.crossword.dictionary;
 import android.annotation.SuppressLint;
 
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
-import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleConfiguration;
+import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
 import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleGenerator;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class Main {
             return;
         }
         PuzzleGenerator generator = new PuzzleGenerator(dictionary).withMinimumWordLength(3).withMaximumWordCount(10);
-        PuzzleConfiguration puzzle = generator.buildPuzzle(7);
+        PuzzleWordConfiguration puzzle = generator.buildPuzzle(7);
         System.out.println(puzzle);
     }
 

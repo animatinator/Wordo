@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public class PuzzleGenerator {
 
-    private static final PuzzleConfiguration EMPTY_PUZZLE =
-            new PuzzleConfiguration(new String[]{}, new ArrayList<>(), 0);
+    private static final PuzzleWordConfiguration EMPTY_PUZZLE =
+            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), 0);
 
     private final int minimumWordLength;
     private final int maximumWordCount;
@@ -40,7 +40,7 @@ public class PuzzleGenerator {
         return new PuzzleGenerator(dictionary, minimumWordLength, newMaximumWordCount);
     }
 
-    public PuzzleConfiguration buildPuzzle(int numLetters) {
+    public PuzzleWordConfiguration buildPuzzle(int numLetters) {
         if (numLetters == 0) {
             return EMPTY_PUZZLE;
         }
@@ -62,7 +62,7 @@ public class PuzzleGenerator {
             words = randomlySelectNFromList(words, maximumWordCount);
         }
 
-        return new PuzzleConfiguration(baseWordFingerPrint.getCharacters(), words, numLetters);
+        return new PuzzleWordConfiguration(baseWordFingerPrint.getCharacters(), words, numLetters);
     }
 
     private Optional<String> chooseBaseWord(int numLetters) {
