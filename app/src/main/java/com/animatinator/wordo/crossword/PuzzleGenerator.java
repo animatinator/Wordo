@@ -11,8 +11,13 @@ import com.animatinator.wordo.crossword.generate.BoardGenerationFlags;
 import com.animatinator.wordo.crossword.generate.BoardGenerator;
 
 public class PuzzleGenerator {
+    private final ProcessedDictionary dictionary;
+
+    public PuzzleGenerator(ProcessedDictionary dictionary) {
+        this.dictionary = dictionary;
+    }
+
     public PuzzleConfiguration createPuzzle(PuzzleGenerationSettings generationSettings) {
-        ProcessedDictionary dictionary = loadDictionary();
         PuzzleWordConfiguration wordConfiguration =
                 generateWordConfiguration(generationSettings, dictionary);
         CrosswordLayout crosswordLayout = generateLayout(wordConfiguration);
@@ -43,10 +48,5 @@ public class PuzzleGenerator {
         flags.setFlag(BoardGenerationFlagConstant.GENERATE_SEVERAL_BOARDS, true);
         flags.setFlag(BoardGenerationFlagConstant.PREFER_MORE_INTERSECTIONS, true);
         return flags;
-    }
-
-    private ProcessedDictionary loadDictionary() {
-        // TODO: Load dictionary.
-        return new ProcessedDictionary();
     }
 }
