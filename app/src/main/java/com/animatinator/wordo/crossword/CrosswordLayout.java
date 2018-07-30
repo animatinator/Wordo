@@ -3,7 +3,10 @@ package com.animatinator.wordo.crossword;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.animatinator.wordo.crossword.board.Board;
+import com.animatinator.wordo.crossword.board.BoardLayout;
 import com.animatinator.wordo.crossword.board.words.LaidWord;
+import com.animatinator.wordo.crossword.util.BoardOffset;
 import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
@@ -29,6 +32,58 @@ public class CrosswordLayout {
             }
         }
         laidWords = new HashMap<>();
+    }
+
+    public CrosswordLayout(Board generatedBoard) {
+        BoardLayout layout = generatedBoard.getLayout();
+        board = createBoardLayoutFromExistingLayout(layout);
+
+        // Because the existing board may not have its top-left corner at (0, 0), we have to take
+        // the real position of its top-left corner into account and subtract it from all LaidWord
+        // positions.
+        BoardOffset laidWordOffset = new BoardOffset(layout.getTopLeft()).negative();
+        laidWords = createLaidWordsMapFromExistingBoard(generatedBoard, laidWordOffset);
+    }
+
+    private BoardTile[][] createBoardLayoutFromExistingLayout(BoardLayout existingLayout) {
+        int width = existingLayout.getWidth();
+        int height = existingLayout.getHeight();
+
+        BoardTile[][] layout = new BoardTile[height][width];
+        BoardPosition topLeft = existingLayout.getTopLeft();
+
+        for (int y = 0; y < height; y++) {
+            for (int x =0; x < width; x++) {
+                Optional<String> valueHere = existingLayout.getAt(new BoardPosition(x + topLeft.x(), y + topLeft.y()));
+                if (valueHere.isPresent()) {
+                    layout[y][x] = new BoardTile(valueHere.get());
+                } else {
+                    layout[y][x] = null;
+                }
+            }
+        }
+
+        return layout;
+    }
+
+    private Map<String, LaidWord> createLaidWordsMapFromExistingBoard(Board board, BoardOffset topLeftOffset) {
+        Map<String, LaidWord> laidWordsMap = new HashMap<>();
+
+        for (LaidWord word : board.getLaidWords()) {
+            LaidWord adjustedWord =
+                    new LaidWord(
+                            word.getWord(),
+                            word.getTopLeft().withOffset(topLeftOffset),
+                            word.getDirection());
+            laidWordsMap.put(word.getWord(), adjustedWord);
+        }
+
+        return laidWordsMap;
+    }
+
+    // Only used for testing, so package-private.
+    Map<String, LaidWord> getLaidWordsMapForTesting() {
+        return laidWords;
     }
 
     public void addWord(LaidWord word) {

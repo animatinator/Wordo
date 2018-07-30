@@ -57,7 +57,15 @@ public class LaidWord {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(word, position, direction);
+    }
+
+    @Override
+    public String toString() {
+        return "LaidWord{" +
+                "word='" + word + '\'' +
+                ", position=" + position +
+                ", direction=" + direction +
+                '}';
     }
 }
