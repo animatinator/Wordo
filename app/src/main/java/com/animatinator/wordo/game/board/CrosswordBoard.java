@@ -7,6 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import com.animatinator.wordo.crossword.util.BoardPosition;
+import com.animatinator.wordo.crossword.util.Direction;
+import com.animatinator.wordo.crossword.util.Vector2d;
 import com.animatinator.wordo.prototype.PrototypeBoardLayout;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -34,10 +37,10 @@ public class CrosswordBoard {
 
     private void initFakeBoard() {
         fakeBoard = new PrototypeBoardLayout(5, 5);
-        fakeBoard.addWord("CASE", new Coordinates(1, 1), PrototypeBoardLayout.Direction.HORIZONTAL);
-        fakeBoard.addWord("CAUSE", new Coordinates(2, 0), PrototypeBoardLayout.Direction.VERTICAL);
-        fakeBoard.addWord("SEA", new Coordinates(4, 0), PrototypeBoardLayout.Direction.VERTICAL);
-        fakeBoard.addWord("ACED", new Coordinates(0, 4), PrototypeBoardLayout.Direction.HORIZONTAL);
+        fakeBoard.addWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL);
+        fakeBoard.addWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL);
+        fakeBoard.addWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL);
+        fakeBoard.addWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL);
     }
 
     private void initPaints() {
@@ -74,7 +77,7 @@ public class CrosswordBoard {
     }
 
     private void updateGrid() {
-        Coordinates boardSize = fakeBoard.getSize();
+        Vector2d boardSize = fakeBoard.getSize();
         float longestSide = Math.max(boardSize.x(), boardSize.y());
         gridSize = size.x() / longestSide;
     }
@@ -91,7 +94,7 @@ public class CrosswordBoard {
 
     @SuppressLint("NewApi")
     private void drawBoard(Canvas canvas) {
-        Coordinates boardSize = fakeBoard.getSize();
+        Vector2d boardSize = fakeBoard.getSize();
 
         for (int y = 0; y < boardSize.y(); y++) {
             for (int x = 0; x < boardSize.x(); x++) {

@@ -3,19 +3,18 @@ package com.animatinator.wordo.prototype;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.animatinator.wordo.util.Coordinates;
+import com.animatinator.wordo.crossword.board.words.LaidWord;
+import com.animatinator.wordo.crossword.util.BoardPosition;
+import com.animatinator.wordo.crossword.util.Direction;
+import com.animatinator.wordo.crossword.util.Vector2d;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * This class is a minimal piece of untested nonsense very loosely based on code her:
- * https://github.com/animatinator/experimental/tree/master/crossword.
- * It's only here to prototype drawing and word revealing code before fully integrating the puzzle
- * generator.
- *
- * TODO: remove this and implement properly.
+ * A board layout for use in-game. This stores a list of laid words and a 2D array of board tiles,
+ * and manages revealing words as the game progresses.
  */
 public class PrototypeBoardLayout {
 
@@ -32,21 +31,21 @@ public class PrototypeBoardLayout {
         laidWords = new HashMap<>();
     }
 
-    public void addWord(String word, Coordinates position, Direction direction) {
-        laidWords.put(word, new LaidWord(position, direction));
+    public void addWord(String word, BoardPosition position, Direction direction) {
+        laidWords.put(word, new LaidWord(word, position, direction));
         if (direction == Direction.VERTICAL) {
             for (int y = 0; y < word.length(); y++) {
-                board[y + (int)position.y()][(int)position.x()] = new BoardTile(""+word.charAt(y));
+                board[y + position.y()][position.x()] = new BoardTile(""+word.charAt(y));
             }
         } else {
             for (int x = 0; x < word.length(); x++) {
-                board[(int)position.y()][x + (int)position.x()] = new BoardTile(""+ word.charAt(x));
+                board[position.y()][x + position.x()] = new BoardTile(""+ word.charAt(x));
             }
         }
     }
 
-    public Coordinates getSize() {
-        return new Coordinates(board[0].length, board.length);
+    public Vector2d getSize() {
+        return new Vector2d(board[0].length, board.length);
     }
 
     @SuppressLint("NewApi")
@@ -70,23 +69,24 @@ public class PrototypeBoardLayout {
         LaidWord laidWord = laidWords.get(word);
         if (laidWord != null) {
             Log.i("PrototypeBoardLayout", "Revealing word: "+word);
-            if (laidWord.direction == Direction.VERTICAL) {
+            if (laidWord.getDirection() == Direction.VERTICAL) {
                 for (int y = 0; y < word.length(); y++) {
-                    board[y + (int)laidWord.getPosition().y()][(int)laidWord.getPosition().x()].reveal();
+                    board[y + laidWord.getTopLeft().y()][laidWord.getTopLeft().x()].reveal();
                 }
             } else {
                 for (int x = 0; x < word.length(); x++) {
-                    board[(int)laidWord.getPosition().y()][x + (int)laidWord.getPosition().x()].reveal();
+                    board[laidWord.getTopLeft().y()][x + laidWord.getTopLeft().x()].reveal();
                 }
             }
         }
     }
 
-    public enum Direction {
-        VERTICAL, HORIZONTAL
-    }
-
-    class BoardTile {
+    /**
+     * Represents a single tile on the board.
+     *
+     * This contains the letter represented and whether or not it has been made visible yet.
+     */
+    private class BoardTile {
         private String value;
         private boolean revealed = false;
 
@@ -104,24 +104,6 @@ public class PrototypeBoardLayout {
 
         void reveal() {
             revealed = true;
-        }
-    }
-
-    class LaidWord {
-        private final Coordinates position;
-        private final Direction direction;
-
-        LaidWord(Coordinates position, Direction direction) {
-            this.position = position;
-            this.direction = direction;
-        }
-
-        Coordinates getPosition() {
-            return position;
-        }
-
-        Direction getDirection() {
-            return direction;
         }
     }
 }
