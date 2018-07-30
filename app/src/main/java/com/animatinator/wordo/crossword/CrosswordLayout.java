@@ -31,15 +31,18 @@ public class CrosswordLayout {
         laidWords = new HashMap<>();
     }
 
-    public void addWord(String word, BoardPosition position, Direction direction) {
-        laidWords.put(word, new LaidWord(word, position, direction));
-        if (direction == Direction.VERTICAL) {
-            for (int y = 0; y < word.length(); y++) {
-                board[y + position.y()][position.x()] = new BoardTile(""+word.charAt(y));
+    public void addWord(LaidWord word) {
+        String wordString = word.getWord();
+        BoardPosition position = word.getTopLeft();
+
+        laidWords.put(wordString, word);
+        if (word.getDirection() == Direction.VERTICAL) {
+            for (int y = 0; y < wordString.length(); y++) {
+                board[y + position.y()][position.x()] = new BoardTile(""+wordString.charAt(y));
             }
         } else {
-            for (int x = 0; x < word.length(); x++) {
-                board[position.y()][x + position.x()] = new BoardTile(""+ word.charAt(x));
+            for (int x = 0; x < wordString.length(); x++) {
+                board[position.y()][x + position.x()] = new BoardTile(""+ wordString.charAt(x));
             }
         }
     }
@@ -49,19 +52,26 @@ public class CrosswordLayout {
     }
 
     @SuppressLint("NewApi")
-    public Optional<String> getValueAt(int x, int y) {
-        BoardTile tile = board[y][x];
+    public Optional<String> getValueAt(BoardPosition position) {
+        checkInRange(position);
+        BoardTile tile = board[position.y()][position.x()];
         if (tile != null) {
             return Optional.of(tile.getValue());
         }
         return Optional.empty();
     }
 
-    public boolean isRevealed(int x, int y) {
-        BoardTile tile = board[y][x];
-
+    public boolean isRevealed(BoardPosition position) {
+        checkInRange(position);
+        BoardTile tile = board[position.y()][position.x()];
         return tile != null && tile.isRevealed();
+    }
 
+    private void checkInRange(BoardPosition position) {
+        Vector2d size = getSize();
+        if (position.x() < 0 || position.y() < 0 || position.x() >= size.x() || position.y() >= size.y()) {
+            throw new IllegalArgumentException("Accessing a position out of range!");
+        }
     }
 
     public void maybeRevealWord(String word) {

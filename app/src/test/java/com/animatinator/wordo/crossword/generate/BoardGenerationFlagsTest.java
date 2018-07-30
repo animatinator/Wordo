@@ -3,11 +3,12 @@ package com.animatinator.wordo.crossword.generate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(JUnit4.class)
+@RunWith(RobolectricTestRunner.class)
 public class BoardGenerationFlagsTest {
     @Test
     public void defaultsSet() {

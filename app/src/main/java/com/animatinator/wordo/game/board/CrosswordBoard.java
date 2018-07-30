@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 import com.animatinator.wordo.crossword.CrosswordLayout;
+import com.animatinator.wordo.crossword.board.words.LaidWord;
 import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
@@ -37,10 +38,10 @@ public class CrosswordBoard {
 
     private void initFakeBoard() {
         fakeBoard = new CrosswordLayout(5, 5);
-        fakeBoard.addWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL);
-        fakeBoard.addWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL);
-        fakeBoard.addWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL);
-        fakeBoard.addWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL);
+        fakeBoard.addWord(new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
+        fakeBoard.addWord(new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
+        fakeBoard.addWord(new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
+        fakeBoard.addWord(new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
     }
 
     private void initPaints() {
@@ -98,7 +99,7 @@ public class CrosswordBoard {
 
         for (int y = 0; y < boardSize.y(); y++) {
             for (int x = 0; x < boardSize.x(); x++) {
-                Optional<String> value = fakeBoard.getValueAt(x, y);
+                Optional<String> value = fakeBoard.getValueAt(new BoardPosition(x, y));
                 if (value.isPresent()) {
                     float left = topLeft.x() + (x * gridSize);
                     float top = topLeft.y() + (y * gridSize);
@@ -106,7 +107,7 @@ public class CrosswordBoard {
                     float bottom = top + gridSize;
                     canvas.drawRect(left, top, right, bottom, squarePaint);
 
-                    if (fakeBoard.isRevealed(x, y)) {
+                    if (fakeBoard.isRevealed(new BoardPosition(x, y))) {
                         String characterHere = value.get();
                         canvas.drawText(characterHere, left, top + gridSize, letterPaint);
                     }

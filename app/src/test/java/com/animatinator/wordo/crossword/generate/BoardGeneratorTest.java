@@ -10,13 +10,14 @@ import com.animatinator.wordo.crossword.print.SystemOutPrinter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-@RunWith(JUnit4.class)
+@RunWith(RobolectricTestRunner.class)
 public class BoardGeneratorTest {
     private static final String[] WORDS = new String[]{
             "ads", "cue", "sad", "sea", "sue", "use", "aces", "case", "cues", "dues", "used", "cause", "sauce",
