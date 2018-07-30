@@ -8,7 +8,7 @@ public class DictionaryEntry {
     private String word;
     private WordFingerPrint fingerPrint;
 
-    DictionaryEntry(String word, WordFingerPrint fingerPrint) {
+    public DictionaryEntry(String word, WordFingerPrint fingerPrint) {
         this.word = word;
         this.fingerPrint = fingerPrint;
     }
@@ -32,7 +32,6 @@ public class DictionaryEntry {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(word, fingerPrint);
     }
 }
