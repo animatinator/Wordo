@@ -28,6 +28,7 @@ public class GameActivity extends Activity {
 
             GameView gameView = findViewById(R.id.game_view);
             gameView.setLetters(puzzleConfig.getLetters());
+            gameView.setPuzzleLayout(puzzleConfig.getLayout());
         } catch (IOException e) {
             Log.e(TAG, "Couldn't generate the puzzle!");
             e.printStackTrace();
@@ -43,7 +44,7 @@ public class GameActivity extends Activity {
 
     private PuzzleGenerationSettings getGenerationSettings() {
         return new PuzzleGenerationSettings()
-                .withMaxWords(10)
+                .withMaxWords(15)
                 .withMinWordLength(3)
                 .withNumLetters(7);
     }

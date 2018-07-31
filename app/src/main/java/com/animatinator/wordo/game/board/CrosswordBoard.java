@@ -27,21 +27,29 @@ public class CrosswordBoard {
     private Paint letterPaint;
     private Rect backgroundRect = new Rect(0, 0, 0, 0);
 
-    private CrosswordLayout fakeBoard;
+    private CrosswordLayout crosswordLayout;
     private float gridSize;
     private float textSize;
+
+    // Keep track of whether we've already set up the layout params. If so, setting the puzzle or
+    // similar will require recomputing the layout.
+    private boolean layoutInitialised = false;
 
     public CrosswordBoard() {
         initFakeBoard();
         initPaints();
     }
 
+    /**
+     * Set it up with a test board at first. This also provides a neat fallback if we totally failed
+     * to generate a board for whatever reason.
+     */
     private void initFakeBoard() {
-        fakeBoard = new CrosswordLayout(5, 5);
-        fakeBoard.addWord(new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
-        fakeBoard.addWord(new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
-        fakeBoard.addWord(new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
-        fakeBoard.addWord(new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
+        crosswordLayout = new CrosswordLayout(5, 5);
+        crosswordLayout.addWord(new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
+        crosswordLayout.addWord(new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
+        crosswordLayout.addWord(new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
+        crosswordLayout.addWord(new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
     }
 
     private void initPaints() {
@@ -57,13 +65,22 @@ public class CrosswordBoard {
         letterPaint.setTypeface(TEXT_TYPEFACE);
     }
 
+    public void setPuzzleLayout(CrosswordLayout layout) {
+        crosswordLayout = layout;
+        // If the layout was already set up earlier, we'll need to recompute various params now.
+        if (layoutInitialised) {
+            updateLayout(topLeft, size);
+        }
+    }
+
     public void maybeRevealWord(String word) {
-        fakeBoard.maybeRevealWord(word);
+        crosswordLayout.maybeRevealWord(word);
     }
 
     public void updateLayout(Coordinates topLeft, Coordinates size) {
         this.topLeft = topLeft;
         this.size = size;
+        layoutInitialised = true;
         updateBackgroundRect();
         updateGrid();
         updateTextSizing();
@@ -78,7 +95,7 @@ public class CrosswordBoard {
     }
 
     private void updateGrid() {
-        Vector2d boardSize = fakeBoard.getSize();
+        Vector2d boardSize = crosswordLayout.getSize();
         float longestSide = Math.max(boardSize.x(), boardSize.y());
         gridSize = size.x() / longestSide;
     }
@@ -95,11 +112,11 @@ public class CrosswordBoard {
 
     @SuppressLint("NewApi")
     private void drawBoard(Canvas canvas) {
-        Vector2d boardSize = fakeBoard.getSize();
+        Vector2d boardSize = crosswordLayout.getSize();
 
         for (int y = 0; y < boardSize.y(); y++) {
             for (int x = 0; x < boardSize.x(); x++) {
-                Optional<String> value = fakeBoard.getValueAt(new BoardPosition(x, y));
+                Optional<String> value = crosswordLayout.getValueAt(new BoardPosition(x, y));
                 if (value.isPresent()) {
                     float left = topLeft.x() + (x * gridSize);
                     float top = topLeft.y() + (y * gridSize);
@@ -107,7 +124,7 @@ public class CrosswordBoard {
                     float bottom = top + gridSize;
                     canvas.drawRect(left, top, right, bottom, squarePaint);
 
-                    if (fakeBoard.isRevealed(new BoardPosition(x, y))) {
+                    if (crosswordLayout.isRevealed(new BoardPosition(x, y))) {
                         String characterHere = value.get();
                         canvas.drawText(characterHere, left, top + gridSize, letterPaint);
                     }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.game.board.CrosswordBoard;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.util.Coordinates;
@@ -43,6 +44,10 @@ public class GameView extends View implements View.OnTouchListener {
 
     public void setLetters(String[] letters) {
         keyboard.setLetters(letters);
+    }
+
+    public void setPuzzleLayout(CrosswordLayout layout) {
+        board.setPuzzleLayout(layout);
     }
 
     @Override
