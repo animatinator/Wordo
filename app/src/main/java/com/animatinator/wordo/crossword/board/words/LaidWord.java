@@ -3,7 +3,7 @@ package com.animatinator.wordo.crossword.board.words;
 import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,8 +41,17 @@ public class LaidWord {
         return direction;
     }
 
+    /**
+     * It should be possible to use Arrays.asList(word.split("")), but that mysteriously fails in
+     * ways I couldn't reproduce in tests. Sometimes (and only sometimes, and only when running on
+     * the device), this would return N+1 results with the first being an empty string.
+     */
     public List<String> getCharacters() {
-        return Arrays.asList(word.split(""));
+        List<String> chars = new ArrayList<>();
+        for (int i = 0; i < word.length(); i++) {
+            chars.add(String.valueOf(word.charAt(i)));
+        }
+        return chars;
     }
 
     @Override
