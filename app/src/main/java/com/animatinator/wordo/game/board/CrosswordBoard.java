@@ -19,6 +19,7 @@ import java.util.Optional;
 public class CrosswordBoard {
     private static final Typeface TEXT_TYPEFACE =
             Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
+    private static final boolean DRAW_DEBUG_RECT = false;
 
     // topLeft is the top-left corner of this view area. drawnBoardTopLeft is the top-left corner of
     // the board being drawn, once it's been centred.
@@ -89,7 +90,9 @@ public class CrosswordBoard {
         this.topLeft = topLeft;
         this.size = size;
         layoutInitialised = true;
-        updateBackgroundRect();
+        if (DRAW_DEBUG_RECT) {
+            updateBackgroundRect();
+        }
         updateGrid();
         updateTextSizing();
     }
@@ -121,7 +124,9 @@ public class CrosswordBoard {
     }
 
     public void onDraw(Canvas canvas) {
-        canvas.drawRect(backgroundRect, backgroundPaint);
+        if (DRAW_DEBUG_RECT) {
+            canvas.drawRect(backgroundRect, backgroundPaint);
+        }
         drawBoard(canvas);
     }
 
