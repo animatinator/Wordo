@@ -17,7 +17,8 @@ import com.animatinator.wordo.util.Coordinates;
 import java.util.Optional;
 
 public class CrosswordBoard {
-    private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
+    private static final Typeface TEXT_TYPEFACE =
+            Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
 
     // topLeft is the top-left corner of this view area. drawnBoardTopLeft is the top-left corner of
     // the board being drawn, once it's been centred.
@@ -49,10 +50,14 @@ public class CrosswordBoard {
      */
     private void initFakeBoard() {
         crosswordLayout = new CrosswordLayout(5, 5);
-        crosswordLayout.addWord(new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
-        crosswordLayout.addWord(new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
-        crosswordLayout.addWord(new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
-        crosswordLayout.addWord(new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
+        crosswordLayout.addWord(
+                new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
+        crosswordLayout.addWord(
+                new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
+        crosswordLayout.addWord(
+                new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
+        crosswordLayout.addWord(
+                new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
     }
 
     private void initPaints() {
@@ -142,7 +147,8 @@ public class CrosswordBoard {
                         float yOffset = (gridSize - letterHeight) / 2.0f;
                         float letterWidth = letterPaint.measureText(characterHere);
                         float xOffset = (gridSize - letterWidth) / 2.0f;
-                        canvas.drawText(characterHere, left + xOffset, top + yOffset, letterPaint);
+                        canvas.drawText(
+                                characterHere, left + xOffset, top + yOffset, letterPaint);
                     }
                 }
             }
