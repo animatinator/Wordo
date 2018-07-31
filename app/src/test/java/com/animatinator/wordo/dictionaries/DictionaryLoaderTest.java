@@ -19,7 +19,7 @@ import static org.junit.Assert.fail;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "..\\app\\src\\main\\AndroidManifest.xml")
 public class DictionaryLoaderTest {
-    private static final String TEST_DICTIONARY_PATH = "dictionaries\\basicdict.txt";
+    private static final String TEST_DICTIONARY_PATH = "basicdict.txt";
 
     @Test
     public void loadTestDictionary() throws IOException {
