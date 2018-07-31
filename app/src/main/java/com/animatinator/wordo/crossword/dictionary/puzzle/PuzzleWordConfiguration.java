@@ -13,7 +13,7 @@ public class PuzzleWordConfiguration {
         this.numberOfLettersRequired = numberOfLettersRequired;
     }
 
-    String[] getLetters() {
+    public String[] getLetters() {
         return letters;
     }
 

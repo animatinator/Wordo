@@ -13,6 +13,7 @@ import org.robolectric.annotation.Config;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -26,6 +27,10 @@ public class DictionaryLoaderTest {
         DictionaryLoader loader = new DictionaryLoader(RuntimeEnvironment.application);
         ProcessedDictionary dictionary = loader.loadDictionary(TEST_DICTIONARY_PATH);
         List<DictionaryEntry> words = dictionary.getDictionary();
+
+        // We got everything excluding comments.
+        assertEquals(14, dictionary.getDictionary().size());
+        // Check some words.
         assertTrue(
                 words.contains(
                         new DictionaryEntry(

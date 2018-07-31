@@ -21,7 +21,7 @@ public class PuzzleGenerator {
         PuzzleWordConfiguration wordConfiguration =
                 generateWordConfiguration(generationSettings, dictionary);
         CrosswordLayout crosswordLayout = generateLayout(wordConfiguration);
-        return new PuzzleConfiguration(wordConfiguration, crosswordLayout);
+        return new PuzzleConfiguration(wordConfiguration.getLetters(), crosswordLayout);
     }
 
     private PuzzleWordConfiguration generateWordConfiguration(

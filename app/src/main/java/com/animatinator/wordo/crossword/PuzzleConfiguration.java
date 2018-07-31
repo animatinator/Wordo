@@ -1,18 +1,16 @@
 package com.animatinator.wordo.crossword;
 
-import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
-
 public class PuzzleConfiguration {
-    private final PuzzleWordConfiguration wordConfiguration;
+    private final String[] letters;
     private final CrosswordLayout layout;
 
-    public PuzzleConfiguration(PuzzleWordConfiguration wordConfiguration, CrosswordLayout layout) {
-        this.wordConfiguration = wordConfiguration;
+    public PuzzleConfiguration(String[] letters, CrosswordLayout layout) {
+        this.letters = letters;
         this.layout = layout;
     }
 
-    public PuzzleWordConfiguration getWordConfiguration() {
-        return wordConfiguration;
+    public String[] getLetters() {
+        return letters;
     }
 
     public CrosswordLayout getLayout() {
