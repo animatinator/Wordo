@@ -29,6 +29,7 @@ public class CrosswordBoard {
 
     private Paint backgroundPaint;
     private Paint squarePaint;
+    private Paint squareOutlinePaint;
     private Paint letterPaint;
     private Rect backgroundRect = new Rect(0, 0, 0, 0);
 
@@ -67,6 +68,10 @@ public class CrosswordBoard {
 
         squarePaint = new Paint();
         squarePaint.setColor(Color.LTGRAY);
+
+        squareOutlinePaint = new Paint();
+        squareOutlinePaint.setColor(Color.GRAY);
+        squareOutlinePaint.setStyle(Paint.Style.STROKE);
 
         letterPaint = new Paint();
         letterPaint.setColor(Color.BLACK);
@@ -143,6 +148,7 @@ public class CrosswordBoard {
                     float right = left + gridSize;
                     float bottom = top + gridSize;
                     canvas.drawRect(left, top, right, bottom, squarePaint);
+                    canvas.drawRect(left, top, right, bottom, squareOutlinePaint);
 
                     if (crosswordLayout.isRevealed(new BoardPosition(x, y))) {
                         String characterHere = value.get();

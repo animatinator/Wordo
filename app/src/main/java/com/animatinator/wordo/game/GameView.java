@@ -15,7 +15,7 @@ import com.animatinator.wordo.util.Coordinates;
 
 public class GameView extends View implements View.OnTouchListener {
     // The ratio of the spacing around the board to the size of the board itself.
-    private static final float BOARD_SPACING_RATIO = 1.2f;
+    private static final float BOARD_SPACING_RATIO = 1.1f;
     // The ratio of the spacing around the keyboard to the size of the keyboard itself.
     private static final float KEYBOARD_SPACING_RATIO = 1.1f;
 
