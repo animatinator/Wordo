@@ -15,7 +15,7 @@ public class DictionaryLoader {
 
     private AssetManager assetManager;
 
-    DictionaryLoader(Context context) {
+    public DictionaryLoader(Context context) {
         assetManager = context.getAssets();
     }
 

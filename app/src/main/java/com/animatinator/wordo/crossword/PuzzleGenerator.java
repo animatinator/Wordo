@@ -10,6 +10,7 @@ import com.animatinator.wordo.crossword.generate.BoardGenerationFlagConstant;
 import com.animatinator.wordo.crossword.generate.BoardGenerationFlags;
 import com.animatinator.wordo.crossword.generate.BoardGenerator;
 
+// TODO: Test this.
 public class PuzzleGenerator {
     private final ProcessedDictionary dictionary;
 
