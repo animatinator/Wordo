@@ -8,8 +8,19 @@ public class FingerPrinter {
             return new WordFingerPrint(new String[]{});
         }
 
-        String[] characters = word.toLowerCase().split("");
+        String[] characters = getLowerCaseCharacters(word);
         Arrays.sort(characters);
         return new WordFingerPrint(characters);
+    }
+
+    private static String[] getLowerCaseCharacters(String word) {
+        String lowerCase = word.toLowerCase();
+        String[] result = new String[word.length()];
+
+        for (int i = 0; i < lowerCase.length(); i++) {
+            result[i] = String.valueOf(lowerCase.charAt(i));
+        }
+
+        return result;
     }
 }
