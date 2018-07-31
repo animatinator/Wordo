@@ -8,17 +8,16 @@ public class FingerPrinter {
             return new WordFingerPrint(new String[]{});
         }
 
-        String[] characters = getLowerCaseCharacters(word);
+        String[] characters = getCharacters(word);
         Arrays.sort(characters);
         return new WordFingerPrint(characters);
     }
 
-    private static String[] getLowerCaseCharacters(String word) {
-        String lowerCase = word.toLowerCase();
+    private static String[] getCharacters(String word) {
         String[] result = new String[word.length()];
 
-        for (int i = 0; i < lowerCase.length(); i++) {
-            result[i] = String.valueOf(lowerCase.charAt(i));
+        for (int i = 0; i < word.length(); i++) {
+            result[i] = String.valueOf(word.charAt(i));
         }
 
         return result;

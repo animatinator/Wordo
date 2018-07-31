@@ -16,4 +16,12 @@ public class Coordinates {
     public float y() {
         return y;
     }
+
+    public Coordinates withXOffset(float offset) {
+        return new Coordinates(x + offset, y);
+    }
+
+    public Coordinates withYOffset(float offset) {
+        return new Coordinates(x, y + offset);
+    }
 }

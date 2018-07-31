@@ -19,7 +19,10 @@ import java.util.Optional;
 public class CrosswordBoard {
     private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
 
+    // topLeft is the top-left corner of this view area. drawnBoardTopLeft is the top-left corner of
+    // the board being drawn, once it's been centred.
     private Coordinates topLeft = null;
+    private Coordinates drawnBoardTopLeft = null;
     private Coordinates size = null;
 
     private Paint backgroundPaint;
@@ -98,6 +101,13 @@ public class CrosswordBoard {
         Vector2d boardSize = crosswordLayout.getSize();
         float longestSide = Math.max(boardSize.x(), boardSize.y());
         gridSize = size.x() / longestSide;
+        if (boardSize.x() > boardSize.y()) {
+            float drawnBoardHeight = boardSize.y() * gridSize;
+            drawnBoardTopLeft = topLeft.withYOffset((size.y() - drawnBoardHeight) / 2.0f);
+        } else {
+            float drawnBoardWidth = boardSize.x() * gridSize;
+            drawnBoardTopLeft = topLeft.withXOffset((size.x() - drawnBoardWidth) / 2.0f);
+        }
     }
 
     private void updateTextSizing() {
@@ -118,15 +128,21 @@ public class CrosswordBoard {
             for (int x = 0; x < boardSize.x(); x++) {
                 Optional<String> value = crosswordLayout.getValueAt(new BoardPosition(x, y));
                 if (value.isPresent()) {
-                    float left = topLeft.x() + (x * gridSize);
-                    float top = topLeft.y() + (y * gridSize);
+                    float left = drawnBoardTopLeft.x() + (x * gridSize);
+                    float top = drawnBoardTopLeft.y() + (y * gridSize);
                     float right = left + gridSize;
                     float bottom = top + gridSize;
                     canvas.drawRect(left, top, right, bottom, squarePaint);
 
                     if (crosswordLayout.isRevealed(new BoardPosition(x, y))) {
                         String characterHere = value.get();
-                        canvas.drawText(characterHere, left, top + gridSize, letterPaint);
+
+                        // Calculate offsets from the grid tile position to centre letters.
+                        float letterHeight = letterPaint.ascent() + letterPaint.descent();
+                        float yOffset = (gridSize - letterHeight) / 2.0f;
+                        float letterWidth = letterPaint.measureText(characterHere);
+                        float xOffset = (gridSize - letterWidth) / 2.0f;
+                        canvas.drawText(characterHere, left + xOffset, top + yOffset, letterPaint);
                     }
                 }
             }

@@ -31,7 +31,7 @@ public class DictionaryLoader {
             if (currentLine.startsWith("#")) {
                 continue;
             }
-            result.addWord(currentLine);
+            result.addWord(currentLine.toUpperCase());
         }
 
         return result;
