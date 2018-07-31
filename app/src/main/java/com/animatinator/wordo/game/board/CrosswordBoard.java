@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class CrosswordBoard {
     private static final Typeface TEXT_TYPEFACE =
-            Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
+            Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
     private static final boolean DRAW_DEBUG_RECT = false;
 
     // topLeft is the top-left corner of this view area. drawnBoardTopLeft is the top-left corner of
@@ -66,10 +66,10 @@ public class CrosswordBoard {
         backgroundPaint.setColor(Color.GREEN);
 
         squarePaint = new Paint();
-        squarePaint.setColor(Color.BLACK);
+        squarePaint.setColor(Color.LTGRAY);
 
         letterPaint = new Paint();
-        letterPaint.setColor(Color.WHITE);
+        letterPaint.setColor(Color.BLACK);
         letterPaint.setTextSize(textSize);
         letterPaint.setTypeface(TEXT_TYPEFACE);
     }
