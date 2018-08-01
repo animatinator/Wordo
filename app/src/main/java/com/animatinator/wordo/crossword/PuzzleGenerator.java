@@ -1,5 +1,7 @@
 package com.animatinator.wordo.crossword;
 
+import android.util.Log;
+
 import com.animatinator.wordo.crossword.board.Board;
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
@@ -12,6 +14,8 @@ import com.animatinator.wordo.crossword.generate.BoardGenerator;
 
 // TODO: Test this.
 public class PuzzleGenerator {
+    private static final String TAG = "PuzzleGenerator";
+
     private final ProcessedDictionary dictionary;
 
     public PuzzleGenerator(ProcessedDictionary dictionary) {
@@ -21,6 +25,7 @@ public class PuzzleGenerator {
     public PuzzleConfiguration createPuzzle(PuzzleGenerationSettings generationSettings) {
         PuzzleWordConfiguration wordConfiguration =
                 generateWordConfiguration(generationSettings, dictionary);
+        Log.d(TAG, "Word config: "+wordConfiguration);
         CrosswordLayout crosswordLayout = generateLayout(wordConfiguration);
         return new PuzzleConfiguration(wordConfiguration.getLetters(), crosswordLayout);
     }

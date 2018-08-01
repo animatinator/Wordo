@@ -21,6 +21,8 @@ import java.util.Optional;
  */
 public class CrosswordLayout {
 
+    private static final String TAG = "CrosswordLayout";
+
     private BoardTile[][] board;
     private Map<String, LaidWord> laidWords;
 
@@ -34,7 +36,7 @@ public class CrosswordLayout {
         laidWords = new HashMap<>();
     }
 
-    public CrosswordLayout(Board generatedBoard) {
+    CrosswordLayout(Board generatedBoard) {
         BoardLayout layout = generatedBoard.getLayout();
         board = createBoardLayoutFromExistingLayout(layout);
 
@@ -55,11 +57,7 @@ public class CrosswordLayout {
         for (int y = 0; y < height; y++) {
             for (int x =0; x < width; x++) {
                 Optional<String> valueHere = existingLayout.getAt(new BoardPosition(x + topLeft.x(), y + topLeft.y()));
-                if (valueHere.isPresent()) {
-                    layout[y][x] = new BoardTile(valueHere.get());
-                } else {
-                    layout[y][x] = null;
-                }
+                layout[y][x] = valueHere.map(BoardTile::new).orElse(null);
             }
         }
 
@@ -75,6 +73,9 @@ public class CrosswordLayout {
                             word.getWord(),
                             word.getTopLeft().withOffset(topLeftOffset),
                             word.getDirection());
+            if (laidWordsMap.containsKey(word.getWord())) {
+                Log.e(TAG, "Duplicate word: "+word.getWord());
+            }
             laidWordsMap.put(word.getWord(), adjustedWord);
         }
 
