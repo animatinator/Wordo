@@ -34,13 +34,13 @@ public class DictionaryLoaderTest {
         assertTrue(
                 words.contains(
                         new DictionaryEntry(
-                                "aces",
-                                new WordFingerPrint(new String[] {"a", "c", "e", "s"}))));
+                                "ACES",
+                                new WordFingerPrint(new String[] {"A", "C", "E", "S"}))));
         assertTrue(
                 words.contains(
                         new DictionaryEntry(
-                                "use",
-                                new WordFingerPrint(new String[] {"e", "s", "u"}))));
+                                "USE",
+                                new WordFingerPrint(new String[] {"E", "S", "U"}))));
     }
 
     @Test

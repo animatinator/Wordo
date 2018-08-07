@@ -70,11 +70,6 @@ public class WordMatcherTest {
     }
 
     @Test
-    public void casesDoNotMatch() {
-        assertTrue(firstWordCanFormSecond("tEsT", "TeSt"));
-    }
-
-    @Test
     public void spanishExample() {
         assertTrue(firstWordCanFormSecond("intentaré", "tentar"));
     }
