@@ -1,5 +1,7 @@
 package com.animatinator.wordo.crossword.dictionary.puzzle;
 
+import android.util.Log;
+
 import com.animatinator.wordo.crossword.dictionary.fingerprint.FingerPrinter;
 import com.animatinator.wordo.crossword.dictionary.fingerprint.WordFingerPrint;
 import com.animatinator.wordo.crossword.dictionary.match.WordMatcher;
@@ -10,8 +12,12 @@ import java.util.stream.Collectors;
 
 public class WordConfigurationGenerator {
 
+    private static final String TAG = "WordConfigurationGenerator";
+
     private static final PuzzleWordConfiguration EMPTY_PUZZLE =
             new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), new ArrayList<>(), 0);
+
+    private static final int WORDS_TO_TRY = 10;
 
     private final int minimumWordLength;
     private final int maximumWordCount;
@@ -45,15 +51,30 @@ public class WordConfigurationGenerator {
             return EMPTY_PUZZLE;
         }
 
-        Optional<String> possibleBaseWord = chooseBaseWord(numLetters);
-        if (!possibleBaseWord.isPresent()) {
+        List<String> possibleBaseWords = chooseBaseWords(numLetters);
+        if (possibleBaseWords.isEmpty()) {
+            Log.e(TAG, "Couldn't find an appropriate base word!");
             return EMPTY_PUZZLE;
         }
 
-        // TODO: Consider trying a few base words and picking the one with the 'best' options by some criterion.
-        String baseWord = possibleBaseWord.get();
+        PuzzleWordConfiguration bestConfiguration = null;
+        int bestConfigurationScore = 0;
+
+        for (String word : possibleBaseWords) {
+            PuzzleWordConfiguration config = generateConfigForBaseWord(word);
+            int score = config.getWords().size();
+
+            if (score > bestConfigurationScore) {
+                bestConfiguration = config;
+                bestConfigurationScore = score;
+            }
+        }
+
+        return bestConfiguration;
+    }
+
+    private PuzzleWordConfiguration generateConfigForBaseWord(String baseWord) {
         WordFingerPrint baseWordFingerPrint = FingerPrinter.getFingerprint(baseWord);
-        numLetters = baseWord.length();
         List<String> allWords = matcher.getWordsFormableFromWord(baseWord, dictionary);
 
         allWords = allWords.stream().filter(word -> word.length() >= minimumWordLength).collect(Collectors.toList());
@@ -70,29 +91,28 @@ public class WordConfigurationGenerator {
                 allWords.stream().filter(word -> !words.contains(word)).collect(Collectors.toList());
 
         return new PuzzleWordConfiguration(
-                baseWordFingerPrint.getCharacters(), words, bonusWords, numLetters);
+                baseWordFingerPrint.getCharacters(), words, bonusWords, baseWord.length());
     }
 
-    private Optional<String> chooseBaseWord(int numLetters) {
-        Optional<String> result = Optional.empty();
+    private List<String> chooseBaseWords(int numLetters) {
+        List<String> result = new ArrayList<>();
 
-        while (!result.isPresent() && numLetters > 0) {
-            result = chooseBaseWordForFixedLength(numLetters);
+        while (result.isEmpty() && numLetters > 0) {
+            result = chooseBaseWordsForFixedLength(numLetters);
             numLetters--;
         }
 
         return result;
     }
 
-    private Optional<String> chooseBaseWordForFixedLength(int numLetters) {
+    private List<String> chooseBaseWordsForFixedLength(int numLetters) {
         List<String> possibleBaseWords = dictionary.getWordsOfLength(numLetters);
 
         if (possibleBaseWords.size() == 0) {
-            return Optional.empty();
+            return new ArrayList<>();
         }
 
-        int indexToUse = random.nextInt(possibleBaseWords.size());
-        return Optional.of(possibleBaseWords.get(indexToUse));
+        return randomlySelectNFromList(possibleBaseWords, WORDS_TO_TRY);
     }
 
     private List<String> randomlySelectNFromList(List<String> input, int limit) {
