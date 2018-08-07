@@ -10,25 +10,30 @@ import android.view.View;
 
 import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.game.board.CrosswordBoard;
+import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.util.Coordinates;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameView extends View implements View.OnTouchListener {
     // The ratio of the spacing around the board to the size of the board itself.
     private static final float BOARD_SPACING_RATIO = 1.1f;
     // The ratio of the spacing around the keyboard to the size of the keyboard itself.
     private static final float KEYBOARD_SPACING_RATIO = 1.1f;
+    // The radius of buttons.
+    private static final float BUTTON_RADIUS = 100.0f;
+    // The ratio of the spacing around a button to the radius of the button itself.
+    private static final float BUTTON_SPACING_RATIO = 1.3f;
+
     public static final String TAG = "GameView";
 
+    private final BonusWordsButton bonusWordsButton;
     private final CrosswordBoard board;
     private final RotaryKeyboard keyboard;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnTouchListener(this);
+        bonusWordsButton = new BonusWordsButton();
         board = new CrosswordBoard();
         keyboard = new RotaryKeyboard();
         keyboard.setWordEntryCallback(new RotaryKeyboard.WordEntryCallback() {
@@ -41,6 +46,7 @@ public class GameView extends View implements View.OnTouchListener {
                 if (!revealed) {
                     if (board.hasBonusWord(word)) {
                         Log.d(TAG, "===== Bonus word:" + word);
+                        bonusWordsButton.addToRevealedWords(word);
                     }
                 }
             }
@@ -64,6 +70,7 @@ public class GameView extends View implements View.OnTouchListener {
     public void onDraw(Canvas canvas) {
         board.onDraw(canvas);
         keyboard.onDraw(canvas);
+        bonusWordsButton.onDraw(canvas);
     }
 
     @Override
@@ -96,6 +103,15 @@ public class GameView extends View implements View.OnTouchListener {
 
         keyboard.updateLayout(keyboardCentre, keyboardRadius);
         board.updateLayout(new Coordinates(boardX, boardY), new Coordinates(boardSize, boardSize));
+
+        updateBonusButtonLayout(width, height);
+    }
+
+    private void updateBonusButtonLayout(int width, int height) {
+        float buttonOffset = BUTTON_SPACING_RATIO * BUTTON_RADIUS;
+        float x = width - buttonOffset;
+        float y = height - buttonOffset;
+        bonusWordsButton.updateLayout(new Coordinates(x, y), BUTTON_RADIUS);
     }
 
     @SuppressLint("NewApi")
