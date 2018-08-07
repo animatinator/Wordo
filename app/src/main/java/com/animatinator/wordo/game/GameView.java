@@ -11,6 +11,7 @@ import android.view.View;
 import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.game.board.CrosswordBoard;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
+import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -64,6 +65,10 @@ public class GameView extends View implements View.OnTouchListener {
 
     public void setPuzzleLayout(CrosswordLayout layout) {
         board.setPuzzleLayout(layout);
+    }
+
+    public void setBonusWordsButtonCallback(BonusWordsCallback callback) {
+        bonusWordsButton.setBonusWordsCallback(callback);
     }
 
     @Override
@@ -126,7 +131,7 @@ public class GameView extends View implements View.OnTouchListener {
             keyboard.handleRelease();
             handled = true;
         } else if (action == MotionEvent.ACTION_DOWN) {
-            handled = keyboard.handlePress(position);
+            handled = bonusWordsButton.handleTouch(position) || keyboard.handlePress(position);
         } else if (action == MotionEvent.ACTION_MOVE) {
             keyboard.handleMovement(position);
             handled = true;

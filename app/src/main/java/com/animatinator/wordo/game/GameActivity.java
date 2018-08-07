@@ -1,6 +1,7 @@
 package com.animatinator.wordo.game;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -9,8 +10,11 @@ import com.animatinator.wordo.crossword.PuzzleConfiguration;
 import com.animatinator.wordo.crossword.PuzzleGenerationSettings;
 import com.animatinator.wordo.crossword.PuzzleGenerator;
 import com.animatinator.wordo.dictionaries.DictionaryLoader;
+import com.animatinator.wordo.game.bonuswords.BonusWordsDialogFragment;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameActivity extends Activity {
 
@@ -29,10 +33,22 @@ public class GameActivity extends Activity {
             GameView gameView = findViewById(R.id.game_view);
             gameView.setLetters(puzzleConfig.getLetters());
             gameView.setPuzzleLayout(puzzleConfig.getLayout());
+            gameView.setBonusWordsButtonCallback(bonusWords -> {
+                DialogFragment fragment = new BonusWordsDialogFragment();
+                fragment.setArguments(buildBundleFromBonusWords(bonusWords));
+                fragment.show(getFragmentManager(), "Bonus words dialog");
+            });
         } catch (IOException e) {
             Log.e(TAG, "Couldn't generate the puzzle!");
             e.printStackTrace();
         }
+    }
+
+    private Bundle buildBundleFromBonusWords(List<String> bonusWords) {
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList(
+                BonusWordsDialogFragment.BONUS_WORDS_BUNDLE_ENTRY, new ArrayList<>(bonusWords));
+        return bundle;
     }
 
     private PuzzleConfiguration generatePuzzle() throws IOException {

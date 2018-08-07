@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
+import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
 public class BonusWordsButton {
@@ -17,6 +18,7 @@ public class BonusWordsButton {
 
     private Paint circlePaint;
     private Paint textPaint;
+    private BonusWordsCallback callback = bonusWords -> {};
 
     public BonusWordsButton() {
         centre = new Coordinates(0.0f, 0.0f);
@@ -26,10 +28,10 @@ public class BonusWordsButton {
 
     private void initPaints() {
         circlePaint = new Paint();
-        circlePaint.setColor(Color.BLUE);
+        circlePaint.setColor(Color.LTGRAY);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        textPaint.setColor(Color.BLACK);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextSize(0.0f);
         textPaint.setTypeface(TEXT_TYPEFACE);
@@ -46,9 +48,28 @@ public class BonusWordsButton {
     }
 
     public void onDraw(Canvas canvas) {
-        int revealedWords = bonusWordsRecord.getNumberOfRevealedWords();
-
         canvas.drawCircle(centre.x(), centre.y(), radius, circlePaint);
-        canvas.drawText(""+revealedWords, centre.x(), centre.y(), textPaint);
+
+        String revealedWords = ""+bonusWordsRecord.getNumberOfRevealedWords();
+
+        float letterHeight = textPaint.ascent() + textPaint.descent();
+        float yOffset = letterHeight / 2.0f;
+        float letterWidth = textPaint.measureText(revealedWords);
+        float xOffset = letterWidth / 2.0f;
+        canvas.drawText(revealedWords, centre.x() - xOffset, centre.y() - yOffset, textPaint);
     }
+
+    public void setBonusWordsCallback(BonusWordsCallback callback) {
+        this.callback = callback;
+    }
+
+    public boolean handleTouch(Coordinates position) {
+        if (CoordinateUtils.distance(position, centre) < radius) {
+            callback.showBonusWords(bonusWordsRecord.getRevealedWords());
+            return true;
+        }
+
+        return false;
+    }
+
 }
