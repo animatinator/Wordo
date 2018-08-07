@@ -54,9 +54,7 @@ public class BonusWordsButton {
 
         float letterHeight = textPaint.ascent() + textPaint.descent();
         float yOffset = letterHeight / 2.0f;
-        float letterWidth = textPaint.measureText(revealedWords);
-        float xOffset = letterWidth / 2.0f;
-        canvas.drawText(revealedWords, centre.x() - xOffset, centre.y() - yOffset, textPaint);
+        canvas.drawText(revealedWords, centre.x(), centre.y() - yOffset, textPaint);
     }
 
     public void setBonusWordsCallback(BonusWordsCallback callback) {
