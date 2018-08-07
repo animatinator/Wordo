@@ -9,6 +9,8 @@ import org.junit.runners.JUnit4;
 
 import java.util.List;
 
+import static org.junit.Assert.fail;
+
 @RunWith(JUnit4.class)
 public class ProcessedDictionaryTest {
     private ProcessedDictionary dictionary = new ProcessedDictionary();
@@ -84,6 +86,19 @@ public class ProcessedDictionaryTest {
     public void addWordToProcessedDictionary() {
         dictionary.addWord("test");
         TestUtils.assertContains(dictionary.getDictionary(), new DictionaryEntry("test", new WordFingerPrint("estt".split(""))));
+    }
+
+    @Test
+    public void addWord_duplicate() {
+        dictionary.addWord("test");
+
+        try {
+            dictionary.addWord("test");
+        } catch (IllegalArgumentException expected) {
+            return;
+        }
+
+        fail("Shouldn't be able to add duplicate words to a ProcessedDictionary!");
     }
 
 }

@@ -4,15 +4,22 @@ import com.animatinator.wordo.crossword.dictionary.fingerprint.FingerPrinter;
 import com.animatinator.wordo.crossword.dictionary.fingerprint.WordFingerPrint;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ProcessedDictionary {
     private ArrayList<List<String>> wordsOfLength = new ArrayList<>();
     private ArrayList<DictionaryEntry> processedDictionary = new ArrayList<>();
+    private HashSet<String> wordsAdded = new HashSet<>();
 
     public void addWord(String word) {
+        if (wordsAdded.contains(word)) {
+            throw new IllegalArgumentException("Word '"+word+"' already in dictionary!");
+        }
+
         addWordToWordsOfLength(word);
         addWordToProcessedDictionary(word);
+        wordsAdded.add(word);
     }
 
     private void addWordToWordsOfLength(String word) {
