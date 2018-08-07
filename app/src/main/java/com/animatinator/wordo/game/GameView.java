@@ -25,7 +25,6 @@ public class GameView extends View implements View.OnTouchListener {
 
     private final CrosswordBoard board;
     private final RotaryKeyboard keyboard;
-    private List<String> bonusWords = new ArrayList<>();
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,16 +35,18 @@ public class GameView extends View implements View.OnTouchListener {
             @Override
             public void onWordEntered(String word) {
                 Log.d(TAG, "===== Word entered: "+word+" =====");
-                // TODO: Make maybeRevealBoard return a boolean so we know whether to skip bonus words.
-                board.maybeRevealWord(word);
-                if (bonusWords.contains(word)) {
-                    Log.d(TAG, "===== Bonus word:"+word);
+                boolean revealed = board.maybeRevealWord(word);
+
+                // If the word wasn't on the board, it might be a bonus word.
+                if (!revealed) {
+                    if (board.hasBonusWord(word)) {
+                        Log.d(TAG, "===== Bonus word:" + word);
+                    }
                 }
             }
 
             @Override
             public void onPartialWord(String partialWord) {
-                Log.d(TAG, "Partial word entry: "+partialWord);
                 // Do nothing.
             }
         });
@@ -57,10 +58,6 @@ public class GameView extends View implements View.OnTouchListener {
 
     public void setPuzzleLayout(CrosswordLayout layout) {
         board.setPuzzleLayout(layout);
-    }
-
-    public void setBonusWords(List<String> bonusWords) {
-        this.bonusWords = bonusWords;
     }
 
     @Override

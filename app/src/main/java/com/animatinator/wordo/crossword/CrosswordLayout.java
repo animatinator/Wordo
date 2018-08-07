@@ -139,11 +139,15 @@ public class CrosswordLayout {
         }
     }
 
-    public void maybeRevealWord(String word) {
+    public boolean maybeRevealWord(String word) {
         Log.i("CrosswordLayout", "maybeRevealWord: "+word);
+        boolean revealed = false;
+
         LaidWord laidWord = laidWords.get(word);
         if (laidWord != null) {
             Log.i("CrosswordLayout", "Revealing word: "+word);
+            revealed = true;
+
             if (laidWord.getDirection() == Direction.VERTICAL) {
                 for (int y = 0; y < word.length(); y++) {
                     board[y + laidWord.getTopLeft().y()][laidWord.getTopLeft().x()].reveal();
@@ -154,6 +158,12 @@ public class CrosswordLayout {
                 }
             }
         }
+
+        return revealed;
+    }
+
+    public boolean hasBonusWord(String word) {
+        return bonusWords.contains(word);
     }
 
     /**

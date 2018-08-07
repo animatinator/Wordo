@@ -24,6 +24,7 @@ public class Board {
 
     public Board(Board existing) {
         laidWords = new ArrayList<>(existing.laidWords);
+        unlaidWords.addAll(existing.unlaidWords);
     }
 
     public void addWord(String word, BoardPosition position, Direction direction) {

@@ -87,8 +87,12 @@ public class CrosswordBoard {
         }
     }
 
-    public void maybeRevealWord(String word) {
-        crosswordLayout.maybeRevealWord(word);
+    public boolean maybeRevealWord(String word) {
+        return crosswordLayout.maybeRevealWord(word);
+    }
+
+    public boolean hasBonusWord(String word) {
+        return crosswordLayout.hasBonusWord(word);
     }
 
     public void updateLayout(Coordinates topLeft, Coordinates size) {
