@@ -26,6 +26,8 @@ public class BoardGeneratorTest {
             "caused"};
     // We can't make a reasonable puzzle with these words - all but one will be bonus words.
     private static final String[] IMPOSSIBLE_WORDS = new String[] {"tie", "our", "bag"};
+    // We can make several matches for "tie" and "ite" but not for the others.
+    private static final String[] IMPOSSIBLE_WORDS_WITH_ONE_MATCH = new String[] {"tie", "our", "bag", "ite"};
     private static final int ITERATIONS = 100;
 
     @Test
@@ -37,6 +39,23 @@ public class BoardGeneratorTest {
         Board board = generator.generateBoard(Arrays.asList(IMPOSSIBLE_WORDS));
 
         assertEquals(1, board.getLaidWords().size());
+        assertEquals(2, board.getUnlaidWords().size());
+    }
+
+    /**
+     * Verify that we keep track of bonus words even when we can explore multiple board generation
+     * paths ({@link #IMPOSSIBLE_WORDS_WITH_ONE_MATCH} has several matches for one pair of words,
+     * but none for the others.)
+     */
+    @Test
+    public void generateBonusWords_dontLoseBetweenIterations() {
+        BoardGenerationFlags flags = new BoardGenerationFlags();
+        BoardEvaluator evaluator = new SimpleBoardEvaluator(flags);
+        BoardGenerator generator = new BoardGenerator(evaluator, flags);
+
+        Board board = generator.generateBoard(Arrays.asList(IMPOSSIBLE_WORDS_WITH_ONE_MATCH));
+
+        assertEquals(2, board.getLaidWords().size());
         assertEquals(2, board.getUnlaidWords().size());
     }
 
