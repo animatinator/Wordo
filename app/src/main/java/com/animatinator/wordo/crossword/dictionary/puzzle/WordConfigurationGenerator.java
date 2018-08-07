@@ -57,7 +57,7 @@ public class WordConfigurationGenerator {
             return EMPTY_PUZZLE;
         }
 
-        PuzzleWordConfiguration bestConfiguration = null;
+        PuzzleWordConfiguration bestConfiguration = EMPTY_PUZZLE;
         int bestConfigurationScore = 0;
 
         for (String word : possibleBaseWords) {
