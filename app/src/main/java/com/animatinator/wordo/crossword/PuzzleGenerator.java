@@ -27,7 +27,9 @@ public class PuzzleGenerator {
                 generateWordConfiguration(generationSettings, dictionary);
         Log.d(TAG, "Word config: "+wordConfiguration);
         CrosswordLayout crosswordLayout = generateLayout(wordConfiguration);
-        return new PuzzleConfiguration(wordConfiguration.getLetters(), crosswordLayout, wordConfiguration.getBonusWords());
+        crosswordLayout.addBonusWords(wordConfiguration.getBonusWords());
+        
+        return new PuzzleConfiguration(wordConfiguration.getLetters(), crosswordLayout);
     }
 
     private PuzzleWordConfiguration generateWordConfiguration(
@@ -44,7 +46,11 @@ public class PuzzleGenerator {
         BoardEvaluator evaluator = new SimpleBoardEvaluator(flags);
         BoardGenerator generator = new BoardGenerator(evaluator, flags);
         Board generatedBoard = generator.generateBoard(wordConfiguration.getWords());
-        return new CrosswordLayout(generatedBoard);
+
+        CrosswordLayout layout = new CrosswordLayout(generatedBoard);
+        // Add words we didn't manage to fit into the board as bonus words.
+        layout.addBonusWords(generatedBoard.getUnlaidWords());
+        return layout;
     }
 
     private BoardGenerationFlags getGenerationFlags() {

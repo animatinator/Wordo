@@ -11,7 +11,9 @@ import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ public class CrosswordLayout {
 
     private BoardTile[][] board;
     private Map<String, LaidWord> laidWords;
+    private List<String> bonusWords;
 
     public CrosswordLayout(int width, int height) {
         board = new BoardTile[height][width];
@@ -34,6 +37,7 @@ public class CrosswordLayout {
             }
         }
         laidWords = new HashMap<>();
+        bonusWords = new ArrayList<>();
     }
 
     CrosswordLayout(Board generatedBoard) {
@@ -45,6 +49,7 @@ public class CrosswordLayout {
         // positions.
         BoardOffset laidWordOffset = new BoardOffset(layout.getTopLeft()).negative();
         laidWords = createLaidWordsMapFromExistingBoard(generatedBoard, laidWordOffset);
+        bonusWords = new ArrayList<>();
     }
 
     private BoardTile[][] createBoardLayoutFromExistingLayout(BoardLayout existingLayout) {
@@ -101,6 +106,10 @@ public class CrosswordLayout {
                 board[position.y()][x + position.x()] = new BoardTile(""+ wordString.charAt(x));
             }
         }
+    }
+
+    public void addBonusWords(List<String> bonusWords) {
+        this.bonusWords.addAll(bonusWords);
     }
 
     public Vector2d getSize() {

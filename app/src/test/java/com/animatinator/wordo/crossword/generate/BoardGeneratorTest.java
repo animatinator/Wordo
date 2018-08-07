@@ -17,12 +17,28 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(RobolectricTestRunner.class)
 public class BoardGeneratorTest {
     private static final String[] WORDS = new String[]{
             "ads", "cue", "sad", "sea", "sue", "use", "aces", "case", "cues", "dues", "used", "cause", "sauce",
             "caused"};
+    // We can't make a reasonable puzzle with these words - all but one will be bonus words.
+    private static final String[] IMPOSSIBLE_WORDS = new String[] {"tie", "our", "bag"};
     private static final int ITERATIONS = 100;
+
+    @Test
+    public void generateBonusWordsCorrectly() {
+        BoardGenerationFlags flags = new BoardGenerationFlags();
+        BoardEvaluator evaluator = new SimpleBoardEvaluator(flags);
+        BoardGenerator generator = new BoardGenerator(evaluator, flags);
+
+        Board board = generator.generateBoard(Arrays.asList(IMPOSSIBLE_WORDS));
+
+        assertEquals(1, board.getLaidWords().size());
+        assertEquals(2, board.getUnlaidWords().size());
+    }
 
     @Test
     public void evaluateDefaultBoardGeneration() {

@@ -16,6 +16,8 @@ import static java.lang.Math.min;
 
 public class Board {
     private List<LaidWord> laidWords = new ArrayList<>();
+    // A list of words which should have gone on the board but could not be fitted in.
+    private final List<String> unlaidWords = new ArrayList<>();
     private final WordIntersections intersectionDetector = new WordIntersections();
 
     public Board() {}
@@ -31,6 +33,14 @@ public class Board {
         } else {
             throw new IllegalArgumentException("Can't add word here! It intersects incorrectly with an existing word.");
         }
+    }
+
+    public void addUnlaidWord(String word) {
+        unlaidWords.add(word);
+    }
+
+    public List<String> getUnlaidWords() {
+        return unlaidWords;
     }
 
     public List<LaidWord> getPossibleAttachmentPointsForWord(String wordToAdd) {
