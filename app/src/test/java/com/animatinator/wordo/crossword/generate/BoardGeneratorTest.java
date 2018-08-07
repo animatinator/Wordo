@@ -45,7 +45,7 @@ public class BoardGeneratorTest {
     /**
      * Verify that we keep track of bonus words even when we can explore multiple board generation
      * paths ({@link #IMPOSSIBLE_WORDS_WITH_ONE_MATCH} has several matches for one pair of words,
-     * but none for the others.)
+     * but none for the others).
      */
     @Test
     public void generateBonusWords_dontLoseBetweenIterations() {
