@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class WordConfigurationGenerator {
 
     private static final PuzzleWordConfiguration EMPTY_PUZZLE =
-            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), 0);
+            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), new ArrayList<>(), 0);
 
     private final int minimumWordLength;
     private final int maximumWordCount;
@@ -54,15 +54,23 @@ public class WordConfigurationGenerator {
         String baseWord = possibleBaseWord.get();
         WordFingerPrint baseWordFingerPrint = FingerPrinter.getFingerprint(baseWord);
         numLetters = baseWord.length();
-        List<String> words = matcher.getWordsFormableFromWord(baseWord, dictionary);
+        List<String> allWords = matcher.getWordsFormableFromWord(baseWord, dictionary);
 
-        words = words.stream().filter(word -> word.length() >= minimumWordLength).collect(Collectors.toList());
+        allWords = allWords.stream().filter(word -> word.length() >= minimumWordLength).collect(Collectors.toList());
 
-        if (maximumWordCount < words.size()) {
-            words = randomlySelectNFromList(words, maximumWordCount);
+        final List<String> words;
+
+        if (maximumWordCount < allWords.size()) {
+            words = randomlySelectNFromList(allWords, maximumWordCount);
+        } else {
+            words = allWords;
         }
 
-        return new PuzzleWordConfiguration(baseWordFingerPrint.getCharacters(), words, numLetters);
+        List<String> bonusWords =
+                allWords.stream().filter(word -> !words.contains(word)).collect(Collectors.toList());
+
+        return new PuzzleWordConfiguration(
+                baseWordFingerPrint.getCharacters(), words, bonusWords, numLetters);
     }
 
     private Optional<String> chooseBaseWord(int numLetters) {

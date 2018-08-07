@@ -29,6 +29,7 @@ public class GameActivity extends Activity {
             GameView gameView = findViewById(R.id.game_view);
             gameView.setLetters(puzzleConfig.getLetters());
             gameView.setPuzzleLayout(puzzleConfig.getLayout());
+            gameView.setBonusWords(puzzleConfig.getBonusWords());
         } catch (IOException e) {
             Log.e(TAG, "Couldn't generate the puzzle!");
             e.printStackTrace();

@@ -13,14 +13,19 @@ import com.animatinator.wordo.game.board.CrosswordBoard;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.util.Coordinates;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameView extends View implements View.OnTouchListener {
     // The ratio of the spacing around the board to the size of the board itself.
     private static final float BOARD_SPACING_RATIO = 1.1f;
     // The ratio of the spacing around the keyboard to the size of the keyboard itself.
     private static final float KEYBOARD_SPACING_RATIO = 1.1f;
+    public static final String TAG = "GameView";
 
     private final CrosswordBoard board;
     private final RotaryKeyboard keyboard;
+    private List<String> bonusWords = new ArrayList<>();
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,13 +35,17 @@ public class GameView extends View implements View.OnTouchListener {
         keyboard.setWordEntryCallback(new RotaryKeyboard.WordEntryCallback() {
             @Override
             public void onWordEntered(String word) {
-                Log.d("GameView", "===== Word entered: "+word+" =====");
+                Log.d(TAG, "===== Word entered: "+word+" =====");
+                // TODO: Make maybeRevealBoard return a boolean so we know whether to skip bonus words.
                 board.maybeRevealWord(word);
+                if (bonusWords.contains(word)) {
+                    Log.d(TAG, "===== Bonus word:"+word);
+                }
             }
 
             @Override
             public void onPartialWord(String partialWord) {
-                Log.d("GameView", "Partial word entry: "+partialWord);
+                Log.d(TAG, "Partial word entry: "+partialWord);
                 // Do nothing.
             }
         });
@@ -48,6 +57,10 @@ public class GameView extends View implements View.OnTouchListener {
 
     public void setPuzzleLayout(CrosswordLayout layout) {
         board.setPuzzleLayout(layout);
+    }
+
+    public void setBonusWords(List<String> bonusWords) {
+        this.bonusWords = bonusWords;
     }
 
     @Override

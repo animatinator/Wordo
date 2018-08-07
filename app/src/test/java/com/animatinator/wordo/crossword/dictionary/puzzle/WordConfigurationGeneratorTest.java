@@ -94,6 +94,16 @@ public class WordConfigurationGeneratorTest {
         TestUtils.assertContains(Arrays.asList(puzzle.getLetters()), "c", "a", "u", "s", "e", "d");
     }
 
+    @Test
+    public void bonusWordsCorrect() {
+        PuzzleWordConfiguration puzzle =
+                generator.withMinimumWordLength(3).withMaximumWordCount(4).buildPuzzle(6);
+
+        assertEquals(10, puzzle.getBonusWords().size());
+        assertWordsAllInDictionary(puzzle.getBonusWords(), dictionary);
+        assertListsAreDisjoint(puzzle.getWords(), puzzle.getBonusWords());
+    }
+
     private void assertWordsAllInDictionary(List<String> words, ProcessedDictionary dictionary) {
         List<String> dictionaryWords = dictionary.getDictionary().stream().map(DictionaryEntry::word).collect(Collectors.toList());
         TestUtils.assertContains(dictionaryWords, words);
@@ -108,5 +118,16 @@ public class WordConfigurationGeneratorTest {
     @SuppressWarnings("ConstantConditions")
     private String getLongestWord(PuzzleWordConfiguration puzzle) {
         return puzzle.getWords().stream().max(Comparator.comparingInt(String::length)).get();
+    }
+
+    private void assertListsAreDisjoint(List<String> left, List<String> right) {
+        assertFirstNotContainedInSecond(left, right);
+        assertFirstNotContainedInSecond(right, left);
+    }
+
+    private void assertFirstNotContainedInSecond(List<String> first, List<String> second) {
+        for (String word : first) {
+            assertFalse(second.contains(word));
+        }
     }
 }
