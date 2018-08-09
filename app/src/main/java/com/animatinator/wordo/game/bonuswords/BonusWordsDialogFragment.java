@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.animatinator.wordo.R;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class BonusWordsDialogFragment extends DialogFragment {
         if (bonusWords == null || bonusWords.isEmpty()) {
             builder.setMessage("None so far!");
         } else {
+            Collections.sort(bonusWords);
             builder.setMessage(TextUtils.join("\n", bonusWords));
         }
 
