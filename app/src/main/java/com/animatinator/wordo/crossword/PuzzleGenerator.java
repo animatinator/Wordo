@@ -47,10 +47,7 @@ public class PuzzleGenerator {
         BoardGenerator generator = new BoardGenerator(evaluator, flags);
         Board generatedBoard = generator.generateBoard(wordConfiguration.getWords());
 
-        CrosswordLayout layout = new CrosswordLayout(generatedBoard);
-        // Add words we didn't manage to fit into the board as bonus words.
-        layout.addBonusWords(generatedBoard.getUnlaidWords());
-        return layout;
+        return new CrosswordLayout(generatedBoard);
     }
 
     private BoardGenerationFlags getGenerationFlags() {

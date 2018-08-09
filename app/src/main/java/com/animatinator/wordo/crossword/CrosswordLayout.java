@@ -49,7 +49,7 @@ public class CrosswordLayout {
         // positions.
         BoardOffset laidWordOffset = new BoardOffset(layout.getTopLeft()).negative();
         laidWords = createLaidWordsMapFromExistingBoard(generatedBoard, laidWordOffset);
-        bonusWords = new ArrayList<>();
+        bonusWords = generatedBoard.getUnlaidWords();
     }
 
     private BoardTile[][] createBoardLayoutFromExistingLayout(BoardLayout existingLayout) {
