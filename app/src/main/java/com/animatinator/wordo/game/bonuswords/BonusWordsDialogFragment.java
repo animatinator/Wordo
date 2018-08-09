@@ -29,7 +29,15 @@ public class BonusWordsDialogFragment extends DialogFragment {
         if (bonusWords == null || bonusWords.isEmpty()) {
             builder.setMessage("None so far!");
         } else {
-            Collections.sort(bonusWords);
+            bonusWords.sort((first, second) -> {
+                // Sort by length and then alphabetically.
+                int firstLength = first.length();
+                int secondLength = second.length();
+                if (firstLength != secondLength) {
+                    return firstLength - secondLength;
+                }
+                return first.compareTo(second);
+            });
             builder.setMessage(TextUtils.join("\n", bonusWords));
         }
 
