@@ -16,8 +16,10 @@ public class RotaryKeyboard {
     // The position along the circle's radius of the letters.
     // 0.0 = in the centre, 1.0 = on the edge.
     private static final float LETTER_RADIUS_RATIO = 0.75f;
-    // Radius within which a motion event will count as hitting a letter.
-    private static final float LETTER_HIT_RADIUS = 70f;
+    // Radius within which a click will initially count as hitting a letter.
+    private static final float LETTER_INITIAL_HIT_RADIUS = 100f;
+    // Radius within which a motion event (whilst dragging) will count as hitting a letter.
+    private static final float LETTER_DRAG_HIT_RADIUS = 70f;
     // Radius of the circle drawn around a letter when it is selected, relative to the radius of the
     // circle.
     private static final float LETTER_HIGHLIGHT_RADIUS_RADIO = 0.2f;
@@ -97,7 +99,7 @@ public class RotaryKeyboard {
 
     @SuppressLint("NewApi")
     public boolean handlePress(Coordinates position) {
-        Optional<Integer> selectedLetter = getAdjacentLetter(position);
+        Optional<Integer> selectedLetter = getAdjacentLetter(position, LETTER_INITIAL_HIT_RADIUS);
         if (selectedLetter.isPresent()) {
             isDragging = true;
             currentPos = new Coordinates(position.x(), position.y());
@@ -116,7 +118,7 @@ public class RotaryKeyboard {
 
     @SuppressLint("NewApi")
     public void handleMovement(Coordinates position) {
-        Optional<Integer> selectedLetter = getAdjacentLetter(position);
+        Optional<Integer> selectedLetter = getAdjacentLetter(position, LETTER_DRAG_HIT_RADIUS);
         if (selectedLetter.isPresent()) {
             if (selectedLetters.contains(selectedLetter.get())) {
                 stripSelectedLettersBackToLetter(selectedLetter.get());
@@ -129,10 +131,10 @@ public class RotaryKeyboard {
     }
 
     @SuppressLint("NewApi")
-    private Optional<Integer> getAdjacentLetter(Coordinates position) {
+    private Optional<Integer> getAdjacentLetter(Coordinates position, float hitRadius) {
         for (int i = 0; i < letterPositions.length; i++) {
             Coordinates letterPosition = letterPositions[i];
-            if (CoordinateUtils.distance(letterPosition, position) < LETTER_HIT_RADIUS) {
+            if (CoordinateUtils.distance(letterPosition, position) < hitRadius) {
                 return Optional.of(i);
             }
         }
