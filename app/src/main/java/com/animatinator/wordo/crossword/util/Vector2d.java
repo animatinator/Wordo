@@ -4,8 +4,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class Vector2d {
-    protected int x;
-    protected int y;
+    protected final int x;
+    protected final int y;
 
     public Vector2d(int x, int y) {
         this.x = x;
@@ -15,14 +15,6 @@ public class Vector2d {
     public Vector2d(Vector2d other) {
         this.x = other.x();
         this.y = other.y();
-    }
-
-    public void setX(int newX) {
-        x = newX;
-    }
-
-    public void setY(int newY) {
-        y = newY;
     }
 
     public int x() {

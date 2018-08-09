@@ -26,15 +26,10 @@ public class CrosswordLayout {
 
     private static final String TAG = "CrosswordLayout";
 
-    private BoardTile[][] board;
+    private final BoardTile[][] board;
+    private final Vector2d size;
     private Map<String, LaidWord> laidWords;
     private List<String> bonusWords;
-
-    // Updated each time we ask for the board's size, and used to avoid reallocating Vector2ds for
-    // each call (since it's called as part of drawing).
-    // TODO: Consider instead storing this in the view code and only updating if the CrosswordLayout
-    // changes.
-    private Vector2d size = new Vector2d(0, 0);
 
     public CrosswordLayout(int width, int height) {
         board = new BoardTile[height][width];
@@ -43,6 +38,7 @@ public class CrosswordLayout {
                 board[y][x] = null;
             }
         }
+        size = calculateSize();
         laidWords = new HashMap<>();
         bonusWords = new ArrayList<>();
     }
@@ -50,6 +46,7 @@ public class CrosswordLayout {
     CrosswordLayout(Board generatedBoard) {
         BoardLayout layout = generatedBoard.getLayout();
         board = createBoardLayoutFromExistingLayout(layout);
+        size = calculateSize();
 
         // Because the existing board may not have its top-left corner at (0, 0), we have to take
         // the real position of its top-left corner into account and subtract it from all LaidWord
@@ -94,6 +91,10 @@ public class CrosswordLayout {
         return laidWordsMap;
     }
 
+    private Vector2d calculateSize() {
+        return new Vector2d(board[0].length, board.length);
+    }
+
     // Only used for testing, so package-private.
     Map<String, LaidWord> getLaidWordsMapForTesting() {
         return laidWords;
@@ -120,8 +121,6 @@ public class CrosswordLayout {
     }
 
     public Vector2d getSize() {
-        size.setX(board[0].length);
-        size.setY(board.length);
         return size;
     }
 
