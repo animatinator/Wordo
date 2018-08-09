@@ -145,8 +145,8 @@ public class CrosswordBoard {
 
         for (int y = 0; y < boardSize.y(); y++) {
             for (int x = 0; x < boardSize.x(); x++) {
-                Optional<String> value = crosswordLayout.getValueAt(new BoardPosition(x, y));
-                if (value.isPresent()) {
+                String value = crosswordLayout.getValueAt(x, y);
+                if (value != null) {
                     float left = drawnBoardTopLeft.x() + (x * gridSize);
                     float top = drawnBoardTopLeft.y() + (y * gridSize);
                     float right = left + gridSize;
@@ -154,16 +154,13 @@ public class CrosswordBoard {
                     canvas.drawRect(left, top, right, bottom, squarePaint);
                     canvas.drawRect(left, top, right, bottom, squareOutlinePaint);
 
-                    if (crosswordLayout.isRevealed(new BoardPosition(x, y))) {
-                        String characterHere = value.get();
-
+                    if (crosswordLayout.isRevealed(x, y)) {
                         // Calculate offsets from the grid tile position to centre letters.
                         float letterHeight = letterPaint.ascent() + letterPaint.descent();
                         float yOffset = (gridSize - letterHeight) / 2.0f;
-                        float letterWidth = letterPaint.measureText(characterHere);
+                        float letterWidth = letterPaint.measureText(value);
                         float xOffset = (gridSize - letterWidth) / 2.0f;
-                        canvas.drawText(
-                                characterHere, left + xOffset, top + yOffset, letterPaint);
+                        canvas.drawText(value, left + xOffset, top + yOffset, letterPaint);
                     }
                 }
             }

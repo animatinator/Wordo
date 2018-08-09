@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -59,15 +61,15 @@ public class CrosswordLayoutTest {
 
         CrosswordLayout layout = new CrosswordLayout(existingBoard);
 
-        assertHasValueAtPosition(layout, "h", new BoardPosition(0, 3));
-        assertHasValueAtPosition(layout, "l", new BoardPosition(3, 3));
-        assertHasValueAtPosition(layout, "h", new BoardPosition(3, 0));
+        assertHasValueAtPosition(layout, "h", 0, 3);
+        assertHasValueAtPosition(layout, "l", 3, 3);
+        assertHasValueAtPosition(layout, "h", 3, 0);
     }
 
     @Test
     public void getValueAt_emptyBoard() {
         CrosswordLayout layout = new CrosswordLayout(10, 10);
-        assertFalse(layout.getValueAt(new BoardPosition(5, 5)).isPresent());
+        assertNull(layout.getValueAt(5, 5));
     }
 
     @Test
@@ -77,16 +79,16 @@ public class CrosswordLayoutTest {
         layout.addWord(new LaidWord("test", new BoardPosition(2, 0), Direction.VERTICAL));
         layout.addWord(new LaidWord("three", new BoardPosition(2, 3), Direction.HORIZONTAL));
 
-        assertHasValueAtPosition(layout, "t", new BoardPosition(2, 3));
-        assertHasValueAtPosition(layout, "r", new BoardPosition(4, 3));
-        assertHasValueAtPosition(layout, "e", new BoardPosition(2, 1));
+        assertHasValueAtPosition(layout, "t", 2, 3);
+        assertHasValueAtPosition(layout, "r", 4, 3);
+        assertHasValueAtPosition(layout, "e", 2, 1);
     }
 
     @Test
     public void getValueAt_outOfRange() {
         CrosswordLayout layout = new CrosswordLayout(1, 1);
         try {
-            layout.getValueAt(new BoardPosition(10, 10));
+            layout.getValueAt(10, 10);
         } catch (IllegalArgumentException expected) {
             return;
         }
@@ -97,14 +99,14 @@ public class CrosswordLayoutTest {
     @Test
     public void isRevealed_notOnWord() {
         CrosswordLayout layout = new CrosswordLayout(10, 10);
-        assertFalse(layout.isRevealed(new BoardPosition(5, 5)));
+        assertFalse(layout.isRevealed(5, 5));
     }
 
     @Test
     public void isRevealed_outOfRange() {
         CrosswordLayout layout = new CrosswordLayout(1, 1);
         try {
-            layout.isRevealed(new BoardPosition(10, 10));
+            layout.isRevealed(10, 10);
         } catch (IllegalArgumentException expected) {
             return;
         }
@@ -118,7 +120,7 @@ public class CrosswordLayoutTest {
         layout.addWord(new LaidWord("test", new BoardPosition(0, 0), Direction.VERTICAL));
 
         for (int i = 0; i < 4; i++) {
-            assertFalse(layout.isRevealed(new BoardPosition(0, i)));
+            assertFalse(layout.isRevealed(0, i));
         }
     }
 
@@ -129,7 +131,7 @@ public class CrosswordLayoutTest {
         layout.maybeRevealWord("test");
 
         for (int i = 0; i < 4; i++) {
-            assertTrue(layout.isRevealed(new BoardPosition(0, i)));
+            assertTrue(layout.isRevealed(0, i));
         }
     }
 
@@ -139,14 +141,14 @@ public class CrosswordLayoutTest {
         layout.addWord(new LaidWord("tost", new BoardPosition(0, 0), Direction.VERTICAL));
 
         for (int i = 0; i < 4; i++) {
-            assertFalse(layout.isRevealed(new BoardPosition(0, i)));
+            assertFalse(layout.isRevealed(0, i));
         }
     }
 
     private void assertHasValueAtPosition(
-            CrosswordLayout layout, String value, BoardPosition position) {
-        Optional<String> valueHere = layout.getValueAt(position);
-        assertTrue(valueHere.isPresent());
-        assertEquals(value, valueHere.get());
+            CrosswordLayout layout, String value, int x, int y) {
+        String valueHere = layout.getValueAt(x, y);
+        assertNotNull(valueHere);
+        assertEquals(value, valueHere);
     }
 }

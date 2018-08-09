@@ -1,6 +1,7 @@
 package com.animatinator.wordo.crossword;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.animatinator.wordo.crossword.board.Board;
@@ -28,6 +29,12 @@ public class CrosswordLayout {
     private BoardTile[][] board;
     private Map<String, LaidWord> laidWords;
     private List<String> bonusWords;
+
+    // Updated each time we ask for the board's size, and used to avoid reallocating Vector2ds for
+    // each call (since it's called as part of drawing).
+    // TODO: Consider instead storing this in the view code and only updating if the CrosswordLayout
+    // changes.
+    private Vector2d size = new Vector2d(0, 0);
 
     public CrosswordLayout(int width, int height) {
         board = new BoardTile[height][width];
@@ -113,28 +120,31 @@ public class CrosswordLayout {
     }
 
     public Vector2d getSize() {
-        return new Vector2d(board[0].length, board.length);
+        size.setX(board[0].length);
+        size.setY(board.length);
+        return size;
     }
 
     @SuppressLint("NewApi")
-    public Optional<String> getValueAt(BoardPosition position) {
-        checkInRange(position);
-        BoardTile tile = board[position.y()][position.x()];
+    @Nullable
+    public String getValueAt(int x, int y) {
+        checkInRange(x, y);
+        BoardTile tile = board[y][x];
         if (tile != null) {
-            return Optional.of(tile.getValue());
+            return tile.getValue();
         }
-        return Optional.empty();
+        return null;
     }
 
-    public boolean isRevealed(BoardPosition position) {
-        checkInRange(position);
-        BoardTile tile = board[position.y()][position.x()];
+    public boolean isRevealed(int x, int y) {
+        checkInRange(x, y);
+        BoardTile tile = board[y][x];
         return tile != null && tile.isRevealed();
     }
 
-    private void checkInRange(BoardPosition position) {
+    private void checkInRange(int x, int y) {
         Vector2d size = getSize();
-        if (position.x() < 0 || position.y() < 0 || position.x() >= size.x() || position.y() >= size.y()) {
+        if (x < 0 || y < 0 || x >= size.x() || y >= size.y()) {
             throw new IllegalArgumentException("Accessing a position out of range!");
         }
     }
