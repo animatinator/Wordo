@@ -11,6 +11,7 @@ public class HintButton extends GameButton {
     private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
     private Paint textPaint;
+    private HintButtonCallback callback;
 
     public HintButton() {
         super();
@@ -21,13 +22,17 @@ public class HintButton extends GameButton {
         textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
         textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setTextSize(0.0f);
+        textPaint.setTextSize(100.0f);
         textPaint.setTypeface(TEXT_TYPEFACE);
+    }
+
+    public void setCallback(HintButtonCallback callback) {
+        this.callback = callback;
     }
 
     @Override
     protected void onPressed() {
-
+        callback.requestHint();
     }
 
     @Override

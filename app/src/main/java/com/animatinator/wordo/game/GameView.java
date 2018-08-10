@@ -12,6 +12,7 @@ import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.game.board.CrosswordBoard;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
+import com.animatinator.wordo.game.hints.HintButton;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -28,6 +29,7 @@ public class GameView extends View implements View.OnTouchListener {
     public static final String TAG = "GameView";
 
     private final BonusWordsButton bonusWordsButton;
+    private final HintButton hintButton;
     private final CrosswordBoard board;
     private final RotaryKeyboard keyboard;
 
@@ -35,6 +37,7 @@ public class GameView extends View implements View.OnTouchListener {
         super(context, attrs);
         setOnTouchListener(this);
         bonusWordsButton = new BonusWordsButton();
+        hintButton = new HintButton();
         board = new CrosswordBoard();
         keyboard = new RotaryKeyboard();
         keyboard.setWordEntryCallback(new RotaryKeyboard.WordEntryCallback() {
@@ -57,6 +60,7 @@ public class GameView extends View implements View.OnTouchListener {
                 // Do nothing.
             }
         });
+        hintButton.setCallback(board::giveHint);
     }
 
     public void setLetters(String[] letters) {
@@ -76,6 +80,7 @@ public class GameView extends View implements View.OnTouchListener {
         board.onDraw(canvas);
         keyboard.onDraw(canvas);
         bonusWordsButton.onDraw(canvas);
+        hintButton.onDraw(canvas);
     }
 
     @Override
@@ -109,14 +114,15 @@ public class GameView extends View implements View.OnTouchListener {
         keyboard.updateLayout(keyboardCentre, keyboardRadius);
         board.updateLayout(new Coordinates(boardX, boardY), new Coordinates(boardSize, boardSize));
 
-        updateBonusButtonLayout(width, height);
+        updateButtonLayouts(width, height);
     }
 
-    private void updateBonusButtonLayout(int width, int height) {
+    private void updateButtonLayouts(int width, int height) {
         float buttonOffset = BUTTON_SPACING_RATIO * BUTTON_RADIUS;
         float x = width - buttonOffset;
         float y = height - buttonOffset;
         bonusWordsButton.updateLayout(new Coordinates(x, y), BUTTON_RADIUS);
+        hintButton.updateLayout(new Coordinates(buttonOffset, y), BUTTON_RADIUS);
     }
 
     @SuppressLint("NewApi")
@@ -131,7 +137,7 @@ public class GameView extends View implements View.OnTouchListener {
             keyboard.handleRelease();
             handled = true;
         } else if (action == MotionEvent.ACTION_DOWN) {
-            handled = bonusWordsButton.handleTouch(position) || keyboard.handlePress(position);
+            handled = handlePossibleButtonTouch(position) || keyboard.handlePress(position);
         } else if (action == MotionEvent.ACTION_MOVE) {
             keyboard.handleMovement(position);
             handled = true;
@@ -140,5 +146,9 @@ public class GameView extends View implements View.OnTouchListener {
         if (handled) invalidate();
 
         return handled;
+    }
+
+    private boolean handlePossibleButtonTouch(Coordinates position) {
+        return bonusWordsButton.handleTouch(position) || hintButton.handleTouch(position);
     }
 }

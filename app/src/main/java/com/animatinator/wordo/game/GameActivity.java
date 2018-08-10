@@ -54,7 +54,7 @@ public class GameActivity extends Activity {
     private PuzzleConfiguration generatePuzzle() throws IOException {
         DictionaryLoader dictionaryLoader = new DictionaryLoader(this);
         PuzzleGenerator generator =
-                new PuzzleGenerator(dictionaryLoader.loadDictionary("english.txt"));
+                new PuzzleGenerator(dictionaryLoader.loadDictionary("english5000.txt"));
         return generator.createPuzzle(getGenerationSettings());
     }
 

@@ -13,6 +13,7 @@ import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,6 +174,26 @@ public class CrosswordLayout {
 
     public boolean hasBonusWord(String word) {
         return bonusWords.contains(word);
+    }
+
+    public void giveHint() {
+        List<BoardTile> possibleReveals = new ArrayList<>();
+
+        for (BoardTile[] row : board) {
+            for (BoardTile tile : row) {
+                if (tile != null && !tile.isRevealed()) {
+                    possibleReveals.add(tile);
+                }
+            }
+        }
+
+        if (possibleReveals.size() == 0) {
+            // Nothing left to reveal!
+            return;
+        }
+
+        Collections.shuffle(possibleReveals);
+        possibleReveals.get(0).reveal();
     }
 
     /**

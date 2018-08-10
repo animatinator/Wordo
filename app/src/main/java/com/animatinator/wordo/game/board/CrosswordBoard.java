@@ -95,6 +95,10 @@ public class CrosswordBoard {
         return crosswordLayout.hasBonusWord(word);
     }
 
+    public void giveHint() {
+        crosswordLayout.giveHint();
+    }
+
     public void updateLayout(Coordinates topLeft, Coordinates size) {
         this.topLeft = topLeft;
         this.size = size;
