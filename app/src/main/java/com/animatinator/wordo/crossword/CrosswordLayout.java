@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * A board layout for use in-game. This stores a list of laid words and a 2D array of board tiles,
@@ -27,8 +28,10 @@ public class CrosswordLayout {
 
     private static final String TAG = "CrosswordLayout";
 
+    private final Random random = new Random();
     private final BoardTile[][] board;
     private final Vector2d size;
+
     private Map<String, LaidWord> laidWords;
     private List<String> bonusWords;
 
@@ -192,8 +195,8 @@ public class CrosswordLayout {
             return;
         }
 
-        Collections.shuffle(possibleReveals);
-        possibleReveals.get(0).reveal();
+        int indexToReveal = random.nextInt(possibleReveals.size());
+        possibleReveals.get(indexToReveal).reveal();
     }
 
     /**
