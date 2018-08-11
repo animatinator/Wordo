@@ -1,7 +1,5 @@
 # Taken from http://www.gwicks.net/dictionaries.htm
 a
-aa
-aaa
 aachen
 aardvark
 aardvarks
@@ -3642,7 +3640,6 @@ azonal
 azores
 aztec
 azure
-b
 ba
 baba
 babble
@@ -7363,7 +7360,6 @@ byword
 bywords
 byzantine
 byzantium
-c
 cab
 cabal
 cabals
@@ -13933,7 +13929,6 @@ czars
 czarship
 czech
 czechoslovakia
-d
 dab
 dabbed
 dabbing
@@ -18663,7 +18658,6 @@ dyspeptical
 dyspeptically
 dysprosium
 dystrophy
-e
 each
 eager
 eagerly
@@ -21279,7 +21273,6 @@ eyot
 eyrie
 ezekiel
 ezra
-f
 fa
 faber
 fabian
@@ -23861,7 +23854,6 @@ fuzzily
 fuzziness
 fuzzy
 fylingdale
-g
 gab
 gabardine
 gabardines
@@ -25837,7 +25829,6 @@ gyrocompass
 gyros
 gyroscope
 gyroscopes
-h
 ha
 habakkuk
 haberdasher
@@ -28174,7 +28165,6 @@ hysteric
 hysterical
 hysterically
 hythe
-i
 iain
 iamb
 iambic
@@ -30926,7 +30916,6 @@ ivy
 ivybridge
 ix
 izvestia
-j
 jab
 jabbed
 jabber
@@ -31486,7 +31475,6 @@ juxtaposed
 juxtaposes
 juxtaposing
 juxtaposition
-k
 kabul
 kafka
 kafkaesque
@@ -31969,7 +31957,6 @@ kyleakin
 kylesku
 kyoto
 kyushu
-l
 lab
 label
 labelled
@@ -33901,7 +33888,6 @@ lyricist
 lyricists
 lyrics
 lysergic
-m
 ma
 maastricht
 mabel
@@ -37144,7 +37130,6 @@ mythological
 mythologies
 mythology
 myths
-n
 naafi
 nab
 nabbed
@@ -38247,7 +38232,6 @@ nymphomania
 nymphomaniac
 nymphomaniacs
 nymphs
-o
 oaf
 oafish
 oafs
@@ -39902,7 +39886,6 @@ oystercatchers
 oysters
 oz
 ozone
-p
 pa
 pablo
 pace
@@ -44388,7 +44371,6 @@ pythagoras
 pythagorean
 python
 pythons
-q
 qatar
 qc
 qdos
@@ -44743,7 +44725,6 @@ quoth
 quotient
 quotients
 quoting
-r
 ra
 rabat
 rabbet
@@ -48493,7 +48474,6 @@ ryde
 ryder
 rye
 ryedale
-s
 sabbath
 sabbatical
 sable
@@ -55250,7 +55230,6 @@ systematizing
 systemisation
 systemization
 systems
-t
 ta
 tab
 tabasco
@@ -58576,7 +58555,6 @@ tyrone
 tyson
 tzar
 tzigane
-u
 ubiquitous
 ubiquitously
 ubiquity
@@ -62027,7 +62005,6 @@ uvular
 uvulas
 uxbridge
 uzbek
-v
 vacancies
 vacancy
 vacant
@@ -63127,7 +63104,6 @@ vultures
 vulva
 vulvas
 vying
-w
 wad
 wadded
 wadding
