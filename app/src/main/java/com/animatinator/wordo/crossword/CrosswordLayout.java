@@ -7,6 +7,7 @@ import android.util.Log;
 import com.animatinator.wordo.crossword.board.Board;
 import com.animatinator.wordo.crossword.board.BoardLayout;
 import com.animatinator.wordo.crossword.board.words.LaidWord;
+import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.util.BoardOffset;
 import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
@@ -31,9 +32,9 @@ public class CrosswordLayout {
     private final Random random = new Random();
     private final BoardTile[][] board;
     private final Vector2d size;
+    private final ProcessedDictionary dictionary;
 
     private Map<String, LaidWord> laidWords;
-    private List<String> bonusWords;
 
     public CrosswordLayout(int width, int height) {
         board = new BoardTile[height][width];
@@ -44,10 +45,11 @@ public class CrosswordLayout {
         }
         size = calculateSize();
         laidWords = new HashMap<>();
-        bonusWords = new ArrayList<>();
+        dictionary = new ProcessedDictionary();
     }
 
-    CrosswordLayout(Board generatedBoard) {
+    CrosswordLayout(Board generatedBoard, ProcessedDictionary dictionary) {
+        this.dictionary = dictionary;
         BoardLayout layout = generatedBoard.getLayout();
         board = createBoardLayoutFromExistingLayout(layout);
         size = calculateSize();
@@ -57,7 +59,6 @@ public class CrosswordLayout {
         // positions.
         BoardOffset laidWordOffset = new BoardOffset(layout.getTopLeft()).negative();
         laidWords = createLaidWordsMapFromExistingBoard(generatedBoard, laidWordOffset);
-        bonusWords = generatedBoard.getUnlaidWords();
     }
 
     private BoardTile[][] createBoardLayoutFromExistingLayout(BoardLayout existingLayout) {
@@ -120,10 +121,6 @@ public class CrosswordLayout {
         }
     }
 
-    public void addBonusWords(List<String> bonusWords) {
-        this.bonusWords.addAll(bonusWords);
-    }
-
     public Vector2d getSize() {
         return size;
     }
@@ -176,7 +173,7 @@ public class CrosswordLayout {
     }
 
     public boolean hasBonusWord(String word) {
-        return bonusWords.contains(word);
+        return dictionary.isWordInFullDictionary(word);
     }
 
     public void giveHint() {

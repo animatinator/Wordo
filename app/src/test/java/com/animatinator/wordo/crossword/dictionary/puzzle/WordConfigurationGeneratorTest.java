@@ -94,18 +94,8 @@ public class WordConfigurationGeneratorTest {
         TestUtils.assertContains(Arrays.asList(puzzle.getLetters()), "c", "a", "u", "s", "e", "d");
     }
 
-    @Test
-    public void bonusWordsCorrect() {
-        PuzzleWordConfiguration puzzle =
-                generator.withMinimumWordLength(3).withMaximumWordCount(4).buildPuzzle(6);
-
-        assertEquals(10, puzzle.getBonusWords().size());
-        assertWordsAllInDictionary(puzzle.getBonusWords(), dictionary);
-        assertListsAreDisjoint(puzzle.getWords(), puzzle.getBonusWords());
-    }
-
     private void assertWordsAllInDictionary(List<String> words, ProcessedDictionary dictionary) {
-        List<String> dictionaryWords = dictionary.getDictionary().stream().map(DictionaryEntry::word).collect(Collectors.toList());
+        List<String> dictionaryWords = dictionary.getGenerationDictionary().stream().map(DictionaryEntry::word).collect(Collectors.toList());
         TestUtils.assertContains(dictionaryWords, words);
     }
 

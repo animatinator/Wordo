@@ -15,7 +15,7 @@ public class WordConfigurationGenerator {
     private static final String TAG = "WordConfigurationGenerator";
 
     private static final PuzzleWordConfiguration EMPTY_PUZZLE =
-            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), new ArrayList<>(), 0);
+            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), 0);
 
     private static final int WORDS_TO_TRY = 10;
 
@@ -87,11 +87,8 @@ public class WordConfigurationGenerator {
             words = allWords;
         }
 
-        List<String> bonusWords =
-                allWords.stream().filter(word -> !words.contains(word)).collect(Collectors.toList());
-
         return new PuzzleWordConfiguration(
-                baseWordFingerPrint.getCharacters(), words, bonusWords, baseWord.length());
+                baseWordFingerPrint.getCharacters(), words, baseWord.length());
     }
 
     private List<String> chooseBaseWords(int numLetters) {

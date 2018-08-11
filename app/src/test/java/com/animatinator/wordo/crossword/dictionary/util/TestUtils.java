@@ -39,7 +39,7 @@ public class TestUtils {
 
         String rawDictionary = new String(Files.readAllBytes(Paths.get(TEST_DICTIONARY_PATH)));
         for (String word : rawDictionary.split(System.getProperty("line.separator"))) {
-            dictionary.addWord(word);
+            dictionary.addWordToGenerationDictionary(word);
         }
 
         return dictionary;

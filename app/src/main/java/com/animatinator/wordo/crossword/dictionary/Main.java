@@ -47,7 +47,7 @@ public class Main {
                 continue;
             }
 
-            dictionary.addWord(word);
+            dictionary.addWordToGenerationDictionary(word);
         }
 
         return dictionary;

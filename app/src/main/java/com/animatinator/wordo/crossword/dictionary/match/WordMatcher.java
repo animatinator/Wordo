@@ -62,7 +62,7 @@ public class WordMatcher {
 
     public List<String> getWordsFormableFromWord(String word, ProcessedDictionary dictionary) {
         Predicate<DictionaryEntry> dictionaryEntryPredicate = new DictionaryWordMatcher(word);
-        return dictionary.getDictionary().parallelStream()
+        return dictionary.getGenerationDictionary().parallelStream()
                 .filter(dictionaryEntryPredicate)
                 .map(DictionaryEntry::word)
                 .collect(Collectors.toList());

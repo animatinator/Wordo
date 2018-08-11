@@ -2,6 +2,7 @@ package com.animatinator.wordo.crossword;
 
 import com.animatinator.wordo.crossword.board.Board;
 import com.animatinator.wordo.crossword.board.words.LaidWord;
+import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.util.BoardPosition;
 import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
@@ -36,7 +37,7 @@ public class CrosswordLayoutTest {
         existingBoard.addWord("hello", new BoardPosition(5, 6), Direction.HORIZONTAL);
         existingBoard.addWord("hell", new BoardPosition(8, 3), Direction.VERTICAL);
 
-        CrosswordLayout layout = new CrosswordLayout(existingBoard);
+        CrosswordLayout layout = new CrosswordLayout(existingBoard, new ProcessedDictionary());
 
         Map<String, LaidWord> laidWordMap = layout.getLaidWordsMapForTesting();
         assertEquals(
@@ -59,7 +60,7 @@ public class CrosswordLayoutTest {
         existingBoard.addWord("hello", new BoardPosition(5, 6), Direction.HORIZONTAL);
         existingBoard.addWord("hell", new BoardPosition(8, 3), Direction.VERTICAL);
 
-        CrosswordLayout layout = new CrosswordLayout(existingBoard);
+        CrosswordLayout layout = new CrosswordLayout(existingBoard, new ProcessedDictionary());
 
         assertHasValueAtPosition(layout, "h", 0, 3);
         assertHasValueAtPosition(layout, "l", 3, 3);
@@ -143,6 +144,18 @@ public class CrosswordLayoutTest {
         for (int i = 0; i < 4; i++) {
             assertFalse(layout.isRevealed(0, i));
         }
+    }
+
+    @Test
+    public void bonusWords() {
+        Board existingBoard = new Board();
+        ProcessedDictionary existingDictionary = new ProcessedDictionary();
+        existingDictionary.addWordToFullDictionary("test");
+
+        CrosswordLayout layout = new CrosswordLayout(existingBoard, existingDictionary);
+
+        assertFalse(layout.hasBonusWord("testy"));
+        assertTrue(layout.hasBonusWord("test"));
     }
 
     private void assertHasValueAtPosition(

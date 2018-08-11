@@ -20,16 +20,16 @@ import static org.junit.Assert.fail;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "..\\app\\src\\main\\AndroidManifest.xml")
 public class DictionaryLoaderTest {
-    private static final String TEST_DICTIONARY_PATH = "basicdict.txt";
+    private static final String TEST_DICTIONARY_PATH = "basic";
 
     @Test
-    public void loadTestDictionary() throws IOException {
+    public void loadTestDictionary_generationDictionary() throws IOException {
         DictionaryLoader loader = new DictionaryLoader(RuntimeEnvironment.application);
         ProcessedDictionary dictionary = loader.loadDictionary(TEST_DICTIONARY_PATH);
-        List<DictionaryEntry> words = dictionary.getDictionary();
+        List<DictionaryEntry> words = dictionary.getGenerationDictionary();
 
         // We got everything excluding comments.
-        assertEquals(14, dictionary.getDictionary().size());
+        assertEquals(14, dictionary.getGenerationDictionary().size());
         // Check some words.
         assertTrue(
                 words.contains(
@@ -41,6 +41,15 @@ public class DictionaryLoaderTest {
                         new DictionaryEntry(
                                 "USE",
                                 new WordFingerPrint(new String[] {"E", "S", "U"}))));
+    }
+
+    @Test
+    public void loadTestDictionary_fullDictionary() throws IOException {
+        DictionaryLoader loader = new DictionaryLoader(RuntimeEnvironment.application);
+        ProcessedDictionary dictionary = loader.loadDictionary(TEST_DICTIONARY_PATH);
+
+        assertTrue(dictionary.isWordInFullDictionary("ACES"));
+        assertTrue(dictionary.isWordInFullDictionary("USE"));
     }
 
     @Test

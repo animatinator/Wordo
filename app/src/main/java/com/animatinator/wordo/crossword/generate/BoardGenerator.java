@@ -56,8 +56,6 @@ public class BoardGenerator {
         for (String word : wordQueue) {
             List<LaidWord> optionsForWord = board.getPossibleAttachmentPointsForWord(word);
             if (optionsForWord.isEmpty()) {
-                // Record that we couldn't use this word.
-                board.addUnlaidWord(word);
                 continue;
             }
 

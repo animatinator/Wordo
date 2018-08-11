@@ -28,9 +28,8 @@ public class PuzzleGenerator {
                 generateWordConfiguration(generationSettings, dictionary);
         Log.d(TAG, "Word config: "+wordConfiguration);
         Log.d(TAG, "Generating layout...");
-        CrosswordLayout crosswordLayout = generateLayout(wordConfiguration);
+        CrosswordLayout crosswordLayout = generateLayout(wordConfiguration, dictionary);
         Log.d(TAG, "Layout generated.");
-        crosswordLayout.addBonusWords(wordConfiguration.getBonusWords());
 
         return new PuzzleConfiguration(wordConfiguration.getLetters(), crosswordLayout);
     }
@@ -44,13 +43,14 @@ public class PuzzleGenerator {
         return wordConfigGenerator.buildPuzzle(generationSettings.getNumLetters());
     }
 
-    private CrosswordLayout generateLayout(PuzzleWordConfiguration wordConfiguration) {
+    private CrosswordLayout generateLayout(
+            PuzzleWordConfiguration wordConfiguration, ProcessedDictionary dictionary) {
         BoardGenerationFlags flags = getGenerationFlags();
         BoardEvaluator evaluator = new SimpleBoardEvaluator(flags);
         BoardGenerator generator = new BoardGenerator(evaluator, flags);
         Board generatedBoard = generator.generateBoard(wordConfiguration.getWords());
 
-        return new CrosswordLayout(generatedBoard);
+        return new CrosswordLayout(generatedBoard, dictionary);
     }
 
     private BoardGenerationFlags getGenerationFlags() {

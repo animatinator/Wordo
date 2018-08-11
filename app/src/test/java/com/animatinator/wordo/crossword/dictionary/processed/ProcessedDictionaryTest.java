@@ -9,6 +9,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(JUnit4.class)
@@ -24,7 +25,7 @@ public class ProcessedDictionaryTest {
 
     @Test
     public void addWordOfLength() {
-        dictionary.addWord("hello");
+        dictionary.addWordToGenerationDictionary("hello");
         List<String> wordsOfLengthFive = dictionary.getWordsOfLength(5);
         TestUtils.assertHasLength(1, wordsOfLengthFive);
         TestUtils.assertContains(wordsOfLengthFive, "hello");
@@ -32,16 +33,16 @@ public class ProcessedDictionaryTest {
 
     @Test
     public void addWordOfLengthInExistingRange() {
-        dictionary.addWord("hello");
-        dictionary.addWord("one");
+        dictionary.addWordToGenerationDictionary("hello");
+        dictionary.addWordToGenerationDictionary("one");
         TestUtils.assertHasLength(1, dictionary.getWordsOfLength(3));
         TestUtils.assertHasLength(1, dictionary.getWordsOfLength(5));
     }
 
     @Test
     public void addTwoWordsOfSameLength() {
-        dictionary.addWord("word");
-        dictionary.addWord("four");
+        dictionary.addWordToGenerationDictionary("word");
+        dictionary.addWordToGenerationDictionary("four");
         List<String> wordsOfLengthFour = dictionary.getWordsOfLength(4);
         TestUtils.assertHasLength(2, wordsOfLengthFour);
         TestUtils.assertContains(wordsOfLengthFour, "word", "four");
@@ -52,7 +53,7 @@ public class ProcessedDictionaryTest {
      */
     @Test
     public void wordOfLengthZero() {
-        dictionary.addWord("");
+        dictionary.addWordToGenerationDictionary("");
         List<String> wordsOfLengthZero = dictionary.getWordsOfLength(0);
         TestUtils.assertHasLength(1, wordsOfLengthZero);
         TestUtils.assertContains(wordsOfLengthZero, "");
@@ -60,7 +61,7 @@ public class ProcessedDictionaryTest {
 
     @Test
     public void wordsOfLength_eAcute() {
-        dictionary.addWord("intentaré");
+        dictionary.addWordToGenerationDictionary("intentaré");
         List<String> wordsOfLengthNine = dictionary.getWordsOfLength(9);
         TestUtils.assertHasLength(1, wordsOfLengthNine);
         TestUtils.assertContains(wordsOfLengthNine, "intentaré");
@@ -68,7 +69,7 @@ public class ProcessedDictionaryTest {
 
     @Test
     public void wordsOfLength_iAcute() {
-        dictionary.addWord("comí");
+        dictionary.addWordToGenerationDictionary("comí");
         List<String> wordsOfLengthFour = dictionary.getWordsOfLength(4);
         TestUtils.assertHasLength(1, wordsOfLengthFour);
         TestUtils.assertContains(wordsOfLengthFour, "comí");
@@ -76,7 +77,7 @@ public class ProcessedDictionaryTest {
 
     @Test
     public void wordsOfLength_enye() {
-        dictionary.addWord("niño");
+        dictionary.addWordToGenerationDictionary("niño");
         List<String> wordsOfLengthFour = dictionary.getWordsOfLength(4);
         TestUtils.assertHasLength(1, wordsOfLengthFour);
         TestUtils.assertContains(wordsOfLengthFour, "niño");
@@ -84,16 +85,35 @@ public class ProcessedDictionaryTest {
 
     @Test
     public void addWordToProcessedDictionary() {
-        dictionary.addWord("test");
-        TestUtils.assertContains(dictionary.getDictionary(), new DictionaryEntry("test", new WordFingerPrint("estt".split(""))));
+        dictionary.addWordToGenerationDictionary("test");
+        TestUtils.assertContains(dictionary.getGenerationDictionary(), new DictionaryEntry("test", new WordFingerPrint("estt".split(""))));
     }
 
     @Test
     public void addWord_duplicate() {
-        dictionary.addWord("test");
+        dictionary.addWordToGenerationDictionary("test");
 
         try {
-            dictionary.addWord("test");
+            dictionary.addWordToGenerationDictionary("test");
+        } catch (IllegalArgumentException expected) {
+            return;
+        }
+
+        fail("Shouldn't be able to add duplicate words to a ProcessedDictionary!");
+    }
+
+    @Test
+    public void addWordToFullDictionary() {
+        dictionary.addWordToFullDictionary("test");
+        assertTrue(dictionary.isWordInFullDictionary("test"));
+    }
+
+    @Test
+    public void addWordToFullDictionary_duplicate() {
+        dictionary.addWordToFullDictionary("test");
+
+        try {
+            dictionary.addWordToFullDictionary("test");
         } catch (IllegalArgumentException expected) {
             return;
         }

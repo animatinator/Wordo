@@ -5,17 +5,14 @@ import java.util.List;
 public class PuzzleWordConfiguration {
     private final String[] letters;
     private final List<String> words;
-    private final List<String> bonusWords;
     private final int numberOfLettersRequired;
 
     PuzzleWordConfiguration(
             String[] letters,
             List<String> words,
-            List<String> bonusWords,
             int numberOfLettersRequired) {
         this.letters = letters;
         this.words = words;
-        this.bonusWords = bonusWords;
         this.numberOfLettersRequired = numberOfLettersRequired;
     }
 
@@ -27,10 +24,6 @@ public class PuzzleWordConfiguration {
         return words;
     }
 
-    public List<String> getBonusWords() {
-        return bonusWords;
-    }
-
     int getNumberOfLettersRequired() {
         return numberOfLettersRequired;
     }
@@ -40,7 +33,6 @@ public class PuzzleWordConfiguration {
         return "PuzzleWordConfiguration{" +
                 "letter set=" + letterString() +
                 "; words=" + words +
-                "; bonus words=" + bonusWords +
                 '}';
     }
 

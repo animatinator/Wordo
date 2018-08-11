@@ -7,12 +7,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Represents a dictionary once it's been processed. This consists of a few pieces:
+ * * Map from int length to words of that length
+ * * List of {@link DictionaryEntry}, the 'generation dictionary' used in building puzzles
+ * * A big ol' hash set of all possible words in the 'language' used for bonus words (but not all
+ * for generation).
+ */
 public class ProcessedDictionary {
     private ArrayList<List<String>> wordsOfLength = new ArrayList<>();
     private ArrayList<DictionaryEntry> processedDictionary = new ArrayList<>();
     private HashSet<String> wordsAdded = new HashSet<>();
+    private HashSet<String> fullDictionary = new HashSet<>();
 
-    public void addWord(String word) {
+    public void addWordToGenerationDictionary(String word) {
         if (wordsAdded.contains(word)) {
             throw new IllegalArgumentException("Word '"+word+"' already in dictionary!");
         }
@@ -40,7 +48,18 @@ public class ProcessedDictionary {
         processedDictionary.add(new DictionaryEntry(word, fingerPrint));
     }
 
-    public List<DictionaryEntry> getDictionary() {
+    public void addWordToFullDictionary(String word) {
+        if (fullDictionary.contains(word)) {
+            throw new IllegalArgumentException("Word '"+word+"' already in dictionary!");
+        }
+        fullDictionary.add(word);
+    }
+
+    public boolean isWordInFullDictionary(String word) {
+        return fullDictionary.contains(word);
+    }
+
+    public List<DictionaryEntry> getGenerationDictionary() {
         return processedDictionary;
     }
 
