@@ -1,5 +1,7 @@
 package com.animatinator.wordo.crossword.generate;
 
+import android.util.Log;
+
 import com.animatinator.wordo.crossword.board.Board;
 import com.animatinator.wordo.crossword.board.words.LaidWord;
 import com.animatinator.wordo.crossword.evaluate.BoardEvaluator;
@@ -12,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class BoardGenerator {
     private static final int BOARDS_TO_GENERATE = 10;
     private static final Random randomGenerator = new Random();
+    private static final String TAG = "BoardGenerator";
 
     private final BoardEvaluator boardEvaluator;
     private final BoardGenerationFlags flags;
@@ -27,6 +30,7 @@ public class BoardGenerator {
             double bestFitness = -1.0d;
 
             for (int i = 0; i < BOARDS_TO_GENERATE; i++) {
+                Log.d(TAG, String.format("Generating board %s of %s...", i, BOARDS_TO_GENERATE));
                 Board newBoard = generateOneBoard(possibleWords);
                 double fitness = boardEvaluator.evaluateBoard(newBoard);
 

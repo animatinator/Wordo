@@ -23,10 +23,13 @@ public class PuzzleGenerator {
     }
 
     public PuzzleConfiguration createPuzzle(PuzzleGenerationSettings generationSettings) {
+        Log.d(TAG, "Generating word config...");
         PuzzleWordConfiguration wordConfiguration =
                 generateWordConfiguration(generationSettings, dictionary);
         Log.d(TAG, "Word config: "+wordConfiguration);
+        Log.d(TAG, "Generating layout...");
         CrosswordLayout crosswordLayout = generateLayout(wordConfiguration);
+        Log.d(TAG, "Layout generated.");
         crosswordLayout.addBonusWords(wordConfiguration.getBonusWords());
 
         return new PuzzleConfiguration(wordConfiguration.getLetters(), crosswordLayout);
