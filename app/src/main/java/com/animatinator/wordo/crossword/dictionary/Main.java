@@ -2,6 +2,7 @@ package com.animatinator.wordo.crossword.dictionary;
 
 import android.annotation.SuppressLint;
 
+import com.animatinator.wordo.crossword.dictionary.evaluate.MaximisingWordConfigurationEvaluator;
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
 import com.animatinator.wordo.crossword.dictionary.puzzle.WordConfigurationGenerator;
@@ -21,7 +22,12 @@ public class Main {
             e.printStackTrace();
             return;
         }
-        WordConfigurationGenerator generator = new WordConfigurationGenerator(dictionary).withMinimumWordLength(3).withMaximumWordCount(10);
+        WordConfigurationGenerator generator =
+                new WordConfigurationGenerator(
+                        dictionary,
+                        new MaximisingWordConfigurationEvaluator())
+                        .withMinimumWordLength(3)
+                        .withMaximumWordCount(10);
         PuzzleWordConfiguration puzzle = generator.buildPuzzle(7);
         System.out.println(puzzle);
     }

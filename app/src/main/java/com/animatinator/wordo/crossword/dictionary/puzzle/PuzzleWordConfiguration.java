@@ -1,13 +1,17 @@
 package com.animatinator.wordo.crossword.dictionary.puzzle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PuzzleWordConfiguration {
+    public static final PuzzleWordConfiguration EMPTY_PUZZLE =
+            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), 0);
+
     private final String[] letters;
     private final List<String> words;
     private final int numberOfLettersRequired;
 
-    PuzzleWordConfiguration(
+    public PuzzleWordConfiguration(
             String[] letters,
             List<String> words,
             int numberOfLettersRequired) {

@@ -2,6 +2,7 @@ package com.animatinator.wordo.crossword.dictionary.puzzle;
 
 import android.util.Log;
 
+import com.animatinator.wordo.crossword.dictionary.evaluate.WordConfigurationEvaluator;
 import com.animatinator.wordo.crossword.dictionary.fingerprint.FingerPrinter;
 import com.animatinator.wordo.crossword.dictionary.fingerprint.WordFingerPrint;
 import com.animatinator.wordo.crossword.dictionary.match.WordMatcher;
@@ -14,55 +15,59 @@ public class WordConfigurationGenerator {
 
     private static final String TAG = "WordConfigurationGenerator";
 
-    private static final PuzzleWordConfiguration EMPTY_PUZZLE =
-            new PuzzleWordConfiguration(new String[]{}, new ArrayList<>(), 0);
-
     private static final int WORDS_TO_TRY = 10;
 
     private final int minimumWordLength;
     private final int maximumWordCount;
 
     private final ProcessedDictionary dictionary;
-    private final Random random;
     private final WordMatcher matcher;
+    private final WordConfigurationEvaluator configEvaluator;
 
-    public WordConfigurationGenerator(ProcessedDictionary dictionary) {
-        this(dictionary, 0, 1000);
+    public WordConfigurationGenerator(
+            ProcessedDictionary dictionary, WordConfigurationEvaluator configEvaluator) {
+        this(dictionary, 0, 1000, configEvaluator);
     }
 
-    private WordConfigurationGenerator(ProcessedDictionary dictionary, int minimumWordLength, int maximumWordCount) {
+    private WordConfigurationGenerator(
+            ProcessedDictionary dictionary,
+            int minimumWordLength,
+            int maximumWordCount,
+            WordConfigurationEvaluator configEvaluator) {
         this.dictionary = dictionary;
         this.minimumWordLength = minimumWordLength;
         this.maximumWordCount = maximumWordCount;
-        random  = new Random();
+        this.configEvaluator = configEvaluator;
         matcher = new WordMatcher();
     }
 
     public WordConfigurationGenerator withMinimumWordLength(int newMinimumWordLength) {
-        return new WordConfigurationGenerator(dictionary, newMinimumWordLength, maximumWordCount);
+        return new WordConfigurationGenerator(
+                dictionary, newMinimumWordLength, maximumWordCount, configEvaluator);
     }
 
     public WordConfigurationGenerator withMaximumWordCount(int newMaximumWordCount) {
-        return new WordConfigurationGenerator(dictionary, minimumWordLength, newMaximumWordCount);
+        return new WordConfigurationGenerator(
+                dictionary, minimumWordLength, newMaximumWordCount, configEvaluator);
     }
 
     public PuzzleWordConfiguration buildPuzzle(int numLetters) {
         if (numLetters == 0) {
-            return EMPTY_PUZZLE;
+            return PuzzleWordConfiguration.EMPTY_PUZZLE;
         }
 
         List<String> possibleBaseWords = chooseBaseWords(numLetters);
         if (possibleBaseWords.isEmpty()) {
             Log.e(TAG, "Couldn't find an appropriate base word!");
-            return EMPTY_PUZZLE;
+            return PuzzleWordConfiguration.EMPTY_PUZZLE;
         }
 
-        PuzzleWordConfiguration bestConfiguration = EMPTY_PUZZLE;
-        int bestConfigurationScore = 0;
+        PuzzleWordConfiguration bestConfiguration = PuzzleWordConfiguration.EMPTY_PUZZLE;
+        float bestConfigurationScore = 0;
 
         for (String word : possibleBaseWords) {
             PuzzleWordConfiguration config = generateConfigForBaseWord(word);
-            int score = config.getWords().size();
+            float score = configEvaluator.evaluateWordConfig(config);
 
             if (score > bestConfigurationScore) {
                 bestConfiguration = config;

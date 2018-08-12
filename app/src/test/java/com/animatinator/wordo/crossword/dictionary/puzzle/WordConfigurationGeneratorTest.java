@@ -1,5 +1,6 @@
 package com.animatinator.wordo.crossword.dictionary.puzzle;
 
+import com.animatinator.wordo.crossword.dictionary.evaluate.MaximisingWordConfigurationEvaluator;
 import com.animatinator.wordo.crossword.dictionary.match.WordMatcher;
 import com.animatinator.wordo.crossword.dictionary.processed.DictionaryEntry;
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
@@ -31,7 +32,8 @@ public class WordConfigurationGeneratorTest {
         } catch (IOException e) {
             fail("Couldn't load test dictionary! Exception: "+e);
         }
-        generator = new WordConfigurationGenerator(dictionary);
+        generator = new WordConfigurationGenerator(
+                dictionary, new MaximisingWordConfigurationEvaluator());
         matcher = new WordMatcher();
     }
 
