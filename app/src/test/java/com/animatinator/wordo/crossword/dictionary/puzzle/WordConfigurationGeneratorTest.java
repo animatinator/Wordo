@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-@RunWith(JUnit4.class)
+@RunWith(RobolectricTestRunner.class)
 public class WordConfigurationGeneratorTest {
     private WordConfigurationGenerator generator;
     private ProcessedDictionary dictionary;

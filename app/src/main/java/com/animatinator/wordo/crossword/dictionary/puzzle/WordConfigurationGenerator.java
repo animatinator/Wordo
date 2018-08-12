@@ -62,23 +62,31 @@ public class WordConfigurationGenerator {
             return PuzzleWordConfiguration.EMPTY_PUZZLE;
         }
 
-        PuzzleWordConfiguration bestConfiguration = PuzzleWordConfiguration.EMPTY_PUZZLE;
-        float bestConfigurationScore = 0;
+        String bestBaseWord = null;
+        float bestBaseWordScore = 0.0f;
 
         for (String word : possibleBaseWords) {
-            PuzzleWordConfiguration config = generateConfigForBaseWord(word);
+            PuzzleWordConfiguration config = generateConfigForBaseWord(word, false);
             float score = configEvaluator.evaluateWordConfig(config);
 
-            if (score > bestConfigurationScore) {
-                bestConfiguration = config;
-                bestConfigurationScore = score;
+            if (score > bestBaseWordScore) {
+                bestBaseWord = word;
+                bestBaseWordScore = score;
             }
         }
 
-        return bestConfiguration;
+        // If for some reason we couldn't get a non-zero score, return an empty puzzle.
+        if (bestBaseWord == null) {
+            Log.e(TAG, "Couldn't pick a base word with a non-zero score!");
+            return PuzzleWordConfiguration.EMPTY_PUZZLE;
+        }
+
+        // Generate a layout for the best base word, sticking to the word limit this time.
+        return generateConfigForBaseWord(bestBaseWord, true);
     }
 
-    private PuzzleWordConfiguration generateConfigForBaseWord(String baseWord) {
+    private PuzzleWordConfiguration generateConfigForBaseWord(
+            String baseWord, boolean stickToLimit) {
         WordFingerPrint baseWordFingerPrint = FingerPrinter.getFingerprint(baseWord);
         List<String> allWords = matcher.getWordsFormableFromWord(baseWord, dictionary);
 
@@ -86,7 +94,7 @@ public class WordConfigurationGenerator {
 
         final List<String> words;
 
-        if (maximumWordCount < allWords.size()) {
+        if (stickToLimit && maximumWordCount < allWords.size()) {
             words = randomlySelectNFromList(allWords, maximumWordCount);
         } else {
             words = allWords;
