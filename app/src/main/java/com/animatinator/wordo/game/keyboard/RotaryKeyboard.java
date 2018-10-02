@@ -1,4 +1,5 @@
 package com.animatinator.wordo.game.keyboard;
+
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,9 +9,9 @@ import android.graphics.Typeface;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RotaryKeyboard {
     // The position along the circle's radius of the letters.
@@ -43,7 +44,7 @@ public class RotaryKeyboard {
 
     private boolean isDragging = false;
     private Coordinates currentPos = new Coordinates(0, 0);
-    private List<Integer> selectedLetters = new ArrayList<>();
+    private List<Integer> selectedLetters = new CopyOnWriteArrayList<>();
 
     public RotaryKeyboard() {
         initPaints();
@@ -103,7 +104,7 @@ public class RotaryKeyboard {
         if (selectedLetter.isPresent()) {
             isDragging = true;
             currentPos = new Coordinates(position.x(), position.y());
-            selectedLetters = new ArrayList<>();
+            selectedLetters = new CopyOnWriteArrayList<>();
             selectedLetters.add(selectedLetter.get());
             return true;
         }
@@ -114,7 +115,7 @@ public class RotaryKeyboard {
         wordEntryCallback.onWordEntered(getEnteredWord());
         wordEntryCallback.onPartialWord("");
         isDragging = false;
-        selectedLetters = new ArrayList<>();
+        selectedLetters = new CopyOnWriteArrayList<>();
     }
 
     @SuppressLint("NewApi")
@@ -152,7 +153,7 @@ public class RotaryKeyboard {
             drawSelectedLetterTrail(canvas);
         }
 
-        drawLetters(canvas);
+            drawLetters(canvas);
     }
 
     private void drawSelectedLetterTrail(Canvas canvas) {
