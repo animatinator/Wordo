@@ -53,13 +53,21 @@ public class GameView extends View implements View.OnTouchListener {
             public void onWordEntered(String word) {
                 Log.d(TAG, "===== Word entered: "+word+" =====");
                 boolean revealed = board.maybeRevealWord(word);
+                boolean bonusWord = false;
 
                 // If the word wasn't on the board, it might be a bonus word.
                 if (!revealed) {
                     if (board.hasBonusWord(word)) {
                         Log.d(TAG, "===== Bonus word:" + word);
                         bonusWordsButton.addToRevealedWords(word);
+                        bonusWord = true;
                     }
+                }
+
+                if (revealed || bonusWord) {
+                    enteredTextDisplay.notifyGuessCorrect(word);
+                } else {
+                    enteredTextDisplay.notifyGuessIncorrect(word);
                 }
             }
 
