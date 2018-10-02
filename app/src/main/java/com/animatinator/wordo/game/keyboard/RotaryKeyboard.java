@@ -112,6 +112,7 @@ public class RotaryKeyboard {
 
     public void handleRelease() {
         wordEntryCallback.onWordEntered(getEnteredWord());
+        wordEntryCallback.onPartialWord("");
         isDragging = false;
         selectedLetters = new ArrayList<>();
     }

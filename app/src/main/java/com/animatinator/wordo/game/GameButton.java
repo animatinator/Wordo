@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.animatinator.wordo.game.util.TextDrawingUtils;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -44,7 +45,7 @@ public abstract class GameButton {
     }
 
     protected void drawCentredText(Canvas canvas, String text, Paint textPaint) {
-        float letterHeight = textPaint.ascent() + textPaint.descent();
+        float letterHeight = TextDrawingUtils.getTextHeight(textPaint);
         float yOffset = letterHeight / 2.0f;
         canvas.drawText(text, centre.x(), centre.y() - yOffset, textPaint);
     }
