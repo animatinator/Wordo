@@ -232,10 +232,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             isRunning.set(true);
 
             while(isRunning.get()) {
-                synchronized (surfaceHolder) {
-                    Canvas canvas = surfaceHolder.lockCanvas();
+                Canvas canvas = surfaceHolder.lockCanvas();
 
-                    if (canvas != null) {
+                if (canvas != null) {
+                    synchronized (surfaceHolder) {
                         try {
                             canvas.drawRect(0, 0,
                                     canvas.getWidth(), canvas.getHeight(), backgroundPaint);

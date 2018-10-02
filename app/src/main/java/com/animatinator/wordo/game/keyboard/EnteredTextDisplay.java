@@ -20,6 +20,10 @@ public class EnteredTextDisplay {
     private static final float TEXT_SIZE_RATIO = 0.8f;
     // The duration of animations.
     private static final int TEXT_ANIMATION_DURATION_MS = 300;
+    // The amplitude of the shaking animation for wrong guesses.
+    private static final float SHAKE_AMPLITUDE = 30.0f;
+    // The period of the shaking animation for wrong guesses.
+    private static final double SHAKE_PERIOD_MS = 20;
 
     private Coordinates centre;
     private float height;
@@ -39,25 +43,36 @@ public class EnteredTextDisplay {
     private class AnimationState {
         private AnimationType currentAnimation = AnimationType.NONE;
         private String textToAnimate = "";
+        private long startTime;
+
+        AnimationState() {
+            startTime = System.currentTimeMillis();
+        }
 
         AnimationType getCurrentAnimation() {
             return currentAnimation;
-        }
-
-        public void setCurrentAnimation(AnimationType currentAnimation) {
-            this.currentAnimation = currentAnimation;
         }
 
         String getTextToAnimate() {
             return textToAnimate;
         }
 
-        void setTextToAnimate(String textToAnimate) {
-            this.textToAnimate = textToAnimate;
-        }
-
         boolean shouldContinueShowingText() {
             return currentAnimation != AnimationType.NONE;
+        }
+
+        void startAnimation(AnimationType animationType, String text) {
+            currentAnimation = animationType;
+            textToAnimate = text;
+            startTime = System.currentTimeMillis();
+        }
+
+        void stopAnimation() {
+            currentAnimation = AnimationType.NONE;
+        }
+
+        long getStartTime() {
+            return startTime;
         }
     }
 
@@ -126,6 +141,16 @@ public class EnteredTextDisplay {
                     break;
             }
 
+            float animatedCentreX = centre.x();
+
+            if (animationState.getCurrentAnimation() == AnimationType.WRONG_ANSWER_ANIMATION) {
+                long curTime = System.currentTimeMillis();
+                long timeDiff = curTime - animationState.getStartTime();
+                float xOffset =
+                        ((float)Math.sin(((double)timeDiff) / SHAKE_PERIOD_MS)) * SHAKE_AMPLITUDE;
+                animatedCentreX = animatedCentreX + xOffset;
+            }
+
             float textHeight = TextDrawingUtils.getTextHeight(textPaint);
             float textWidth = textPaint.measureText(textToUse);
 
@@ -134,14 +159,14 @@ public class EnteredTextDisplay {
             float halfHeight = height / 2.0f;
 
             canvas.drawRoundRect(
-                    centre.x() - halfWidth,
+                    animatedCentreX - halfWidth,
                     centre.y() - halfHeight,
-                    centre.x() + halfWidth,
+                    animatedCentreX + halfWidth,
                     centre.y() + halfHeight,
                     cornerRadius, cornerRadius,
                     paintToUse);
 
-            canvas.drawText(textToUse, centre.x(), centre.y() - (textHeight / 2.0f), textPaint);
+            canvas.drawText(textToUse, animatedCentreX, centre.y() - (textHeight / 2.0f), textPaint);
         }
     }
 
@@ -150,14 +175,12 @@ public class EnteredTextDisplay {
     }
 
     public void notifyGuessCorrect(String guess) {
-        animationState.setCurrentAnimation(AnimationType.RIGHT_ANSWER_ANIMATION);
-        animationState.setTextToAnimate(guess);
+        animationState.startAnimation(AnimationType.RIGHT_ANSWER_ANIMATION, guess);
         resetAnimationAfterDelay();
     }
 
     public void notifyGuessIncorrect(String guess) {
-        animationState.setCurrentAnimation(AnimationType.WRONG_ANSWER_ANIMATION);
-        animationState.setTextToAnimate(guess);
+        animationState.startAnimation(AnimationType.WRONG_ANSWER_ANIMATION, guess);
         resetAnimationAfterDelay();
     }
 
@@ -165,7 +188,7 @@ public class EnteredTextDisplay {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                animationState.setCurrentAnimation(AnimationType.NONE);
+                animationState.stopAnimation();
             }
         }, TEXT_ANIMATION_DURATION_MS);
     }
