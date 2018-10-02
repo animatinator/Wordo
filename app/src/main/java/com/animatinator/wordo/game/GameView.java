@@ -27,8 +27,10 @@ public class GameView extends View implements View.OnTouchListener {
     private static final float BUTTON_RADIUS = 100.0f;
     // The ratio of the spacing around a button to the radius of the button itself.
     private static final float BUTTON_SPACING_RATIO = 1.3f;
+    // Size of the 'entered word' display.
+    private static final float ENTERED_WORD_DISPLAY_HEIGHT = 100.0f;
     // Padding to add around the 'entered word' display.
-    private static final float ENTERED_WORD_DISPLAY_PADDING = 10.0f;
+    private static final float ENTERED_WORD_DISPLAY_PADDING_RATIO = 1.1f;
 
     public static final String TAG = "GameView";
 
@@ -108,23 +110,22 @@ public class GameView extends View implements View.OnTouchListener {
     private void updateLayout(int width, int height) {
         float centreX = width / 2.0f;
 
-        float enteredTextHeight = 100.0f;
-
-        float enteredTextCentreY = (enteredTextHeight / 2.0f) + ENTERED_WORD_DISPLAY_PADDING;
-        float enteredTextBottom = enteredTextCentreY * 2.0f;
-
+        // Keyboard at the bottom.
         float keyboardRadius = ((float)width) * 0.3f;
         Coordinates keyboardCentre =
                 new Coordinates(
                         centreX, height - (keyboardRadius * KEYBOARD_SPACING_RATIO));
         float keyboardTop = height - ((keyboardRadius * KEYBOARD_SPACING_RATIO) * 2.0f);
 
-        // Fit the board in between the entered word display at the top and the keyboard at the
-        // bottom.
-        float boardVerticalSpace = keyboardTop - enteredTextBottom;
-        float boardSize = Math.min(width, boardVerticalSpace) / BOARD_SPACING_RATIO;
+        // Entered text display right above it.
+        float enteredTextHeight = ENTERED_WORD_DISPLAY_HEIGHT * ENTERED_WORD_DISPLAY_PADDING_RATIO;
+        float enteredTextCentreY = keyboardTop - (enteredTextHeight / 2.0f);
+        float enteredTextTop = keyboardTop - enteredTextHeight;
+
+        // Board occupies the remaining space at the top.
+        float boardSize = Math.min(width, enteredTextTop) / BOARD_SPACING_RATIO;
         float boardX = centreX - (boardSize / 2.0f);
-        float boardY = enteredTextBottom + ((boardVerticalSpace / 2.0f) - (boardSize / 2.0f));
+        float boardY = (enteredTextTop / 2.0f) - (boardSize / 2.0f);
 
         enteredTextDisplay.updateLayout(new Coordinates(centreX, enteredTextCentreY), enteredTextHeight);
         keyboard.updateLayout(keyboardCentre, keyboardRadius);
