@@ -153,7 +153,7 @@ public class RotaryKeyboard {
             drawSelectedLetterTrail(canvas);
         }
 
-            drawLetters(canvas);
+        drawLetters(canvas);
     }
 
     private void drawSelectedLetterTrail(Canvas canvas) {
