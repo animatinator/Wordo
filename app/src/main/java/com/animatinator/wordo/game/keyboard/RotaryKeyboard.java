@@ -244,8 +244,4 @@ public class RotaryKeyboard {
         selectedLetters = selectedLetters.subList(0, index + 1);
     }
 
-    public interface WordEntryCallback {
-        void onWordEntered(String word);
-        void onPartialWord(String partialWord);
-    }
 }

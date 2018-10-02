@@ -14,6 +14,7 @@ import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
 import com.animatinator.wordo.game.hints.HintButton;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
+import com.animatinator.wordo.game.keyboard.WordEntryCallback;
 import com.animatinator.wordo.util.Coordinates;
 
 public class GameView extends View implements View.OnTouchListener {
@@ -40,7 +41,7 @@ public class GameView extends View implements View.OnTouchListener {
         hintButton = new HintButton();
         board = new CrosswordBoard();
         keyboard = new RotaryKeyboard();
-        keyboard.setWordEntryCallback(new RotaryKeyboard.WordEntryCallback() {
+        keyboard.setWordEntryCallback(new WordEntryCallback() {
             @Override
             public void onWordEntered(String word) {
                 Log.d(TAG, "===== Word entered: "+word+" =====");
