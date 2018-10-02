@@ -19,7 +19,7 @@ public class EnteredTextDisplay {
     // The ratio of the text size to the size of the text display.
     private static final float TEXT_SIZE_RATIO = 0.8f;
     // The duration of animations.
-    private static final int TEXT_ANIMATION_DURATION_MS = 500;
+    private static final int TEXT_ANIMATION_DURATION_MS = 300;
 
     private Coordinates centre;
     private float height;

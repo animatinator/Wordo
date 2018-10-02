@@ -3,9 +3,13 @@ package com.animatinator.wordo.game;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 
 import com.animatinator.wordo.crossword.CrosswordLayout;
@@ -18,7 +22,9 @@ import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.game.keyboard.WordEntryCallback;
 import com.animatinator.wordo.util.Coordinates;
 
-public class GameView extends View implements View.OnTouchListener {
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class GameView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
     // The ratio of the spacing around the board to the size of the board itself.
     private static final float BOARD_SPACING_RATIO = 1.1f;
     // The ratio of the spacing around the keyboard to the size of the keyboard itself.
@@ -39,6 +45,9 @@ public class GameView extends View implements View.OnTouchListener {
     private final HintButton hintButton;
     private final CrosswordBoard board;
     private final RotaryKeyboard keyboard;
+
+    private GameThread gameThread;
+    private Paint backgroundPaint;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -77,6 +86,16 @@ public class GameView extends View implements View.OnTouchListener {
             }
         });
         hintButton.setCallback(board::giveHint);
+        gameThread = new GameThread(getHolder(), this);
+        getHolder().addCallback(this);
+
+        initPaints();
+    }
+
+    private void initPaints() {
+        backgroundPaint = new Paint();
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setColor(Color.WHITE);
     }
 
     public void setLetters(String[] letters) {
@@ -91,8 +110,7 @@ public class GameView extends View implements View.OnTouchListener {
         bonusWordsButton.setBonusWordsCallback(callback);
     }
 
-    @Override
-    public void onDraw(Canvas canvas) {
+    public void drawToCanvas(Canvas canvas) {
         board.onDraw(canvas);
         keyboard.onDraw(canvas);
         bonusWordsButton.onDraw(canvas);
@@ -175,5 +193,75 @@ public class GameView extends View implements View.OnTouchListener {
 
     private boolean handlePossibleButtonTouch(Coordinates position) {
         return bonusWordsButton.handleTouch(position) || hintButton.handleTouch(position);
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        if (!gameThread.isRunning()) {
+            gameThread = new GameThread(getHolder(), this);
+        }
+        gameThread.start();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+        updateLayout(width, height);
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        gameThread.setIsRunning(false);
+    }
+
+    private final class GameThread extends Thread {
+        // 60fps maximum.
+        private static final int FRAME_DELAY_MS = 1000 / 60;
+
+        private final SurfaceHolder surfaceHolder;
+        private final GameView gameView;
+
+        private AtomicBoolean isRunning = new AtomicBoolean(false);
+
+        GameThread(SurfaceHolder surfaceHolder, GameView gameView) {
+            this.surfaceHolder = surfaceHolder;
+            this.gameView = gameView;
+        }
+
+        @Override
+        public void run() {
+            isRunning.set(true);
+
+            while(isRunning.get()) {
+                synchronized (surfaceHolder) {
+                    Canvas canvas = surfaceHolder.lockCanvas();
+
+                    if (canvas != null) {
+                        try {
+                            canvas.drawRect(0, 0,
+                                    canvas.getWidth(), canvas.getHeight(), backgroundPaint);
+
+                            gameView.drawToCanvas(canvas);
+                        } finally {
+                            surfaceHolder.unlockCanvasAndPost(canvas);
+                        }
+                    }
+                }
+
+                try {
+                    Thread.sleep(FRAME_DELAY_MS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    isRunning.set(false);
+                }
+            }
+        }
+
+        synchronized void setIsRunning(boolean running) {
+            isRunning.set(running);
+        }
+
+        synchronized boolean isRunning() {
+            return isRunning.get();
+        }
     }
 }
