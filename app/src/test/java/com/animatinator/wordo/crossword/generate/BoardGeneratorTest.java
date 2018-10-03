@@ -6,10 +6,10 @@ import com.animatinator.wordo.crossword.evaluate.SimpleBoardEvaluator;
 import com.animatinator.wordo.crossword.print.BoardPrinter;
 import com.animatinator.wordo.crossword.print.BoardToHumanReadableString;
 import com.animatinator.wordo.crossword.print.SystemOutPrinter;
+import com.animatinator.wordo.crossword.testutils.TestProgressListener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
@@ -112,6 +112,38 @@ public class BoardGeneratorTest {
                 new SimpleBoardEvaluator(flagsWithMoreIntersectionsPreferred),
                 flagsWithMoreIntersectionsPreferred,
                 flagsWithoutMoreIntersectionsPreferred);
+    }
+
+    @Test
+    public void testProgress_singleBoard() {
+        BoardGenerationFlags flags = new BoardGenerationFlags();
+        flags.setFlag(BoardGenerationFlagConstant.RANDOM_INITIAL_ORIENTATION, true);
+        flags.setFlag(BoardGenerationFlagConstant.GENERATE_SEVERAL_BOARDS, false);
+        flags.setFlag(BoardGenerationFlagConstant.PICK_RANDOMLY_FROM_BEST_FEW_WORD_PLACEMENTS, true);
+        flags.setFlag(BoardGenerationFlagConstant.PREFER_MORE_INTERSECTIONS, true);
+
+        BoardGenerator generator = new BoardGenerator(new SimpleBoardEvaluator(flags), flags);
+        TestProgressListener progressListener = new TestProgressListener();
+
+        generator.generateBoard(Arrays.asList(WORDS), progressListener);
+
+        assertEquals(1.0d, progressListener.getProgress(), 0.01d);
+    }
+
+    @Test
+    public void testProgress_multipleBoards() {
+        BoardGenerationFlags flags = new BoardGenerationFlags();
+        flags.setFlag(BoardGenerationFlagConstant.RANDOM_INITIAL_ORIENTATION, true);
+        flags.setFlag(BoardGenerationFlagConstant.GENERATE_SEVERAL_BOARDS, true);
+        flags.setFlag(BoardGenerationFlagConstant.PICK_RANDOMLY_FROM_BEST_FEW_WORD_PLACEMENTS, true);
+        flags.setFlag(BoardGenerationFlagConstant.PREFER_MORE_INTERSECTIONS, true);
+
+        BoardGenerator generator = new BoardGenerator(new SimpleBoardEvaluator(flags), flags);
+        TestProgressListener progressListener = new TestProgressListener();
+
+        generator.generateBoard(Arrays.asList(WORDS), progressListener);
+
+        assertEquals(1.0d, progressListener.getProgress(), 0.01d);
     }
 
     private void compareFlagSets(BoardGenerationFlags ... flags) {

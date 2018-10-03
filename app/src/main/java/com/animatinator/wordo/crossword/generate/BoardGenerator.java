@@ -1,7 +1,10 @@
 package com.animatinator.wordo.crossword.generate;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.animatinator.wordo.crossword.NoOpProgressCallback;
+import com.animatinator.wordo.crossword.ProgressCallback;
 import com.animatinator.wordo.crossword.board.Board;
 import com.animatinator.wordo.crossword.board.words.LaidWord;
 import com.animatinator.wordo.crossword.evaluate.BoardEvaluator;
@@ -25,24 +28,39 @@ public class BoardGenerator {
     }
 
     public Board generateBoard(List<String> possibleWords) {
+        return generateBoard(possibleWords, new NoOpProgressCallback());
+    }
+
+    public Board generateBoard(List<String> possibleWords, ProgressCallback progressCallback) {
         if (flags.getFlag(BoardGenerationFlagConstant.GENERATE_SEVERAL_BOARDS)) {
-            Board bestBoard = null;
-            double bestFitness = -1.0d;
+            return generateMultipleBoardsAndPickBest(possibleWords, progressCallback);
+        } else {
+            Board board = generateOneBoard(possibleWords);
+            progressCallback.setProgress(1.0d);
+            return board;
+        }
+    }
 
-            for (int i = 0; i < BOARDS_TO_GENERATE; i++) {
-                Log.d(TAG, String.format("Generating board %s of %s...", i, BOARDS_TO_GENERATE));
-                Board newBoard = generateOneBoard(possibleWords);
-                double fitness = boardEvaluator.evaluateBoard(newBoard);
+    @Nullable
+    private Board generateMultipleBoardsAndPickBest(
+            List<String> possibleWords, ProgressCallback progressCallback) {
+        Board bestBoard = null;
+        double bestFitness = -1.0d;
 
-                if (fitness > bestFitness) {
-                    bestFitness = fitness;
-                    bestBoard = newBoard;
-                }
+        for (int i = 0; i < BOARDS_TO_GENERATE; i++) {
+            Log.d(TAG, String.format("Generating board %s of %s...", i, BOARDS_TO_GENERATE));
+            Board newBoard = generateOneBoard(possibleWords);
+            double fitness = boardEvaluator.evaluateBoard(newBoard);
+
+            if (fitness > bestFitness) {
+                bestFitness = fitness;
+                bestBoard = newBoard;
             }
 
-            return bestBoard;
+            progressCallback.setProgress((double) (i + 1) / (double) BOARDS_TO_GENERATE);
         }
-        return generateOneBoard(possibleWords);
+
+        return bestBoard;
     }
 
     private Board generateOneBoard(List<String> possibleWords) {

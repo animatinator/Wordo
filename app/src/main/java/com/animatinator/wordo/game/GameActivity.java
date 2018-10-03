@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.PuzzleConfiguration;
+import com.animatinator.wordo.crossword.PuzzleGenerationProgressCallback;
 import com.animatinator.wordo.crossword.PuzzleGenerationSettings;
 import com.animatinator.wordo.crossword.PuzzleGenerator;
 import com.animatinator.wordo.dictionaries.DictionaryLoader;
@@ -55,7 +56,7 @@ public class GameActivity extends Activity {
         DictionaryLoader dictionaryLoader = new DictionaryLoader(this);
         PuzzleGenerator generator =
                 new PuzzleGenerator(dictionaryLoader.loadDictionary("english"));
-        return generator.createPuzzle(getGenerationSettings());
+        return generator.createPuzzle(getGenerationSettings(), new DebugLoggingPuzzleGenerationCallback());
     }
 
     private PuzzleGenerationSettings getGenerationSettings() {
@@ -63,5 +64,18 @@ public class GameActivity extends Activity {
                 .withMaxWords(15)
                 .withMinWordLength(3)
                 .withNumLetters(7);
+    }
+
+    private static final class DebugLoggingPuzzleGenerationCallback
+            implements PuzzleGenerationProgressCallback {
+        @Override
+        public void setGenerationState(String state) {
+            Log.i(TAG, "Puzzle generation state: "+state);
+        }
+
+        @Override
+        public void setProgress(double progress) {
+            Log.i(TAG, "Puzzle generation progress set to: "+progress);
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.animatinator.wordo.crossword.dictionary.puzzle;
 
 import android.util.Log;
 
+import com.animatinator.wordo.crossword.NoOpProgressCallback;
+import com.animatinator.wordo.crossword.ProgressCallback;
 import com.animatinator.wordo.crossword.dictionary.evaluate.WordConfigurationEvaluator;
 import com.animatinator.wordo.crossword.dictionary.fingerprint.FingerPrinter;
 import com.animatinator.wordo.crossword.dictionary.fingerprint.WordFingerPrint;
@@ -52,6 +54,10 @@ public class WordConfigurationGenerator {
     }
 
     public PuzzleWordConfiguration buildPuzzle(int numLetters) {
+        return buildPuzzle(numLetters, new NoOpProgressCallback());
+    }
+
+    public PuzzleWordConfiguration buildPuzzle(int numLetters, ProgressCallback progressCallback) {
         if (numLetters == 0) {
             return PuzzleWordConfiguration.EMPTY_PUZZLE;
         }
@@ -64,6 +70,7 @@ public class WordConfigurationGenerator {
 
         String bestBaseWord = null;
         float bestBaseWordScore = 0.0f;
+        int wordsChecked = 0;
 
         for (String word : possibleBaseWords) {
             PuzzleWordConfiguration config = generateConfigForBaseWord(word, false);
@@ -73,6 +80,9 @@ public class WordConfigurationGenerator {
                 bestBaseWord = word;
                 bestBaseWordScore = score;
             }
+
+            wordsChecked++;
+            progressCallback.setProgress((double)wordsChecked / (double)possibleBaseWords.size());
         }
 
         // If for some reason we couldn't get a non-zero score, return an empty puzzle.

@@ -5,11 +5,11 @@ import com.animatinator.wordo.crossword.dictionary.match.WordMatcher;
 import com.animatinator.wordo.crossword.dictionary.processed.DictionaryEntry;
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.dictionary.util.TestUtils;
+import com.animatinator.wordo.crossword.testutils.TestProgressListener;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
@@ -97,6 +97,14 @@ public class WordConfigurationGeneratorTest {
         TestUtils.assertContains(Arrays.asList(puzzle.getLetters()), "c", "a", "u", "s", "e", "d");
     }
 
+    @Test
+    public void progressMeterIncreasesAsExpected() {
+        TestProgressListener progressListener = new TestProgressListener();
+        PuzzleWordConfiguration puzzle =
+                generator.withMinimumWordLength(3).buildPuzzle(6, progressListener);
+        assertEquals(1.0d, progressListener.getProgress(), 0.01d);
+    }
+
     private void assertWordsAllInDictionary(List<String> words, ProcessedDictionary dictionary) {
         List<String> dictionaryWords = dictionary.getGenerationDictionary().stream().map(DictionaryEntry::word).collect(Collectors.toList());
         TestUtils.assertContains(dictionaryWords, words);
@@ -113,14 +121,4 @@ public class WordConfigurationGeneratorTest {
         return puzzle.getWords().stream().max(Comparator.comparingInt(String::length)).get();
     }
 
-    private void assertListsAreDisjoint(List<String> left, List<String> right) {
-        assertFirstNotContainedInSecond(left, right);
-        assertFirstNotContainedInSecond(right, left);
-    }
-
-    private void assertFirstNotContainedInSecond(List<String> first, List<String> second) {
-        for (String word : first) {
-            assertFalse(second.contains(word));
-        }
-    }
 }
