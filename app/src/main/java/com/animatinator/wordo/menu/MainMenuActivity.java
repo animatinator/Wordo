@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.animatinator.wordo.R;
-import com.animatinator.wordo.game.GameActivity;
+import com.animatinator.wordo.loadingscreen.LoadingActivity;
 
 public class MainMenuActivity extends Activity {
 
@@ -18,7 +17,7 @@ public class MainMenuActivity extends Activity {
     }
 
     public void launchGameActivity(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, LoadingActivity.class);
         startActivity(intent);
     }
 }

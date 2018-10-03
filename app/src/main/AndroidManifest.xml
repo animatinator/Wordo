@@ -18,9 +18,13 @@
         </activity>
         <activity
             android:name=".game.GameActivity"
-            android:parentActivityName=".menu.MainMenuActivity"
             android:configChanges="orientation"
+            android:parentActivityName=".menu.MainMenuActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".loadingscreen.LoadingActivity"
+            android:noHistory="true">
+        </activity>
     </application>
 
 </manifest>
