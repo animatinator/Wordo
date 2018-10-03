@@ -15,7 +15,7 @@ public class WordConfigurationGenerator {
 
     private static final String TAG = "WordConfigurationGenerator";
 
-    private static final int WORDS_TO_TRY = 10;
+    private static final int WORDS_TO_TRY = 50;
 
     private final int minimumWordLength;
     private final int maximumWordCount;
