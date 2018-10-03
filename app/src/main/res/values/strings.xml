@@ -3,4 +3,5 @@
     <string name="menu_title">super cool\nMENU</string>
     <string name="play_button_text">Play</string>
     <string name="bonus_words">Bonus words</string>
+    <string name="base_loading_string">Loading…</string>
 </resources>

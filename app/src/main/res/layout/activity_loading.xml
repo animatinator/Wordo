@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".loadingscreen.LoadingActivity">
 
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/base_loading_string"
+        android:textSize="8pt"
+        app:layout_constraintRight_toRightOf="@id/guideline"
+        app:layout_constraintLeft_toLeftOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@id/progressBar"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -13,5 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
 
 </android.support.constraint.ConstraintLayout>
