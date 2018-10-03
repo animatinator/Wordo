@@ -112,10 +112,12 @@ public class RotaryKeyboard {
     }
 
     public void handleRelease() {
-        wordEntryCallback.onWordEntered(getEnteredWord());
-        wordEntryCallback.onPartialWord("");
-        isDragging = false;
-        selectedLetters = new CopyOnWriteArrayList<>();
+        if (isDragging) {
+            wordEntryCallback.onWordEntered(getEnteredWord());
+            wordEntryCallback.onPartialWord("");
+            isDragging = false;
+            selectedLetters = new CopyOnWriteArrayList<>();
+        }
     }
 
     @SuppressLint("NewApi")
