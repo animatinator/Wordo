@@ -3,9 +3,9 @@ package com.animatinator.wordo.game.keyboard;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 
-import com.animatinator.wordo.game.util.TextDrawingUtils;
 import com.animatinator.wordo.util.Coordinates;
 
 import java.util.Timer;
@@ -35,6 +35,7 @@ public class EnteredTextDisplay {
     private AnimationState animationState;
 
     private String enteredText = "";
+    private Rect textBounds = new Rect();
 
     private enum AnimationType {
         NONE, WRONG_ANSWER_ANIMATION, RIGHT_ANSWER_ANIMATION
@@ -151,22 +152,25 @@ public class EnteredTextDisplay {
                 animatedCentreX = animatedCentreX + xOffset;
             }
 
-            float textHeight = TextDrawingUtils.getTextHeight(textPaint);
-            float textWidth = textPaint.measureText(textToUse);
+            textPaint.getTextBounds(textToUse, 0, textToUse.length(), textBounds);
 
-            float rectWidth = textWidth / TEXT_SIZE_RATIO;
-            float halfWidth = rectWidth / 2.0f;
-            float halfHeight = height / 2.0f;
+            // Give the rect the same horizontal padding as it has vertical (don't scale it with the
+            // length of the string).
+            float rectPadding = height - textBounds.height();
+            float rectWidth = textBounds.width() + rectPadding;
+
+            float halfRectWidth = rectWidth / 2.0f;
+            float halfRectHeight = height / 2.0f;
 
             canvas.drawRoundRect(
-                    animatedCentreX - halfWidth,
-                    centre.y() - halfHeight,
-                    animatedCentreX + halfWidth,
-                    centre.y() + halfHeight,
+                    animatedCentreX - halfRectWidth,
+                    centre.y() - halfRectHeight,
+                    animatedCentreX + halfRectWidth,
+                    centre.y() + halfRectHeight,
                     cornerRadius, cornerRadius,
                     paintToUse);
 
-            canvas.drawText(textToUse, animatedCentreX, centre.y() - (textHeight / 2.0f), textPaint);
+            canvas.drawText(textToUse, animatedCentreX, centre.y() - textBounds.exactCenterY(), textPaint);
         }
     }
 

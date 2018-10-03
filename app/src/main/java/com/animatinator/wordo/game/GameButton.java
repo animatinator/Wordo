@@ -3,8 +3,8 @@ package com.animatinator.wordo.game;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
-import com.animatinator.wordo.game.util.TextDrawingUtils;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -13,6 +13,7 @@ public abstract class GameButton {
     protected float radius;
 
     private Paint circlePaint;
+    private Rect textBounds = new Rect();
 
     public GameButton() {
         centre = new Coordinates(0.0f, 0.0f);
@@ -45,9 +46,8 @@ public abstract class GameButton {
     }
 
     protected void drawCentredText(Canvas canvas, String text, Paint textPaint) {
-        float letterHeight = TextDrawingUtils.getTextHeight(textPaint);
-        float yOffset = letterHeight / 2.0f;
-        canvas.drawText(text, centre.x(), centre.y() - yOffset, textPaint);
+        textPaint.getTextBounds(text, 0, text.length(), textBounds);
+        canvas.drawText(text, centre.x(), centre.y() - textBounds.exactCenterY(), textPaint);
     }
 
     protected abstract void onPressed();
