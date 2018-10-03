@@ -21,7 +21,7 @@ public class EnteredTextDisplay {
     // The duration of animations.
     private static final int TEXT_ANIMATION_DURATION_MS = 300;
     // The amplitude of the shaking animation for wrong guesses.
-    private static final float SHAKE_AMPLITUDE = 30.0f;
+    private static final float SHAKE_AMPLITUDE = 20.0f;
     // The period of the shaking animation for wrong guesses.
     private static final double SHAKE_PERIOD_MS = 20;
 
