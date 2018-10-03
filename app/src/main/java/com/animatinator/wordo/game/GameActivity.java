@@ -16,33 +16,48 @@ import com.animatinator.wordo.game.bonuswords.BonusWordsDialogFragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class GameActivity extends Activity {
 
     private static final String TAG = "GameActivity";
+
+    private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        // TODO: This is going to very slowly generate a puzzle on the main thread - stop this
-        // madness as soon as possible.
-        try {
-            PuzzleConfiguration puzzleConfig = generatePuzzle();
-
-            GameView gameView = findViewById(R.id.game_view);
-            gameView.setLetters(puzzleConfig.getLetters());
-            gameView.setPuzzleLayout(puzzleConfig.getLayout());
+        synchronized (this) {
+            gameView = findViewById(R.id.game_view);
             gameView.setBonusWordsButtonCallback(bonusWords -> {
                 DialogFragment fragment = new BonusWordsDialogFragment();
                 fragment.setArguments(buildBundleFromBonusWords(bonusWords));
                 fragment.show(getFragmentManager(), "Bonus words dialog");
             });
-        } catch (IOException e) {
-            Log.e(TAG, "Couldn't generate the puzzle!");
-            e.printStackTrace();
         }
+
+        generatePuzzleOnBackgroundThread();
+    }
+
+    private void generatePuzzleOnBackgroundThread() {
+        Executor configExecutor = Executors.newSingleThreadExecutor();
+
+        configExecutor.execute(() -> {
+            try {
+                PuzzleConfiguration puzzleConfig =
+                        generatePuzzle(new DebugLoggingPuzzleGenerationCallback());
+                synchronized (this) {
+                    gameView.setLetters(puzzleConfig.getLetters());
+                    gameView.setPuzzleLayout(puzzleConfig.getLayout());
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Couldn't generate the puzzle");
+                e.printStackTrace();
+            }
+        });
     }
 
     private Bundle buildBundleFromBonusWords(List<String> bonusWords) {
@@ -52,11 +67,12 @@ public class GameActivity extends Activity {
         return bundle;
     }
 
-    private PuzzleConfiguration generatePuzzle() throws IOException {
+    private PuzzleConfiguration generatePuzzle(
+            PuzzleGenerationProgressCallback progressCallback) throws IOException {
         DictionaryLoader dictionaryLoader = new DictionaryLoader(this);
         PuzzleGenerator generator =
                 new PuzzleGenerator(dictionaryLoader.loadDictionary("english"));
-        return generator.createPuzzle(getGenerationSettings(), new DebugLoggingPuzzleGenerationCallback());
+        return generator.createPuzzle(getGenerationSettings(), progressCallback);
     }
 
     private PuzzleGenerationSettings getGenerationSettings() {
