@@ -9,12 +9,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.Callable;
 
 public class DictionaryLoader {
     private static final File DICTIONARY_ASSETS_ROOT = new File("dictionaries");
+    // It's possible to use a smaller version of the dictionary for generation, but right now we
+    // don't. This is left here for debugging purposes (it only adds a couple of lines of
+    // complexity).
     private static final String FULL_DICTIONARY_NAME = "full.txt";
-    private static final String SMALL_DICTIONARY_NAME = "small.txt";
+    private static final String GENERATION_DICTIONARY_NAME = "full.txt";
 
     private AssetManager assetManager;
 
@@ -24,7 +26,7 @@ public class DictionaryLoader {
 
     public ProcessedDictionary loadDictionary(String name) throws IOException {
         File dictionaryFolder = new File(DICTIONARY_ASSETS_ROOT, name);
-        File smallDictionary = new File(dictionaryFolder, SMALL_DICTIONARY_NAME);
+        File smallDictionary = new File(dictionaryFolder, GENERATION_DICTIONARY_NAME);
         File fullDictionary = new File(dictionaryFolder, FULL_DICTIONARY_NAME);
 
         ProcessedDictionary result = new ProcessedDictionary();
