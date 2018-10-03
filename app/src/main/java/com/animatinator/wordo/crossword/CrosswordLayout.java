@@ -151,25 +151,33 @@ public class CrosswordLayout {
 
     public boolean maybeRevealWord(String word) {
         Log.i("CrosswordLayout", "maybeRevealWord: "+word);
-        boolean revealed = false;
 
         LaidWord laidWord = laidWords.get(word);
         if (laidWord != null) {
             Log.i("CrosswordLayout", "Revealing word: "+word);
-            revealed = true;
-
-            if (laidWord.getDirection() == Direction.VERTICAL) {
-                for (int y = 0; y < word.length(); y++) {
-                    board[y + laidWord.getTopLeft().y()][laidWord.getTopLeft().x()].reveal();
-                }
-            } else {
-                for (int x = 0; x < word.length(); x++) {
-                    board[laidWord.getTopLeft().y()][x + laidWord.getTopLeft().x()].reveal();
-                }
-            }
+            revealWord(laidWord);
+            return true;
         }
 
-        return revealed;
+        return false;
+    }
+
+    public void revealAllWords() {
+        for (LaidWord word : laidWords.values()) {
+            revealWord(word);
+        }
+    }
+
+    private void revealWord(LaidWord laidWord) {
+        if (laidWord.getDirection() == Direction.VERTICAL) {
+            for (int y = 0; y < laidWord.getWord().length(); y++) {
+                board[y + laidWord.getTopLeft().y()][laidWord.getTopLeft().x()].reveal();
+            }
+        } else {
+            for (int x = 0; x < laidWord.getWord().length(); x++) {
+                board[laidWord.getTopLeft().y()][x + laidWord.getTopLeft().x()].reveal();
+            }
+        }
     }
 
     public boolean hasBonusWord(String word) {

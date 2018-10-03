@@ -25,6 +25,9 @@ import com.animatinator.wordo.util.Coordinates;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
+    // Used to display the complete board immediately for debugging purposes.
+    private static final boolean DBG_REVEAL_BOARD_IMMEDIATELY = false;
+
     // The ratio of the spacing around the board to the size of the board itself.
     private static final float BOARD_SPACING_RATIO = 1.1f;
     // The ratio of the spacing around the keyboard to the size of the keyboard itself.
@@ -103,6 +106,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     public void setPuzzleLayout(CrosswordLayout layout) {
+        if (DBG_REVEAL_BOARD_IMMEDIATELY) {
+            layout.revealAllWords();
+        }
         board.setPuzzleLayout(layout);
     }
 
