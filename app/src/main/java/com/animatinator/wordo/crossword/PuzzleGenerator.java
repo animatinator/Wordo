@@ -3,7 +3,7 @@ package com.animatinator.wordo.crossword;
 import android.util.Log;
 
 import com.animatinator.wordo.crossword.board.Board;
-import com.animatinator.wordo.crossword.dictionary.evaluate.OptimisingWordConfigurationEvaluator;
+import com.animatinator.wordo.crossword.dictionary.evaluate.PreferLongerWordsAndRightNumberWordConfigurationEvaluator;
 import com.animatinator.wordo.crossword.dictionary.processed.ProcessedDictionary;
 import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
 import com.animatinator.wordo.crossword.dictionary.puzzle.WordConfigurationGenerator;
@@ -40,7 +40,7 @@ public class PuzzleGenerator {
         WordConfigurationGenerator wordConfigGenerator =
                 new WordConfigurationGenerator(
                         dictionary,
-                        new OptimisingWordConfigurationEvaluator(generationSettings.getMaxWords()))
+                        new PreferLongerWordsAndRightNumberWordConfigurationEvaluator(generationSettings.getMaxWords()))
                         .withMaximumWordCount(generationSettings.getMaxWords())
                         .withMinimumWordLength(generationSettings.getMinWordLength());
         return wordConfigGenerator.buildPuzzle(generationSettings.getNumLetters());

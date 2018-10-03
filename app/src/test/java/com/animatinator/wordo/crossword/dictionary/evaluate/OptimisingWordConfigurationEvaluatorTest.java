@@ -1,6 +1,5 @@
 package com.animatinator.wordo.crossword.dictionary.evaluate;
 
-import com.animatinator.wordo.crossword.board.words.LaidWord;
 import com.animatinator.wordo.crossword.dictionary.puzzle.PuzzleWordConfiguration;
 
 import org.junit.Before;
