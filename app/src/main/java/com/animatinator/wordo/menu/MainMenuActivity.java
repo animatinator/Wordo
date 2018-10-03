@@ -17,7 +17,9 @@ public class MainMenuActivity extends Activity {
     }
 
     public void launchGameActivity(View view) {
-        Intent intent = new Intent(this, LoadingActivity.class);
+        Intent intent =
+                new Intent(
+                        this, LoadingActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 }

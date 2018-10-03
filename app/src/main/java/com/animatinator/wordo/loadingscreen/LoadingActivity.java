@@ -53,7 +53,9 @@ public class LoadingActivity extends Activity {
                 PuzzleConfiguration puzzleConfig =
                         generatePuzzle(new GenerationProgressListener());
                 long id = PuzzleStore.storePuzzleConfiguration(puzzleConfig);
-                Intent intent = new Intent(this, GameActivity.class);
+                Intent intent =
+                        new Intent(this, GameActivity.class)
+                                .addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra(IntentConstants.PUZZLE_CONFIGURATION_ID, id);
                 startActivity(intent);
             } catch (IOException e) {
