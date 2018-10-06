@@ -2,6 +2,7 @@ package com.animatinator.wordo.game;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,6 +12,7 @@ import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.PuzzleConfiguration;
 import com.animatinator.wordo.game.bonuswords.BonusWordsDialogFragment;
 import com.animatinator.wordo.game.victory.VictoryDialogFragment;
+import com.animatinator.wordo.loadingscreen.LoadingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,11 +87,15 @@ public class GameActivity extends Activity implements VictoryDialogFragment.Call
 
     @Override
     public void onChoosePlayAgain() {
-        Log.i(TAG, "Play again!");
+        Intent intent =
+                new Intent(
+                        this, LoadingActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     public void onChooseExit() {
-        Log.i(TAG, "Exit");
+        finish();
     }
 }
