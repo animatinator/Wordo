@@ -11,6 +11,7 @@ import com.animatinator.wordo.IntentConstants;
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.PuzzleConfiguration;
 import com.animatinator.wordo.game.bonuswords.BonusWordsDialogFragment;
+import com.animatinator.wordo.game.stats.GameStatsMonitor;
 import com.animatinator.wordo.game.victory.VictoryDialogFragment;
 import com.animatinator.wordo.loadingscreen.LoadingActivity;
 
@@ -73,8 +74,9 @@ public class GameActivity extends Activity implements VictoryDialogFragment.Call
         fragment.show(getFragmentManager(), "Bonus words dialog");
     }
 
-    private void showVictoryDialog() {
+    private void showVictoryDialog(GameStatsMonitor.GameStats gameStats) {
         DialogFragment fragment = new VictoryDialogFragment();
+        Log.i(TAG, "Game stats - hints given: "+gameStats.getNumHints()+", duration: "+gameStats.getDuration());
         fragment.show(getFragmentManager(), "VictoryDialog");
     }
 

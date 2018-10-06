@@ -21,6 +21,7 @@ import com.animatinator.wordo.game.hints.HintButtonCallback;
 import com.animatinator.wordo.game.keyboard.EnteredTextDisplay;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.game.keyboard.WordEntryCallback;
+import com.animatinator.wordo.game.stats.GameStatsMonitor;
 import com.animatinator.wordo.game.victory.VictoryCallback;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -54,6 +55,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private CrosswordLayout crosswordLayout;
     private VictoryCallback victoryCallback;
 
+    private GameStatsMonitor gameStatsMonitor;
+
     private GameThread gameThread;
     private Paint backgroundPaint;
 
@@ -70,6 +73,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         keyboard = setUpRotaryKeyboard();
         hintButton = new HintButton();
         hintButton.setCallback(new GameViewHintButtonCallback());
+
+        initGameStatsMonitor();
 
         gameThread = new GameThread(getHolder(), this);
         getHolder().addCallback(this);
@@ -89,6 +94,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         backgroundPaint.setColor(Color.WHITE);
     }
 
+    private void initGameStatsMonitor() {
+        gameStatsMonitor = new GameStatsMonitor();
+    }
+
     private CrosswordLayout getCrosswordLayout() {
         return crosswordLayout;
     }
@@ -98,7 +107,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
      */
     private void maybeWin() {
         if (getCrosswordLayout().isFinished()) {
-            victoryCallback.onVictory();
+            victoryCallback.onVictory(gameStatsMonitor.getGameStatsNow());
         }
     }
 
@@ -112,6 +121,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         }
         crosswordLayout = layout;
         board.setPuzzleLayout(layout);
+        initGameStatsMonitor();
     }
 
     public void setBonusWordsButtonCallback(BonusWordsCallback callback) {
@@ -313,6 +323,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         @Override
         public void requestHint() {
             getCrosswordLayout().giveHint();
+            gameStatsMonitor.hintRequested();
             maybeWin();
         }
     }
