@@ -55,44 +55,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnTouchListener(this);
+        
         bonusWordsButton = new BonusWordsButton();
         enteredTextDisplay = new EnteredTextDisplay();
-        hintButton = new HintButton();
         board = new CrosswordBoard();
-        keyboard = new RotaryKeyboard();
-        keyboard.setWordEntryCallback(new WordEntryCallback() {
-            @Override
-            public void onWordEntered(String word) {
-                Log.d(TAG, "===== Word entered: "+word+" =====");
-                boolean revealed = board.maybeRevealWord(word);
-                boolean bonusWord = false;
-
-                // If the word wasn't on the board, it might be a bonus word.
-                if (!revealed) {
-                    if (board.hasBonusWord(word)) {
-                        Log.d(TAG, "===== Bonus word:" + word);
-                        bonusWordsButton.addToRevealedWords(word);
-                        bonusWord = true;
-                    }
-                }
-
-                if (revealed || bonusWord) {
-                    enteredTextDisplay.notifyGuessCorrect(word);
-                } else {
-                    enteredTextDisplay.notifyGuessIncorrect(word);
-                }
-            }
-
-            @Override
-            public void onPartialWord(String partialWord) {
-                enteredTextDisplay.updateEnteredText(partialWord);
-            }
-        });
+        keyboard = setUpRotaryKeyboard();
+        hintButton = new HintButton();
         hintButton.setCallback(board::giveHint);
+
         gameThread = new GameThread(getHolder(), this);
         getHolder().addCallback(this);
 
         initPaints();
+    }
+
+    private RotaryKeyboard setUpRotaryKeyboard() {
+        RotaryKeyboard keyboard = new RotaryKeyboard();
+        keyboard.setWordEntryCallback(new GameViewWordEntryCallback());
+        return keyboard;
     }
 
     private void initPaints() {
@@ -268,6 +248,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
         synchronized boolean isRunning() {
             return isRunning.get();
+        }
+    }
+
+    private final class GameViewWordEntryCallback implements WordEntryCallback {
+        @Override
+        public void onWordEntered(String word) {
+            Log.d(TAG, "===== Word entered: "+word+" =====");
+            boolean revealed = board.maybeRevealWord(word);
+            boolean bonusWord = false;
+
+            // If the word wasn't on the board, it might be a bonus word.
+            if (!revealed) {
+                if (board.hasBonusWord(word)) {
+                    Log.d(TAG, "===== Bonus word:" + word);
+                    bonusWordsButton.addToRevealedWords(word);
+                    bonusWord = true;
+                }
+            }
+
+            if (revealed || bonusWord) {
+                enteredTextDisplay.notifyGuessCorrect(word);
+            } else {
+                enteredTextDisplay.notifyGuessIncorrect(word);
+            }
+        }
+
+        @Override
+        public void onPartialWord(String partialWord) {
+            enteredTextDisplay.updateEnteredText(partialWord);
         }
     }
 }
