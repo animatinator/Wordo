@@ -78,7 +78,8 @@ public class CrosswordLayout {
         return layout;
     }
 
-    private Map<String, LaidWord> createLaidWordsMapFromExistingBoard(Board board, BoardOffset topLeftOffset) {
+    private Map<String, LaidWord> createLaidWordsMapFromExistingBoard(
+            Board board, BoardOffset topLeftOffset) {
         Map<String, LaidWord> laidWordsMap = new HashMap<>();
 
         for (LaidWord word : board.getLaidWords()) {
@@ -202,6 +203,19 @@ public class CrosswordLayout {
 
         int indexToReveal = random.nextInt(possibleReveals.size());
         possibleReveals.get(indexToReveal).reveal();
+    }
+
+    public static CrosswordLayout buildPlaceholderLayout() {
+        CrosswordLayout layout = new CrosswordLayout(5, 5);
+        layout.addWord(
+                new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
+        layout.addWord(
+                new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
+        layout.addWord(
+                new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
+        layout.addWord(
+                new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
+        return layout;
     }
 
     /**

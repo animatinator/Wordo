@@ -8,13 +8,8 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 import com.animatinator.wordo.crossword.CrosswordLayout;
-import com.animatinator.wordo.crossword.board.words.LaidWord;
-import com.animatinator.wordo.crossword.util.BoardPosition;
-import com.animatinator.wordo.crossword.util.Direction;
 import com.animatinator.wordo.crossword.util.Vector2d;
 import com.animatinator.wordo.util.Coordinates;
-
-import java.util.Optional;
 
 public class CrosswordBoard {
     private static final Typeface TEXT_TYPEFACE =
@@ -42,24 +37,10 @@ public class CrosswordBoard {
     private boolean layoutInitialised = false;
 
     public CrosswordBoard() {
-        initFakeBoard();
+        // Set it up with a test board at first. This provides a neat fallback if we totally failed
+        // to generate a board for whatever reason.
+        crosswordLayout = CrosswordLayout.buildPlaceholderLayout();
         initPaints();
-    }
-
-    /**
-     * Set it up with a test board at first. This also provides a neat fallback if we totally failed
-     * to generate a board for whatever reason.
-     */
-    private void initFakeBoard() {
-        crosswordLayout = new CrosswordLayout(5, 5);
-        crosswordLayout.addWord(
-                new LaidWord("CASE", new BoardPosition(1, 1), Direction.HORIZONTAL));
-        crosswordLayout.addWord(
-                new LaidWord("CAUSE", new BoardPosition(2, 0), Direction.VERTICAL));
-        crosswordLayout.addWord(
-                new LaidWord("SEA", new BoardPosition(4, 0), Direction.VERTICAL));
-        crosswordLayout.addWord(
-                new LaidWord("ACED", new BoardPosition(0, 4), Direction.HORIZONTAL));
     }
 
     private void initPaints() {
