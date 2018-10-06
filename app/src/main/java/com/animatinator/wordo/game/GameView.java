@@ -13,7 +13,7 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import com.animatinator.wordo.crossword.CrosswordLayout;
-import com.animatinator.wordo.game.board.CrosswordBoard;
+import com.animatinator.wordo.game.board.CrosswordBoardView;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
 import com.animatinator.wordo.game.hints.HintButton;
@@ -31,7 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     // Used to display the complete board immediately for debugging purposes.
     private static final boolean DBG_REVEAL_BOARD_IMMEDIATELY = false;
 
-    // The ratio of the spacing around the board to the size of the board itself.
+    // The ratio of the spacing around the board view to the size of the board view itself.
     private static final float BOARD_SPACING_RATIO = 1.1f;
     // The ratio of the spacing around the keyboard to the size of the keyboard itself.
     private static final float KEYBOARD_SPACING_RATIO = 1.1f;
@@ -49,7 +49,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private final BonusWordsButton bonusWordsButton;
     private final EnteredTextDisplay enteredTextDisplay;
     private final HintButton hintButton;
-    private final CrosswordBoard board;
+    private final CrosswordBoardView boardView;
     private final RotaryKeyboard keyboard;
 
     private CrosswordLayout crosswordLayout;
@@ -69,7 +69,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         // Set it up with a test board at first. This provides a neat fallback if we totally failed
         // to generate a board for whatever reason.
         crosswordLayout = CrosswordLayout.buildPlaceholderLayout();
-        board = new CrosswordBoard(crosswordLayout);
+        boardView = new CrosswordBoardView(crosswordLayout);
         keyboard = setUpRotaryKeyboard();
         hintButton = new HintButton();
         hintButton.setCallback(new GameViewHintButtonCallback());
@@ -124,7 +124,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             layout.revealAllWords();
         }
         crosswordLayout = layout;
-        board.setPuzzleLayout(layout);
+        boardView.setPuzzleLayout(layout);
         initGameStatsMonitor();
     }
 
@@ -137,7 +137,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     public void drawToCanvas(Canvas canvas) {
-        board.onDraw(canvas);
+        boardView.onDraw(canvas);
         keyboard.onDraw(canvas);
         bonusWordsButton.onDraw(canvas);
         hintButton.onDraw(canvas);
@@ -181,7 +181,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
         enteredTextDisplay.updateLayout(new Coordinates(centreX, enteredTextCentreY), enteredTextHeight);
         keyboard.updateLayout(keyboardCentre, keyboardRadius);
-        board.updateLayout(new Coordinates(boardX, boardY), new Coordinates(boardSize, boardSize));
+        boardView.updateLayout(new Coordinates(boardX, boardY), new Coordinates(boardSize, boardSize));
 
         updateButtonLayouts(width, height);
     }

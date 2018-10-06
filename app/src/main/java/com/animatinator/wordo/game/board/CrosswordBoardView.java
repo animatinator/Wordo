@@ -11,7 +11,7 @@ import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.crossword.util.Vector2d;
 import com.animatinator.wordo.util.Coordinates;
 
-public class CrosswordBoard {
+public class CrosswordBoardView {
     private static final Typeface TEXT_TYPEFACE =
             Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
     private static final boolean DRAW_DEBUG_RECT = false;
@@ -36,7 +36,7 @@ public class CrosswordBoard {
     // similar will require recomputing the layout.
     private boolean layoutInitialised = false;
 
-    public CrosswordBoard(CrosswordLayout layout) {
+    public CrosswordBoardView(CrosswordLayout layout) {
         crosswordLayout = layout;
         initPaints();
     }
