@@ -66,7 +66,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         board = new CrosswordBoard(crosswordLayout);
         keyboard = setUpRotaryKeyboard();
         hintButton = new HintButton();
-        hintButton.setCallback(crosswordLayout::giveHint);
+        hintButton.setCallback(() -> getCrosswordLayout().giveHint());
 
         gameThread = new GameThread(getHolder(), this);
         getHolder().addCallback(this);
@@ -86,6 +86,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         backgroundPaint.setColor(Color.WHITE);
     }
 
+    private CrosswordLayout getCrosswordLayout() {
+        return crosswordLayout;
+    }
+
     public void setLetters(String[] letters) {
         keyboard.setLetters(letters);
     }
@@ -94,6 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         if (DBG_REVEAL_BOARD_IMMEDIATELY) {
             layout.revealAllWords();
         }
+        crosswordLayout = layout;
         board.setPuzzleLayout(layout);
     }
 
@@ -260,12 +265,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         @Override
         public void onWordEntered(String word) {
             Log.d(TAG, "===== Word entered: "+word+" =====");
-            boolean revealed = crosswordLayout.maybeRevealWord(word);
+            boolean revealed = getCrosswordLayout().maybeRevealWord(word);
             boolean bonusWord = false;
 
             // If the word wasn't on the board, it might be a bonus word.
             if (!revealed) {
-                if (crosswordLayout.hasBonusWord(word)) {
+                if (getCrosswordLayout().hasBonusWord(word)) {
                     Log.d(TAG, "===== Bonus word:" + word);
                     bonusWordsButton.addToRevealedWords(word);
                     bonusWord = true;
