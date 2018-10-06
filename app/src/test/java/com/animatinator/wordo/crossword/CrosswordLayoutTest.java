@@ -158,6 +158,85 @@ public class CrosswordLayoutTest {
         assertTrue(layout.hasBonusWord("test"));
     }
 
+    @Test
+    public void calculateSize() {
+        CrosswordLayout layout = new CrosswordLayout(4, 5);
+
+        Vector2d size = layout.getSize();
+
+        assertEquals(4, size.x());
+        assertEquals(5, size.y());
+    }
+
+    @Test
+    public void calculateSize_zeroByZero() {
+        CrosswordLayout zeroByZeroLayout = new CrosswordLayout(0, 0);
+
+        Vector2d size = zeroByZeroLayout.getSize();
+
+        assertEquals(0, size.x());
+        assertEquals(0, size.y());
+    }
+
+    @Test
+    public void calculateSize_zeroByOne() {
+        CrosswordLayout zeroByZeroLayout = new CrosswordLayout(0, 1);
+
+        Vector2d size = zeroByZeroLayout.getSize();
+
+        assertEquals(0, size.x());
+        assertEquals(1, size.y());
+    }
+
+    @Test
+    public void calculateSize_OneByZero() {
+        CrosswordLayout zeroByZeroLayout = new CrosswordLayout(1, 0);
+
+        Vector2d size = zeroByZeroLayout.getSize();
+
+        // If its height is one, its width has no meaning, so we return zero.
+        assertEquals(0, size.x());
+        assertEquals(0, size.y());
+    }
+
+    @Test
+    public void isFinished_zeroByZeroBoard() {
+        CrosswordLayout zeroByZero = new CrosswordLayout(0, 0);
+        assertTrue(zeroByZero.isFinished());
+    }
+
+    @Test
+    public void isFinished_emptyBoard() {
+        Board emptyBoard = new Board();
+        CrosswordLayout emptyLayout = new CrosswordLayout(emptyBoard, new ProcessedDictionary());
+        assertTrue(emptyLayout.isFinished());
+    }
+
+    @Test
+    public void isFinished_notFinished() {
+        Board simpleBoard = new Board();
+        simpleBoard.addWord("hello", new BoardPosition(5, 6), Direction.HORIZONTAL);
+        simpleBoard.addWord("hell", new BoardPosition(8, 3), Direction.VERTICAL);
+
+        CrosswordLayout layout = new CrosswordLayout(simpleBoard, new ProcessedDictionary());
+        layout.maybeRevealWord("hello");
+
+        assertFalse(layout.isFinished());
+    }
+
+    @Test
+    public void isFinished_finished() {
+        Board simpleBoard = new Board();
+        simpleBoard.addWord("hello", new BoardPosition(5, 6), Direction.HORIZONTAL);
+        simpleBoard.addWord("hell", new BoardPosition(8, 3), Direction.VERTICAL);
+
+        CrosswordLayout layout = new CrosswordLayout(simpleBoard, new ProcessedDictionary());
+        layout.maybeRevealWord("hello");
+        layout.maybeRevealWord("hell");
+
+        assertTrue(layout.isFinished());
+    }
+
     private void assertHasValueAtPosition(
             CrosswordLayout layout, String value, int x, int y) {
         String valueHere = layout.getValueAt(x, y);

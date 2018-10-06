@@ -98,6 +98,9 @@ public class CrosswordLayout {
     }
 
     private Vector2d calculateSize() {
+        if (board.length == 0) {
+            return new Vector2d(0, 0);
+        }
         return new Vector2d(board[0].length, board.length);
     }
 
@@ -203,6 +206,19 @@ public class CrosswordLayout {
 
         int indexToReveal = random.nextInt(possibleReveals.size());
         possibleReveals.get(indexToReveal).reveal();
+    }
+
+    public boolean isFinished() {
+        for (int y = 0; y < size.y(); y++) {
+            for (int x = 0; x < size.x(); x++) {
+                BoardTile tile = board[y][x];
+                if (tile != null && !tile.isRevealed()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public static CrosswordLayout buildPlaceholderLayout() {
