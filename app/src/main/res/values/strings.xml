@@ -4,4 +4,8 @@
     <string name="play_button_text">Play</string>
     <string name="bonus_words">Bonus words</string>
     <string name="base_loading_string">Loading…</string>
+    <string name="victory_title">You win!</string>
+    <string name="victory_message">You solved the puzzle!\nPlay again?</string>
+    <string name="victory_play_again_button">Play again!</string>
+    <string name="victory_exit_button">Exit</string>
 </resources>

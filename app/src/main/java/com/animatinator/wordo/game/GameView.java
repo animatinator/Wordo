@@ -21,6 +21,7 @@ import com.animatinator.wordo.game.hints.HintButtonCallback;
 import com.animatinator.wordo.game.keyboard.EnteredTextDisplay;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.game.keyboard.WordEntryCallback;
+import com.animatinator.wordo.game.victory.VictoryCallback;
 import com.animatinator.wordo.util.Coordinates;
 
 import java.util.concurrent.atomic.AtomicBoolean;

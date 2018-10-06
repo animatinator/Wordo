@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import com.animatinator.wordo.R;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,7 +19,6 @@ public class BonusWordsDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.bonus_words);
 

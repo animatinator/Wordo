@@ -10,11 +10,12 @@ import com.animatinator.wordo.IntentConstants;
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.PuzzleConfiguration;
 import com.animatinator.wordo.game.bonuswords.BonusWordsDialogFragment;
+import com.animatinator.wordo.game.victory.VictoryDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements VictoryDialogFragment.Callback {
 
     private static final String TAG = "GameActivity";
     private static final long NO_PUZZLE_ID = -1;
@@ -61,13 +62,18 @@ public class GameActivity extends Activity {
 
     private void setUpCallbacks(GameView gameView) {
         gameView.setBonusWordsButtonCallback(this::showBonusWordsDialog);
-        gameView.setVictoryCallback(() -> Log.e(TAG, "Victory!"));
+        gameView.setVictoryCallback(this::showVictoryDialog);
     }
 
     private void showBonusWordsDialog(List<String> bonusWords) {
         DialogFragment fragment = new BonusWordsDialogFragment();
         fragment.setArguments(buildBundleFromBonusWords(bonusWords));
         fragment.show(getFragmentManager(), "Bonus words dialog");
+    }
+
+    private void showVictoryDialog() {
+        DialogFragment fragment = new VictoryDialogFragment();
+        fragment.show(getFragmentManager(), "VictoryDialog");
     }
 
     private Bundle buildBundleFromBonusWords(List<String> bonusWords) {
@@ -77,4 +83,13 @@ public class GameActivity extends Activity {
         return bundle;
     }
 
+    @Override
+    public void onChoosePlayAgain() {
+        Log.i(TAG, "Play again!");
+    }
+
+    @Override
+    public void onChooseExit() {
+        Log.i(TAG, "Exit");
+    }
 }
