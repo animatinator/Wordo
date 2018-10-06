@@ -29,7 +29,9 @@ public class GameActivity extends Activity {
         PuzzleConfiguration puzzleConfig = loadPuzzleConfiguration();
         if (puzzleConfig == null) return;
 
-        setPuzzleInGameView(puzzleConfig);
+        gameView = findViewById(R.id.game_view);
+        setPuzzleInGameView(gameView, puzzleConfig);
+        setUpCallbacks(gameView);
     }
 
     @Nullable
@@ -52,16 +54,20 @@ public class GameActivity extends Activity {
         return puzzleConfig;
     }
 
-    private void setPuzzleInGameView(PuzzleConfiguration puzzleConfiguration) {
-        gameView = findViewById(R.id.game_view);
+    private void setPuzzleInGameView(GameView gameView, PuzzleConfiguration puzzleConfiguration) {
         gameView.setLetters(puzzleConfiguration.getLetters());
         gameView.setPuzzleLayout(puzzleConfiguration.getLayout());
-        gameView.setBonusWordsButtonCallback(bonusWords -> {
-            DialogFragment fragment = new BonusWordsDialogFragment();
-            fragment.setArguments(buildBundleFromBonusWords(bonusWords));
-            fragment.show(getFragmentManager(), "Bonus words dialog");
-        });
+    }
+
+    private void setUpCallbacks(GameView gameView) {
+        gameView.setBonusWordsButtonCallback(this::showBonusWordsDialog);
         gameView.setVictoryCallback(() -> Log.e(TAG, "Victory!"));
+    }
+
+    private void showBonusWordsDialog(List<String> bonusWords) {
+        DialogFragment fragment = new BonusWordsDialogFragment();
+        fragment.setArguments(buildBundleFromBonusWords(bonusWords));
+        fragment.show(getFragmentManager(), "Bonus words dialog");
     }
 
     private Bundle buildBundleFromBonusWords(List<String> bonusWords) {
