@@ -102,12 +102,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         return crosswordLayout;
     }
 
+    private GameStatsMonitor getGameStatsMonitor() {
+        return gameStatsMonitor;
+    }
+
     /**
      * Check whether the game is finished and notify if so.
      */
     private void maybeWin() {
         if (getCrosswordLayout().isFinished()) {
-            victoryCallback.onVictory(gameStatsMonitor.getGameStatsNow());
+            victoryCallback.onVictory(getGameStatsMonitor().getGameStatsNow());
         }
     }
 
@@ -323,7 +327,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         @Override
         public void requestHint() {
             getCrosswordLayout().giveHint();
-            gameStatsMonitor.hintRequested();
+            getGameStatsMonitor().hintRequested();
             maybeWin();
         }
     }
