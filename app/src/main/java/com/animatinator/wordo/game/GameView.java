@@ -49,6 +49,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private final CrosswordBoard board;
     private final RotaryKeyboard keyboard;
 
+    private CrosswordLayout crosswordLayout;
+
     private GameThread gameThread;
     private Paint backgroundPaint;
 
@@ -58,10 +60,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         
         bonusWordsButton = new BonusWordsButton();
         enteredTextDisplay = new EnteredTextDisplay();
-        board = new CrosswordBoard();
+        // Set it up with a test board at first. This provides a neat fallback if we totally failed
+        // to generate a board for whatever reason.
+        crosswordLayout = CrosswordLayout.buildPlaceholderLayout();
+        board = new CrosswordBoard(crosswordLayout);
         keyboard = setUpRotaryKeyboard();
         hintButton = new HintButton();
-        hintButton.setCallback(board::giveHint);
+        hintButton.setCallback(crosswordLayout::giveHint);
 
         gameThread = new GameThread(getHolder(), this);
         getHolder().addCallback(this);
@@ -255,12 +260,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         @Override
         public void onWordEntered(String word) {
             Log.d(TAG, "===== Word entered: "+word+" =====");
-            boolean revealed = board.maybeRevealWord(word);
+            boolean revealed = crosswordLayout.maybeRevealWord(word);
             boolean bonusWord = false;
 
             // If the word wasn't on the board, it might be a bonus word.
             if (!revealed) {
-                if (board.hasBonusWord(word)) {
+                if (crosswordLayout.hasBonusWord(word)) {
                     Log.d(TAG, "===== Bonus word:" + word);
                     bonusWordsButton.addToRevealedWords(word);
                     bonusWord = true;

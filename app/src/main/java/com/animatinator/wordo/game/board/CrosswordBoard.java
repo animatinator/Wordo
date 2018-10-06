@@ -36,10 +36,8 @@ public class CrosswordBoard {
     // similar will require recomputing the layout.
     private boolean layoutInitialised = false;
 
-    public CrosswordBoard() {
-        // Set it up with a test board at first. This provides a neat fallback if we totally failed
-        // to generate a board for whatever reason.
-        crosswordLayout = CrosswordLayout.buildPlaceholderLayout();
+    public CrosswordBoard(CrosswordLayout layout) {
+        crosswordLayout = layout;
         initPaints();
     }
 
@@ -66,18 +64,6 @@ public class CrosswordBoard {
         if (layoutInitialised) {
             updateLayout(topLeft, size);
         }
-    }
-
-    public boolean maybeRevealWord(String word) {
-        return crosswordLayout.maybeRevealWord(word);
-    }
-
-    public boolean hasBonusWord(String word) {
-        return crosswordLayout.hasBonusWord(word);
-    }
-
-    public void giveHint() {
-        crosswordLayout.giveHint();
     }
 
     public void updateLayout(Coordinates topLeft, Coordinates size) {
