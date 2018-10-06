@@ -17,6 +17,7 @@ import com.animatinator.wordo.game.board.CrosswordBoard;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
 import com.animatinator.wordo.game.hints.HintButton;
+import com.animatinator.wordo.game.hints.HintButtonCallback;
 import com.animatinator.wordo.game.keyboard.EnteredTextDisplay;
 import com.animatinator.wordo.game.keyboard.RotaryKeyboard;
 import com.animatinator.wordo.game.keyboard.WordEntryCallback;
@@ -50,6 +51,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private final RotaryKeyboard keyboard;
 
     private CrosswordLayout crosswordLayout;
+    private VictoryCallback victoryCallback;
 
     private GameThread gameThread;
     private Paint backgroundPaint;
@@ -66,7 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         board = new CrosswordBoard(crosswordLayout);
         keyboard = setUpRotaryKeyboard();
         hintButton = new HintButton();
-        hintButton.setCallback(() -> getCrosswordLayout().giveHint());
+        hintButton.setCallback(new GameViewHintButtonCallback());
 
         gameThread = new GameThread(getHolder(), this);
         getHolder().addCallback(this);
@@ -90,6 +92,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         return crosswordLayout;
     }
 
+    /**
+     * Check whether the game is finished and notify if so.
+     */
+    private void maybeWin() {
+        if (getCrosswordLayout().isFinished()) {
+            victoryCallback.onVictory();
+        }
+    }
+
     public void setLetters(String[] letters) {
         keyboard.setLetters(letters);
     }
@@ -104,6 +115,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     public void setBonusWordsButtonCallback(BonusWordsCallback callback) {
         bonusWordsButton.setBonusWordsCallback(callback);
+    }
+
+    public void setVictoryCallback(VictoryCallback victoryCallback) {
+        this.victoryCallback = victoryCallback;
     }
 
     public void drawToCanvas(Canvas canvas) {
@@ -268,8 +283,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             boolean revealed = getCrosswordLayout().maybeRevealWord(word);
             boolean bonusWord = false;
 
-            // If the word wasn't on the board, it might be a bonus word.
-            if (!revealed) {
+            if (revealed) {
+                maybeWin();
+            }
+            else {
+                // If the word wasn't on the board, it might be a bonus word.
                 if (getCrosswordLayout().hasBonusWord(word)) {
                     Log.d(TAG, "===== Bonus word:" + word);
                     bonusWordsButton.addToRevealedWords(word);
@@ -287,6 +305,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         @Override
         public void onPartialWord(String partialWord) {
             enteredTextDisplay.updateEnteredText(partialWord);
+        }
+    }
+
+    private class GameViewHintButtonCallback implements HintButtonCallback {
+        @Override
+        public void requestHint() {
+            getCrosswordLayout().giveHint();
+            maybeWin();
         }
     }
 }

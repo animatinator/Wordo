@@ -61,6 +61,7 @@ public class GameActivity extends Activity {
             fragment.setArguments(buildBundleFromBonusWords(bonusWords));
             fragment.show(getFragmentManager(), "Bonus words dialog");
         });
+        gameView.setVictoryCallback(() -> Log.e(TAG, "Victory!"));
     }
 
     private Bundle buildBundleFromBonusWords(List<String> bonusWords) {
