@@ -1,5 +1,6 @@
 package com.animatinator.wordo.game.stats;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,7 +34,7 @@ public class GameStatsMonitor {
     /**
      * A snapshot of the game's statistics at a given time.
      */
-    public static final class GameStats {
+    public static final class GameStats implements Serializable {
         private final Date startTime;
         private final Date endTime;
         private final int numHints;

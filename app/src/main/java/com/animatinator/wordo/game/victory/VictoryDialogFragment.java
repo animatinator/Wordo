@@ -8,8 +8,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.animatinator.wordo.R;
+import com.animatinator.wordo.game.stats.DurationFormatter;
+import com.animatinator.wordo.game.stats.GameStatsMonitor;
 
 public class VictoryDialogFragment extends DialogFragment {
+
+    public static final String GAME_STATS_BUNDLE_ENTRY = "game_stats";
 
     public interface Callback {
         void onChoosePlayAgain();
@@ -23,7 +27,11 @@ public class VictoryDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.victory_title);
-        builder.setMessage(R.string.victory_message);
+
+        GameStatsMonitor.GameStats gameStats =
+                (GameStatsMonitor.GameStats) getArguments().getSerializable(GAME_STATS_BUNDLE_ENTRY);
+
+        builder.setMessage(buildMessageFromGameState(gameStats));
 
         builder.setPositiveButton(
                 R.string.victory_play_again_button,
@@ -32,6 +40,22 @@ public class VictoryDialogFragment extends DialogFragment {
                 R.string.victory_exit_button, (dialogInterface, i) -> callback.onChooseExit());
 
         return builder.create();
+    }
+
+    private String buildMessageFromGameState(GameStatsMonitor.GameStats gameStats) {
+        if (gameStats == null) {
+            return getString(R.string.victory_message_no_stats);
+        } else {
+            String formatString = getString(R.string.victory_message);
+            return String.format(
+                    formatString,
+                    getDurationAsString(gameStats.getDuration()),
+                    gameStats.getNumHints());
+        }
+    }
+
+    private String getDurationAsString(long duration) {
+        return new DurationFormatter(duration).getAsString();
     }
 
     @Override

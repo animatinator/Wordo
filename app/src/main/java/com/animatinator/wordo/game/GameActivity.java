@@ -76,7 +76,7 @@ public class GameActivity extends Activity implements VictoryDialogFragment.Call
 
     private void showVictoryDialog(GameStatsMonitor.GameStats gameStats) {
         DialogFragment fragment = new VictoryDialogFragment();
-        Log.i(TAG, "Game stats - hints given: "+gameStats.getNumHints()+", duration: "+gameStats.getDuration());
+        fragment.setArguments(buildGameStatsBundle(gameStats));
         fragment.show(getFragmentManager(), "VictoryDialog");
     }
 
@@ -84,6 +84,12 @@ public class GameActivity extends Activity implements VictoryDialogFragment.Call
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(
                 BonusWordsDialogFragment.BONUS_WORDS_BUNDLE_ENTRY, new ArrayList<>(bonusWords));
+        return bundle;
+    }
+
+    private Bundle buildGameStatsBundle(GameStatsMonitor.GameStats stats) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(VictoryDialogFragment.GAME_STATS_BUNDLE_ENTRY, stats);
         return bundle;
     }
 
