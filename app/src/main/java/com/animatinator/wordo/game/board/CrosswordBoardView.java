@@ -61,7 +61,7 @@ public class CrosswordBoardView {
         squareOutlinePaint.setStyle(Paint.Style.STROKE);
 
         letterPaint = new Paint();
-        int textColour = ContextCompat.getColor(context, R.color.textColor);
+        int textColour = ContextCompat.getColor(context, R.color.textDark);
         letterPaint.setColor(textColour);
         letterPaint.setTextSize(textSize);
         letterPaint.setTypeface(TEXT_TYPEFACE);

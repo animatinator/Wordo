@@ -1,11 +1,13 @@
 package com.animatinator.wordo.game.keyboard;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 
+import com.animatinator.wordo.R;
 import com.animatinator.wordo.util.Coordinates;
 
 import java.util.Timer;
@@ -24,6 +26,8 @@ public class EnteredTextDisplay {
     private static final float SHAKE_AMPLITUDE = 20.0f;
     // The period of the shaking animation for wrong guesses.
     private static final double SHAKE_PERIOD_MS = 20;
+
+    private final Context context;
 
     private Coordinates centre;
     private float height;
@@ -77,11 +81,12 @@ public class EnteredTextDisplay {
         }
     }
 
-    public EnteredTextDisplay() {
-        this(new Coordinates(0, 0), 0.0f);
+    public EnteredTextDisplay(Context context) {
+        this(context, new Coordinates(0, 0), 0.0f);
     }
 
-    private EnteredTextDisplay(Coordinates centre, float height) {
+    private EnteredTextDisplay(Context context, Coordinates centre, float height) {
+        this.context = context;
         this.centre = centre;
         this.height = height;
         this.animationState = new AnimationState();
@@ -91,21 +96,25 @@ public class EnteredTextDisplay {
 
     private void initPaints() {
         textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
+        int textColour = ContextCompat.getColor(context, R.color.textLight);
+        textPaint.setColor(textColour);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTypeface(TEXT_TYPEFACE);
 
         backgroundPaint = new Paint();
-        backgroundPaint.setARGB(255, 0, 0, 150);
+        int backgroundColour = ContextCompat.getColor(context, R.color.enteredTextBackground);
+        backgroundPaint.setColor(backgroundColour);
         backgroundPaint.setStyle(Paint.Style.FILL);
 
         rightAnswerBackgroundPaint = new Paint();
-        rightAnswerBackgroundPaint.setARGB(255, 0, 150, 0);
+        int rightAnswerColour = ContextCompat.getColor(context, R.color.enteredTextCorrect);
+        rightAnswerBackgroundPaint.setColor(rightAnswerColour);
         rightAnswerBackgroundPaint.setStyle(Paint.Style.FILL);
 
         wrongAnswerBackgroundPaint = new Paint();
-        wrongAnswerBackgroundPaint.setARGB(255, 150, 0, 0);
+        int wrongAnswerColour = ContextCompat.getColor(context, R.color.enteredTextIncorrect);
+        wrongAnswerBackgroundPaint.setColor(wrongAnswerColour);
         wrongAnswerBackgroundPaint.setStyle(Paint.Style.FILL);
     }
 

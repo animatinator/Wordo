@@ -22,7 +22,7 @@ public class HintButton extends GameButton {
 
     private void initPaints() {
         textPaint = new Paint();
-        int textColour = ContextCompat.getColor(context, R.color.textColor);
+        int textColour = ContextCompat.getColor(context, R.color.textDark);
         textPaint.setColor(textColour);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextSize(100.0f);

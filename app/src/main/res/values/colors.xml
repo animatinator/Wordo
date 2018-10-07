@@ -3,8 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="textDark">#FF000000</color>
+    <color name="textLight">#FFFFFFFF</color>
+
     <color name="buttonBackground">#FFCCCCCC</color>
-    <color name="textColor">#FF000000</color>
+
     <color name="crosswordSquare">#FFCCCCCC</color>
     <color name="crosswordSquareOutline">#FF888888</color>
+
+    <color name="enteredTextBackground">#FF000096</color>
+    <color name="enteredTextCorrect">#FF009600</color>
+    <color name="enteredTextIncorrect">#FF960000</color>
 </resources>
