@@ -1,10 +1,12 @@
 package com.animatinator.wordo.game.hints;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 
+import com.animatinator.wordo.R;
 import com.animatinator.wordo.game.GameButton;
 
 public class HintButton extends GameButton {
@@ -13,14 +15,15 @@ public class HintButton extends GameButton {
     private Paint textPaint;
     private HintButtonCallback callback;
 
-    public HintButton() {
-        super();
+    public HintButton(Context context) {
+        super(context);
         initPaints();
     }
 
     private void initPaints() {
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        int textColour = ContextCompat.getColor(context, R.color.textColor);
+        textPaint.setColor(textColour);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextSize(100.0f);
         textPaint.setTypeface(TEXT_TYPEFACE);

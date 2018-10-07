@@ -1,21 +1,26 @@
 package com.animatinator.wordo.game;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 
+import com.animatinator.wordo.R;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
 public abstract class GameButton {
+    protected final Context context;
+
     protected Coordinates centre;
     protected float radius;
 
     private Paint circlePaint;
     private Rect textBounds = new Rect();
 
-    public GameButton() {
+    public GameButton(Context context) {
+        this.context = context;
         centre = new Coordinates(0.0f, 0.0f);
         radius = 0.0f;
         initPaints();
@@ -23,7 +28,8 @@ public abstract class GameButton {
 
     private void initPaints() {
         circlePaint = new Paint();
-        circlePaint.setColor(Color.LTGRAY);
+        int backgroundColour = ContextCompat.getColor(context, R.color.buttonBackground);
+        circlePaint.setColor(backgroundColour);
     }
 
     public void updateLayout(Coordinates centre, float radius) {
