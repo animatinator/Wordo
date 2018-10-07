@@ -3,8 +3,6 @@ package com.animatinator.wordo.game;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,8 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.CrosswordLayout;
+import com.animatinator.wordo.game.background.BackgroundAnimator;
 import com.animatinator.wordo.game.board.CrosswordBoardView;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
@@ -48,6 +46,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     public static final String TAG = "GameView";
 
+    private final BackgroundAnimator backgroundAnimator;
     private final BonusWordsButton bonusWordsButton;
     private final EnteredTextDisplay enteredTextDisplay;
     private final HintButton hintButton;
@@ -61,12 +60,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private VictoryCallback victoryCallback;
 
     private GameThread gameThread;
-    private Paint backgroundPaint;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnTouchListener(this);
-        
+
+        backgroundAnimator = new BackgroundAnimator(context);
         bonusWordsButton = new BonusWordsButton(getContext(), bonusWordsRecord);
         enteredTextDisplay = new EnteredTextDisplay(getContext());
         // Set it up with a test board at first. This provides a neat fallback if we totally failed
@@ -82,21 +81,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
         gameThread = new GameThread(getHolder(), this);
         getHolder().addCallback(this);
-
-        initPaints();
     }
 
     private RotaryKeyboard setUpRotaryKeyboard() {
         RotaryKeyboard keyboard = new RotaryKeyboard(getContext());
         keyboard.setWordEntryCallback(new GameViewWordEntryCallback());
         return keyboard;
-    }
-
-    private void initPaints() {
-        backgroundPaint = new Paint();
-        int backgroundColour = ContextCompat.getColor(getContext(), R.color.gameBackground);
-        backgroundPaint.setColor(backgroundColour);
-        backgroundPaint.setStyle(Paint.Style.FILL);
     }
 
     private void initGameStatsMonitor() {
@@ -152,6 +142,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     public void drawToCanvas(Canvas canvas) {
+        backgroundAnimator.onDraw(canvas);
         boardView.onDraw(canvas);
         keyboard.onDraw(canvas);
         bonusWordsButton.onDraw(canvas);
@@ -273,14 +264,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
             isRunning.set(true);
 
             while(isRunning.get()) {
+                backgroundAnimator.update();
+
                 Canvas canvas = surfaceHolder.lockCanvas();
 
                 if (canvas != null) {
                     synchronized (surfaceHolder) {
                         try {
-                            canvas.drawRect(0, 0,
-                                    canvas.getWidth(), canvas.getHeight(), backgroundPaint);
-
                             gameView.drawToCanvas(canvas);
                         } finally {
                             surfaceHolder.unlockCanvasAndPost(canvas);

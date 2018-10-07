@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="gameBackground">#FFEDEDED</color>
+    <color name="gameBackgroundGrid">#FFEED7C5</color>
+    <color name="gameBackgroundGridDark">#FFC89F9C</color>
 
     <color name="textDark">#FF000000</color>
     <color name="textLight">#FFEDEDED</color>
