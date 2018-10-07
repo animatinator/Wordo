@@ -3,8 +3,8 @@ package com.animatinator.wordo.game;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.game.board.CrosswordBoardView;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
@@ -93,8 +94,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private void initPaints() {
         backgroundPaint = new Paint();
+        int backgroundColour = ContextCompat.getColor(getContext(), R.color.gameBackground);
+        backgroundPaint.setColor(backgroundColour);
         backgroundPaint.setStyle(Paint.Style.FILL);
-        backgroundPaint.setColor(Color.WHITE);
     }
 
     private void initGameStatsMonitor() {

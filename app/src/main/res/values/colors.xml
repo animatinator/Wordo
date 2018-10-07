@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="gameBackground">#FFFFFFFF</color>
+
     <color name="textDark">#FF000000</color>
     <color name="textLight">#FFFFFFFF</color>
 
