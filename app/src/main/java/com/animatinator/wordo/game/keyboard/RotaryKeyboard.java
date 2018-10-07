@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 
 import com.animatinator.wordo.R;
+import com.animatinator.wordo.game.util.Typefaces;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -28,7 +29,6 @@ public class RotaryKeyboard {
     private static final float LETTER_HIGHLIGHT_RADIUS_RADIO = 0.2f;
     // Size of the letters
     private static final float TEXT_SIZE = 100.0f;
-    private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
     private final Context context;
 
@@ -72,19 +72,21 @@ public class RotaryKeyboard {
         letterHighlightPaint.setColor(traceColour);
         letterHighlightPaint.setStyle(Paint.Style.FILL);
 
+        Typeface textTypeface = Typefaces.getBoldTypeface(context);
+
         textPaint = new Paint();
         int textColour = ContextCompat.getColor(context, R.color.textDark);
         textPaint.setColor(textColour);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextSize(TEXT_SIZE);
-        textPaint.setTypeface(TEXT_TYPEFACE);
+        textPaint.setTypeface(textTypeface);
 
         highlightedTextPaint = new Paint();
         int textHighlightColour = ContextCompat.getColor(context, R.color.textLight);
         highlightedTextPaint.setColor(textHighlightColour);
         highlightedTextPaint.setTextAlign(Paint.Align.CENTER);
         highlightedTextPaint.setTextSize(TEXT_SIZE);
-        highlightedTextPaint.setTypeface(TEXT_TYPEFACE);
+        highlightedTextPaint.setTypeface(textTypeface);
     }
 
     public void updateLayout(Coordinates centre, float radius) {

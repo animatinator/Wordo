@@ -4,20 +4,20 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="gameBackground">#FFFFFFFF</color>
+    <color name="gameBackground">#FFEDEDED</color>
 
     <color name="textDark">#FF000000</color>
-    <color name="textLight">#FFFFFFFF</color>
+    <color name="textLight">#FFEDEDED</color>
 
-    <color name="buttonBackground">#FFCCCCCC</color>
+    <color name="buttonBackground">#FFEED7C5</color>
 
-    <color name="crosswordSquare">#FFCCCCCC</color>
-    <color name="crosswordSquareOutline">#FF888888</color>
+    <color name="crosswordSquare">#FFEED7C5</color>
+    <color name="crosswordSquareOutline">#FFC89F9C</color>
 
-    <color name="enteredTextBackground">#FF000096</color>
-    <color name="enteredTextCorrect">#FF009600</color>
-    <color name="enteredTextIncorrect">#FF960000</color>
+    <color name="enteredTextBackground">#FFC89F9C</color>
+    <color name="enteredTextCorrect">#FF7FB069</color>
+    <color name="enteredTextIncorrect">#FFD33F49</color>
 
-    <color name="rotaryKeyboardBackground">#C8CCCCCC</color>
-    <color name="rotaryKeyboardTrace">#FF000096</color>
+    <color name="rotaryKeyboardBackground">#FFEED7C5</color>
+    <color name="rotaryKeyboardTrace">#FFc89F9C</color>
 </resources>

@@ -11,11 +11,10 @@ import android.support.v4.content.ContextCompat;
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.crossword.util.Vector2d;
+import com.animatinator.wordo.game.util.Typefaces;
 import com.animatinator.wordo.util.Coordinates;
 
 public class CrosswordBoardView {
-    private static final Typeface TEXT_TYPEFACE =
-            Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
     private static final boolean DRAW_DEBUG_RECT = false;
 
     private final Context context;
@@ -60,11 +59,13 @@ public class CrosswordBoardView {
         squareOutlinePaint.setColor(squareOutlineColour);
         squareOutlinePaint.setStyle(Paint.Style.STROKE);
 
+        Typeface textTypeface = Typefaces.getNormalTypeface(context);
+
         letterPaint = new Paint();
         int textColour = ContextCompat.getColor(context, R.color.textDark);
         letterPaint.setColor(textColour);
         letterPaint.setTextSize(textSize);
-        letterPaint.setTypeface(TEXT_TYPEFACE);
+        letterPaint.setTypeface(textTypeface);
     }
 
     public void setPuzzleLayout(CrosswordLayout layout) {

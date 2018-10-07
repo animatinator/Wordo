@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 
 import com.animatinator.wordo.R;
+import com.animatinator.wordo.game.util.Typefaces;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -16,6 +18,7 @@ public abstract class GameButton {
     protected Coordinates centre;
     protected float radius;
 
+    protected Paint textPaint;
     private Paint circlePaint;
     private Rect textBounds = new Rect();
 
@@ -30,11 +33,20 @@ public abstract class GameButton {
         circlePaint = new Paint();
         int backgroundColour = ContextCompat.getColor(context, R.color.buttonBackground);
         circlePaint.setColor(backgroundColour);
+
+        textPaint = new Paint();
+        Typeface textTypeface = Typefaces.getBoldTypeface(context);
+        int textColour = ContextCompat.getColor(context, R.color.textDark);
+        textPaint.setColor(textColour);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTextSize(0.0f);
+        textPaint.setTypeface(textTypeface);
     }
 
     public void updateLayout(Coordinates centre, float radius) {
         this.centre = centre;
         this.radius = radius;
+        textPaint.setTextSize(radius);
     }
 
     public boolean handleTouch(Coordinates position) {
