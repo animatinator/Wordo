@@ -76,6 +76,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         hintButton = new HintButton();
         hintButton.setCallback(new GameViewHintButtonCallback());
 
+        initBonusWordsRecord();
         initGameStatsMonitor();
 
         gameThread = new GameThread(getHolder(), this);
@@ -98,6 +99,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
 
     private void initGameStatsMonitor() {
         gameStatsMonitor = new GameStatsMonitor();
+    }
+
+    private void initBonusWordsRecord() {
+        bonusWordsRecord = new BonusWordsRecord();
+        bonusWordsButton.setBonusWordsRecord(bonusWordsRecord);
     }
 
     private CrosswordLayout getCrosswordLayout() {
@@ -131,8 +137,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         }
         crosswordLayout = layout;
         boardView.setPuzzleLayout(layout);
-        bonusWordsRecord = new BonusWordsRecord();
-        bonusWordsButton.setBonusWordsRecord(bonusWordsRecord);
+        initBonusWordsRecord();
         initGameStatsMonitor();
     }
 
