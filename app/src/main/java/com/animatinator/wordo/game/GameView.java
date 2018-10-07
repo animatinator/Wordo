@@ -86,7 +86,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     private RotaryKeyboard setUpRotaryKeyboard() {
-        RotaryKeyboard keyboard = new RotaryKeyboard();
+        RotaryKeyboard keyboard = new RotaryKeyboard(getContext());
         keyboard.setWordEntryCallback(new GameViewWordEntryCallback());
         return keyboard;
     }

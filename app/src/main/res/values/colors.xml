@@ -15,4 +15,7 @@
     <color name="enteredTextBackground">#FF000096</color>
     <color name="enteredTextCorrect">#FF009600</color>
     <color name="enteredTextIncorrect">#FF960000</color>
+
+    <color name="rotaryKeyboardBackground">#C8CCCCCC</color>
+    <color name="rotaryKeyboardTrace">#FF000096</color>
 </resources>

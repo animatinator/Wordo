@@ -1,11 +1,13 @@
 package com.animatinator.wordo.game.keyboard;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 
+import com.animatinator.wordo.R;
 import com.animatinator.wordo.util.CoordinateUtils;
 import com.animatinator.wordo.util.Coordinates;
 
@@ -28,8 +30,10 @@ public class RotaryKeyboard {
     private static final float TEXT_SIZE = 100.0f;
     private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
+    private final Context context;
+
     private WordEntryCallback wordEntryCallback = null;
-    private Paint backgroundPaint;
+
     private Paint linePaint;
     private Paint letterHighlightPaint;
     private Paint circlePaint;
@@ -46,38 +50,38 @@ public class RotaryKeyboard {
     private Coordinates currentPos = new Coordinates(0, 0);
     private List<Integer> selectedLetters = new CopyOnWriteArrayList<>();
 
-    public RotaryKeyboard() {
+    public RotaryKeyboard(Context context) {
+        this.context = context;
         initPaints();
     }
 
     private void initPaints() {
-        backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.WHITE);
-        backgroundPaint.setAlpha(0);
-        backgroundPaint.setStyle(Paint.Style.FILL);
-
         circlePaint = new Paint();
-        circlePaint.setColor(Color.LTGRAY);
-        circlePaint.setAlpha(200);
+        int circleColour = ContextCompat.getColor(context, R.color.rotaryKeyboardBackground);
+        circlePaint.setColor(circleColour);
+
+        int traceColour = ContextCompat.getColor(context, R.color.rotaryKeyboardTrace);
 
         linePaint = new Paint();
-        linePaint.setARGB(255, 0, 0, 150);
+        linePaint.setColor(traceColour);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(50.0f);
         linePaint.setStrokeCap(Paint.Cap.ROUND);
 
         letterHighlightPaint = new Paint();
-        letterHighlightPaint.setARGB(255, 0, 0, 150);
+        letterHighlightPaint.setColor(traceColour);
         letterHighlightPaint.setStyle(Paint.Style.FILL);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        int textColour = ContextCompat.getColor(context, R.color.textDark);
+        textPaint.setColor(textColour);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTypeface(TEXT_TYPEFACE);
 
         highlightedTextPaint = new Paint();
-        highlightedTextPaint.setColor(Color.WHITE);
+        int textHighlightColour = ContextCompat.getColor(context, R.color.textLight);
+        highlightedTextPaint.setColor(textHighlightColour);
         highlightedTextPaint.setTextAlign(Paint.Align.CENTER);
         highlightedTextPaint.setTextSize(TEXT_SIZE);
         highlightedTextPaint.setTypeface(TEXT_TYPEFACE);
@@ -148,7 +152,6 @@ public class RotaryKeyboard {
 
     public void onDraw(Canvas canvas) {
         Coordinates circleCentre = centre;
-        canvas.drawPaint(backgroundPaint);
         canvas.drawCircle(circleCentre.x(), circleCentre.y(), radius, circlePaint);
 
         if (isDragging) {
