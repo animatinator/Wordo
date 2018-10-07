@@ -314,6 +314,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
                     getGameStatsMonitor().setNumBonusWords(
                             bonusWordsRecord.getNumberOfRevealedWords());
                     bonusWord = true;
+                } else {
+                    getGameStatsMonitor().wrongWordEntered();
                 }
             }
 

@@ -11,6 +11,7 @@ import java.util.Date;
 public class GameStatsMonitor {
     private Date startTime;
     private int numHints = 0;
+    private int numWrongWords = 0;
     private int numBonusWords;
 
     public GameStatsMonitor() {
@@ -22,6 +23,10 @@ public class GameStatsMonitor {
      */
     public void hintRequested() {
         numHints++;
+    }
+
+    public void wrongWordEntered() {
+        numWrongWords++;
     }
 
     /**
@@ -36,7 +41,7 @@ public class GameStatsMonitor {
      */
     public GameStats getGameStatsNow() {
         Date endTime = Calendar.getInstance().getTime();
-        return new GameStats(startTime, endTime, numHints, numBonusWords);
+        return new GameStats(startTime, endTime, numHints, numWrongWords, numBonusWords);
     }
 
     /**
@@ -46,12 +51,14 @@ public class GameStatsMonitor {
         private final Date startTime;
         private final Date endTime;
         private final int numHints;
+        private final int numWrongWords;
         private final int numBonusWords;
 
-        GameStats(Date startTime, Date endTime, int numHints, int numBonusWords) {
+        GameStats(Date startTime, Date endTime, int numHints, int numWrongWords, int numBonusWords) {
             this.startTime = startTime;
             this.endTime = endTime;
             this.numHints = numHints;
+            this.numWrongWords = numWrongWords;
             this.numBonusWords = numBonusWords;
         }
 
@@ -61,6 +68,10 @@ public class GameStatsMonitor {
 
         public int getNumHints() {
             return numHints;
+        }
+
+        public int getNumWrongWords() {
+            return numWrongWords;
         }
 
         public int getNumBonusWords() {

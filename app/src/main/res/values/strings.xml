@@ -10,6 +10,8 @@
         &lt;br>
         Hints: &lt;b>%d&lt;/b>
         &lt;br>
+        Incorrect guesses: &lt;b>%d&lt;/b>
+        &lt;br>
         Bonus words: &lt;b>%d&lt;/b>
         &lt;br>&lt;br>
         Play again?</string>

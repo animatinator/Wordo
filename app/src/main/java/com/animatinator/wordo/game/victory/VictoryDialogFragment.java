@@ -53,6 +53,7 @@ public class VictoryDialogFragment extends DialogFragment {
                     formatString,
                     getDurationAsString(gameStats.getDuration()),
                     gameStats.getNumHints(),
+                    gameStats.getNumWrongWords(),
                     gameStats.getNumBonusWords());
         }
     }
