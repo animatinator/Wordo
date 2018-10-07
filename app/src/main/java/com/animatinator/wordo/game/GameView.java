@@ -71,7 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         // Set it up with a test board at first. This provides a neat fallback if we totally failed
         // to generate a board for whatever reason.
         crosswordLayout = CrosswordLayout.buildPlaceholderLayout();
-        boardView = new CrosswordBoardView(crosswordLayout);
+        boardView = new CrosswordBoardView(getContext(), crosswordLayout);
         keyboard = setUpRotaryKeyboard();
         hintButton = new HintButton(getContext());
         hintButton.setCallback(new GameViewHintButtonCallback());

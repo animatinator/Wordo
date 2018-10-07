@@ -1,12 +1,14 @@
 package com.animatinator.wordo.game.board;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 
+import com.animatinator.wordo.R;
 import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.crossword.util.Vector2d;
 import com.animatinator.wordo.util.Coordinates;
@@ -15,6 +17,8 @@ public class CrosswordBoardView {
     private static final Typeface TEXT_TYPEFACE =
             Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
     private static final boolean DRAW_DEBUG_RECT = false;
+
+    private final Context context;
 
     // topLeft is the top-left corner of this view area. drawnBoardTopLeft is the top-left corner of
     // the board being drawn, once it's been centred.
@@ -36,24 +40,29 @@ public class CrosswordBoardView {
     // similar will require recomputing the layout.
     private boolean layoutInitialised = false;
 
-    public CrosswordBoardView(CrosswordLayout layout) {
+    public CrosswordBoardView(Context context, CrosswordLayout layout) {
+        this.context = context;
         crosswordLayout = layout;
         initPaints();
     }
 
     private void initPaints() {
         backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.GREEN);
+        // Hideous green for testing.
+        backgroundPaint.setColor(0xff00ff00);
 
         squarePaint = new Paint();
-        squarePaint.setColor(Color.LTGRAY);
+        int squareColour = ContextCompat.getColor(context, R.color.crosswordSquare);
+        squarePaint.setColor(squareColour);
 
         squareOutlinePaint = new Paint();
-        squareOutlinePaint.setColor(Color.GRAY);
+        int squareOutlineColour = ContextCompat.getColor(context, R.color.crosswordSquareOutline);
+        squareOutlinePaint.setColor(squareOutlineColour);
         squareOutlinePaint.setStyle(Paint.Style.STROKE);
 
         letterPaint = new Paint();
-        letterPaint.setColor(Color.BLACK);
+        int textColour = ContextCompat.getColor(context, R.color.textColor);
+        letterPaint.setColor(textColour);
         letterPaint.setTextSize(textSize);
         letterPaint.setTypeface(TEXT_TYPEFACE);
     }

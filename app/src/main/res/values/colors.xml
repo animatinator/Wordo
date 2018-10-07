@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="buttonBackground">#FFCCCCCC</color>
     <color name="textColor">#FF000000</color>
+    <color name="crosswordSquare">#FFCCCCCC</color>
+    <color name="crosswordSquareOutline">#FF888888</color>
 </resources>
