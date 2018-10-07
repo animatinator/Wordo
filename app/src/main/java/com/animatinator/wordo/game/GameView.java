@@ -67,7 +67,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         setOnTouchListener(this);
         
         bonusWordsButton = new BonusWordsButton(getContext(), bonusWordsRecord);
-        enteredTextDisplay = new EnteredTextDisplay();
+        enteredTextDisplay = new EnteredTextDisplay(getContext());
         // Set it up with a test board at first. This provides a neat fallback if we totally failed
         // to generate a board for whatever reason.
         crosswordLayout = CrosswordLayout.buildPlaceholderLayout();
