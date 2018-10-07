@@ -7,6 +7,9 @@ import android.support.annotation.RequiresApi;
 
 import com.animatinator.wordo.R;
 
+/**
+ * Loads the standard typefaces for use throughout the game.
+ */
 public class Typefaces {
     public static Typeface getBoldTypeface(Context context) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
