@@ -11,13 +11,14 @@ import com.animatinator.wordo.util.Coordinates;
 public class BonusWordsButton extends GameButton {
     private static final Typeface TEXT_TYPEFACE = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
-    private BonusWordsRecord bonusWordsRecord = new BonusWordsRecord();
+    private BonusWordsRecord bonusWordsRecord;
 
     private Paint textPaint;
     private BonusWordsCallback callback = bonusWords -> {};
 
-    public BonusWordsButton() {
+    public BonusWordsButton(BonusWordsRecord bonusWordsRecord) {
         super();
+        this.bonusWordsRecord = bonusWordsRecord;
         initPaints();
     }
 
@@ -29,14 +30,14 @@ public class BonusWordsButton extends GameButton {
         textPaint.setTypeface(TEXT_TYPEFACE);
     }
 
+    public void setBonusWordsRecord(BonusWordsRecord bonusWordsRecord) {
+        this.bonusWordsRecord = bonusWordsRecord;
+    }
+
     @Override
     public void updateLayout(Coordinates centre, float radius) {
         super.updateLayout(centre, radius);
         textPaint.setTextSize(radius);
-    }
-
-    public void addToRevealedWords(String word) {
-        bonusWordsRecord.revealBonusWord(word);
     }
 
     @Override
@@ -54,5 +55,4 @@ public class BonusWordsButton extends GameButton {
     protected void onPressed() {
         callback.showBonusWords(bonusWordsRecord.getRevealedWords());
     }
-
 }

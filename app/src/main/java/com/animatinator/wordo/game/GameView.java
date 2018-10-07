@@ -16,6 +16,7 @@ import com.animatinator.wordo.crossword.CrosswordLayout;
 import com.animatinator.wordo.game.board.CrosswordBoardView;
 import com.animatinator.wordo.game.bonuswords.BonusWordsButton;
 import com.animatinator.wordo.game.bonuswords.BonusWordsCallback;
+import com.animatinator.wordo.game.bonuswords.BonusWordsRecord;
 import com.animatinator.wordo.game.hints.HintButton;
 import com.animatinator.wordo.game.hints.HintButtonCallback;
 import com.animatinator.wordo.game.keyboard.EnteredTextDisplay;
@@ -53,9 +54,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private final RotaryKeyboard keyboard;
 
     private CrosswordLayout crosswordLayout;
-    private VictoryCallback victoryCallback;
-
+    private BonusWordsRecord bonusWordsRecord = new BonusWordsRecord();
     private GameStatsMonitor gameStatsMonitor;
+
+    private VictoryCallback victoryCallback;
 
     private GameThread gameThread;
     private Paint backgroundPaint;
@@ -64,7 +66,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         super(context, attrs);
         setOnTouchListener(this);
         
-        bonusWordsButton = new BonusWordsButton();
+        bonusWordsButton = new BonusWordsButton(bonusWordsRecord);
         enteredTextDisplay = new EnteredTextDisplay();
         // Set it up with a test board at first. This provides a neat fallback if we totally failed
         // to generate a board for whatever reason.
@@ -106,6 +108,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         return gameStatsMonitor;
     }
 
+    private BonusWordsRecord getBonusWordsRecord() {
+        return bonusWordsRecord;
+    }
+
     /**
      * Check whether the game is finished and notify if so.
      */
@@ -125,6 +131,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
         }
         crosswordLayout = layout;
         boardView.setPuzzleLayout(layout);
+        bonusWordsRecord = new BonusWordsRecord();
+        bonusWordsButton.setBonusWordsRecord(bonusWordsRecord);
         initGameStatsMonitor();
     }
 
@@ -294,18 +302,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     private final class GameViewWordEntryCallback implements WordEntryCallback {
         @Override
         public void onWordEntered(String word) {
-            Log.d(TAG, "===== Word entered: "+word+" =====");
+            Log.d(TAG, "===== Word entered: " + word + " =====");
             boolean revealed = getCrosswordLayout().maybeRevealWord(word);
             boolean bonusWord = false;
 
             if (revealed) {
                 maybeWin();
-            }
-            else {
+            } else {
                 // If the word wasn't on the board, it might be a bonus word.
                 if (getCrosswordLayout().hasBonusWord(word)) {
                     Log.d(TAG, "===== Bonus word:" + word);
-                    bonusWordsButton.addToRevealedWords(word);
+                    BonusWordsRecord bonusWordsRecord = getBonusWordsRecord();
+                    bonusWordsRecord.revealBonusWord(word);
+                    getGameStatsMonitor().setNumBonusWords(
+                            bonusWordsRecord.getNumberOfRevealedWords());
                     bonusWord = true;
                 }
             }
