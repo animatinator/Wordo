@@ -90,7 +90,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Vie
     }
 
     private void initGameStatsMonitor() {
-        gameStatsMonitor = new GameStatsMonitor();
+        gameStatsMonitor = new GameStatsMonitor(getCrosswordLayout().getNumWords());
     }
 
     private void initBonusWordsRecord() {

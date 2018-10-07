@@ -9,12 +9,14 @@ import java.util.Date;
  * snapshot form by calling {@link GameStatsMonitor#getGameStatsNow()}.
  */
 public class GameStatsMonitor {
+    private final int numWords;
     private Date startTime;
     private int numHints = 0;
     private int numWrongWords = 0;
     private int numBonusWords;
 
-    public GameStatsMonitor() {
+    public GameStatsMonitor(int numWords) {
+        this.numWords = numWords;
         startTime = Calendar.getInstance().getTime();
     }
 
@@ -41,25 +43,37 @@ public class GameStatsMonitor {
      */
     public GameStats getGameStatsNow() {
         Date endTime = Calendar.getInstance().getTime();
-        return new GameStats(startTime, endTime, numHints, numWrongWords, numBonusWords);
+        return new GameStats(numWords, startTime, endTime, numHints, numWrongWords, numBonusWords);
     }
 
     /**
      * A snapshot of the game's statistics at a given time.
      */
     public static final class GameStats implements Serializable {
+        private final int numWords;
         private final Date startTime;
         private final Date endTime;
         private final int numHints;
         private final int numWrongWords;
         private final int numBonusWords;
 
-        GameStats(Date startTime, Date endTime, int numHints, int numWrongWords, int numBonusWords) {
+        GameStats(
+                int numWords,
+                Date startTime,
+                Date endTime,
+                int numHints,
+                int numWrongWords,
+                int numBonusWords) {
+            this.numWords = numWords;
             this.startTime = startTime;
             this.endTime = endTime;
             this.numHints = numHints;
             this.numWrongWords = numWrongWords;
             this.numBonusWords = numBonusWords;
+        }
+
+        public int getNumWords() {
+            return numWords;
         }
 
         public long getDuration() {

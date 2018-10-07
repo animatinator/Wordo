@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.game.stats.DurationFormatter;
@@ -15,6 +16,8 @@ import com.animatinator.wordo.game.stats.GameStatsMonitor;
 public class VictoryDialogFragment extends DialogFragment {
 
     public static final String GAME_STATS_BUNDLE_ENTRY = "game_stats";
+
+    private static final String TAG = "VictoryDialog";
 
     public interface Callback {
         void onChoosePlayAgain();
@@ -31,6 +34,8 @@ public class VictoryDialogFragment extends DialogFragment {
 
         GameStatsMonitor.GameStats gameStats =
                 (GameStatsMonitor.GameStats) getArguments().getSerializable(GAME_STATS_BUNDLE_ENTRY);
+
+        Log.i(TAG, "Stars: "+ScoreCalculator.computeScore(gameStats));
 
         String messageWithHtmlTags = buildMessageFromGameState(gameStats);
         builder.setMessage(Html.fromHtml(messageWithHtmlTags, Html.FROM_HTML_MODE_COMPACT));

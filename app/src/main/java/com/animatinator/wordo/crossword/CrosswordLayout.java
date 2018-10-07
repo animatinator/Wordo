@@ -129,6 +129,10 @@ public class CrosswordLayout {
         return size;
     }
 
+    public int getNumWords() {
+        return laidWords.size();
+    }
+
     @SuppressLint("NewApi")
     @Nullable
     public String getValueAt(int x, int y) {

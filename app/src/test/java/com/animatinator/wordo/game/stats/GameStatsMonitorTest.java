@@ -12,7 +12,7 @@ public class GameStatsMonitorTest {
 
     @Before
     public void setUpGameStatsMonitor() {
-        gameStatsMonitor = new GameStatsMonitor();
+        gameStatsMonitor = new GameStatsMonitor(100);
     }
 
     @Test
