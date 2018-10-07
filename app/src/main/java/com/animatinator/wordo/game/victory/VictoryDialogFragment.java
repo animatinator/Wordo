@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.game.stats.DurationFormatter;
@@ -31,7 +32,8 @@ public class VictoryDialogFragment extends DialogFragment {
         GameStatsMonitor.GameStats gameStats =
                 (GameStatsMonitor.GameStats) getArguments().getSerializable(GAME_STATS_BUNDLE_ENTRY);
 
-        builder.setMessage(buildMessageFromGameState(gameStats));
+        String messageWithHtmlTags = buildMessageFromGameState(gameStats);
+        builder.setMessage(Html.fromHtml(messageWithHtmlTags, Html.FROM_HTML_MODE_COMPACT));
 
         builder.setPositiveButton(
                 R.string.victory_play_again_button,

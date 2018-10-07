@@ -5,7 +5,14 @@
     <string name="bonus_words">Bonus words</string>
     <string name="base_loading_string">Loading…</string>
     <string name="victory_title">You win!</string>
-    <string name="victory_message">You solved the puzzle!\n\nIt took you %s.\nHints: %d\nBonus words: %d\n\nPlay again?</string>
+    <string name="victory_message">You solved the puzzle!&lt;br>&lt;br>
+        It took you &lt;b>%s&lt;/b>.
+        &lt;br>
+        Hints: &lt;b>%d&lt;/b>
+        &lt;br>
+        Bonus words: &lt;b>%d&lt;/b>
+        &lt;br>&lt;br>
+        Play again?</string>
     <string name="victory_message_no_stats">You solved the puzzle!\n\nSorry, no stats available :(\n\nPlay again?</string>
     <string name="victory_play_again_button">Play again!</string>
     <string name="victory_exit_button">Exit</string>
