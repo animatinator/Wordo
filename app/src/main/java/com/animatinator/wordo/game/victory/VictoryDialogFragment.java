@@ -1,5 +1,6 @@
 package com.animatinator.wordo.game.victory;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -8,6 +9,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.game.stats.DurationFormatter;
@@ -35,10 +40,21 @@ public class VictoryDialogFragment extends DialogFragment {
         GameStatsMonitor.GameStats gameStats =
                 (GameStatsMonitor.GameStats) getArguments().getSerializable(GAME_STATS_BUNDLE_ENTRY);
 
-        Log.i(TAG, "Stars: "+ScoreCalculator.computeScore(gameStats));
+        int starScore = ScoreCalculator.computeScore(gameStats);
+        Log.i(TAG, "Stars: "+starScore);
 
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        @SuppressLint("InflateParams")  // The docs told me to pass null D:
+        View dialogView = inflater.inflate(R.layout.victory_dialog, null);
+        builder.setView(dialogView);
+
+        TextView dialogText = dialogView.findViewById(R.id.victory_dialog_text);
         String messageWithHtmlTags = buildMessageFromGameState(gameStats);
-        builder.setMessage(Html.fromHtml(messageWithHtmlTags, Html.FROM_HTML_MODE_COMPACT));
+        dialogText.setText(Html.fromHtml(messageWithHtmlTags, Html.FROM_HTML_MODE_COMPACT));
+
+        RatingBar ratingBar = dialogView.findViewById(R.id.star_rating_display);
+        ratingBar.setNumStars(5);
+        ratingBar.setRating(starScore);
 
         builder.setPositiveButton(
                 R.string.victory_play_again_button,
