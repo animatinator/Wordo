@@ -10,7 +10,7 @@
         android:layout_gravity="center_horizontal"
         android:numStars="5"
         android:isIndicator="true"
-        android:stepSize="1" />
+        android:stepSize="0.5" />
     <TextView
         android:id="@+id/victory_dialog_text"
         android:layout_width="match_parent"

@@ -10,7 +10,7 @@ public class ScoreCalculatorTest {
     @Test
     public void perfectGame() {
         GameStatsMonitor monitor = new GameStatsMonitor(10);
-        assertEquals(5, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
+        assertEquals(10, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ScoreCalculatorTest {
 
         requestHints(monitor, 5);
 
-        assertEquals(4, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
+        assertEquals(8, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ScoreCalculatorTest {
 
         makeWrongGuesses(monitor, 20);
 
-        assertEquals(3, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
+        assertEquals(6, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ScoreCalculatorTest {
         requestHints(monitor, 5);
         monitor.setNumBonusWords(5);
 
-        assertEquals(4, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
+        assertEquals(8, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
     }
 
     /**
@@ -61,7 +61,7 @@ public class ScoreCalculatorTest {
 
         monitor.hintRequested();
 
-        assertEquals(4, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
+        assertEquals(9, ScoreCalculator.computeScore(monitor.getGameStatsNow()));
     }
 
     private void requestHints(GameStatsMonitor monitor, int numHints) {

@@ -40,7 +40,8 @@ public class VictoryDialogFragment extends DialogFragment {
         GameStatsMonitor.GameStats gameStats =
                 (GameStatsMonitor.GameStats) getArguments().getSerializable(GAME_STATS_BUNDLE_ENTRY);
 
-        int starScore = ScoreCalculator.computeScore(gameStats);
+        // Divide by two to map from the 0-10 range to 1-5 stars
+        float starScore = ScoreCalculator.computeScore(gameStats) / 2.0f;
         Log.i(TAG, "Stars: "+starScore);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
