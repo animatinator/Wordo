@@ -7,23 +7,43 @@
     tools:context=".menu.MainMenuActivity">
 
     <TextView
+        android:id="@+id/main_menu_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="@string/menu_title"
         android:textAlignment="center"
-        android:textSize="50sp"/>
+        android:textSize="80sp"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/play_button_text"
-        android:id="@+id/play_button"
-        android:onClick="launchGameActivity"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/main_menu_title" >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play_button_text"
+            android:id="@+id/play_button"
+            android:onClick="launchGameActivity" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play_button_text"
+            android:id="@+id/difficulty_button"
+            android:onClick="handleConfigToggle" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play_button_text"
+            android:id="@+id/size_button"
+            android:onClick="handleConfigToggle" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

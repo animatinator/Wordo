@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Wordo</string>
-    <string name="menu_title">super cool\nMENU</string>
+    <string name="menu_title">Wordo!</string>
     <string name="play_button_text">Play</string>
     <string name="bonus_words">Bonus words</string>
     <string name="base_loading_string">Loading…</string>
@@ -19,4 +19,11 @@
     <string name="victory_play_again_button">Play again!</string>
     <string name="victory_exit_button">Exit</string>
     <string name="loading_screen_header">Generating a puzzle…</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_normal">Normal</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="puzzle_size_small">Small</string>
+    <string name="puzzle_size_medium">Medium</string>
+    <string name="puzzle_size_large">Large</string>
+    <string name="puzzle_size_enormous">Enormous</string>
 </resources>
