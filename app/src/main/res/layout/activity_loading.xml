@@ -7,6 +7,16 @@
     tools:context=".loadingscreen.LoadingActivity">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/loading_screen_header"
+        android:textSize="16pt"
+        android:padding="10dp"
+        app:layout_constraintRight_toRightOf="@id/guideline"
+        app:layout_constraintLeft_toLeftOf="@id/guideline" />
+
+    <TextView
         android:id="@+id/progressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -18,4 +18,5 @@
     <string name="victory_message_no_stats">You solved the puzzle!\n\nSorry, no stats available :(\n\nPlay again?</string>
     <string name="victory_play_again_button">Play again!</string>
     <string name="victory_exit_button">Exit</string>
+    <string name="loading_screen_header">Generating a puzzle…</string>
 </resources>
