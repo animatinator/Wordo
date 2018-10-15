@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.animatinator.wordo.IntentConstants;
 import com.animatinator.wordo.R;
+import com.animatinator.wordo.config.ConfigValues;
+import com.animatinator.wordo.config.PuzzleGenerationConfig;
 import com.animatinator.wordo.crossword.PuzzleConfiguration;
 import com.animatinator.wordo.crossword.PuzzleGenerationProgressCallback;
 import com.animatinator.wordo.crossword.PuzzleGenerationSettings;
@@ -74,10 +76,14 @@ public class LoadingActivity extends Activity {
     }
 
     private PuzzleGenerationSettings getGenerationSettings() {
+        int numLetters =
+                ConfigValues.getWordLengthFromDifficulty(this, PuzzleGenerationConfig.getDifficulty());
+        int maxWords =
+                ConfigValues.getRealSizeFromPuzzleSize(this, PuzzleGenerationConfig.getPuzzleSize());
         return new PuzzleGenerationSettings()
-                .withMaxWords(15)
+                .withMaxWords(maxWords)
                 .withMinWordLength(3)
-                .withNumLetters(7);
+                .withNumLetters(numLetters);
     }
 
     private static final class ProgressHandler extends Handler {

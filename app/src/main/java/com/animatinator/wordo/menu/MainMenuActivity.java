@@ -10,14 +10,15 @@ import android.widget.TextView;
 import com.animatinator.wordo.R;
 import com.animatinator.wordo.config.ConfigNames;
 import com.animatinator.wordo.config.Difficulty;
+import com.animatinator.wordo.config.PuzzleGenerationConfig;
 import com.animatinator.wordo.config.PuzzleSize;
 import com.animatinator.wordo.game.util.Typefaces;
 import com.animatinator.wordo.loadingscreen.LoadingActivity;
 
 public class MainMenuActivity extends Activity {
 
-    private Difficulty difficulty = Difficulty.NORMAL;
-    private PuzzleSize puzzleSize = PuzzleSize.MEDIUM;
+    private Difficulty difficulty;
+    private PuzzleSize puzzleSize;
 
     private Button difficultyButton;
     private Button sizeButton;
@@ -25,6 +26,8 @@ public class MainMenuActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initConfig();
 
         setContentView(R.layout.activity_main_menu);
 
@@ -34,6 +37,11 @@ public class MainMenuActivity extends Activity {
         sizeButton = findViewById(R.id.size_button);
         updateButtonText();
 
+    }
+
+    private void initConfig() {
+        difficulty = PuzzleGenerationConfig.getDifficulty();
+        puzzleSize = PuzzleGenerationConfig.getPuzzleSize();
     }
 
     public void launchGameActivity(View view) {
@@ -56,10 +64,16 @@ public class MainMenuActivity extends Activity {
         }
 
         updateButtonText();
+        commitConfigChanges();
     }
 
     private void updateButtonText() {
         difficultyButton.setText(ConfigNames.getStringForDifficulty(this, difficulty));
         sizeButton.setText(ConfigNames.getStringForPuzzleSize(this, puzzleSize));
+    }
+
+    private void commitConfigChanges() {
+        PuzzleGenerationConfig.setDifficulty(difficulty);
+        PuzzleGenerationConfig.setPuzzleSize(puzzleSize);
     }
 }

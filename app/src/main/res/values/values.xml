@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="puzzle_word_length_easy">5</integer>
+    <integer name="puzzle_word_length_normal">7</integer>
+    <integer name="puzzle_word_length_hard">9</integer>
+
+    <integer name="puzzle_size_small">10</integer>
+    <integer name="puzzle_size_medium">15</integer>
+    <integer name="puzzle_size_large">20</integer>
+    <integer name="puzzle_size_enormous">30</integer>
+</resources>
